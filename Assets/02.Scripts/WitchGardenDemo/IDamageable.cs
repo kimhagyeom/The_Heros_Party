@@ -1,7 +1,7 @@
-namespace WitchGardenDemo
-{
-    public interface IDamageable
-    {
-        void TakeDamage(int amount);
-    }
-}
+// namespace WitchGardenDemo
+// {
+//     public interface IDamageable
+//     {
+//         void TakeDamage(int amount);
+//     }
+// }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace WitchGardenDemo
 {
-    public class Health : MonoBehaviour, IDamageable
+    public class Health : MonoBehaviour
     {
         public int maxHealth = 100;
 
