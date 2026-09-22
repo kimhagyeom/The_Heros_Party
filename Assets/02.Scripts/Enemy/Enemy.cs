@@ -26,5 +26,6 @@ public class Enemy : MonoBehaviour,IDamageable
     void Die()
     {
         EnemyRegistry.Instance.Unregister(this);
+        Destroy(gameObject);
     }
 }

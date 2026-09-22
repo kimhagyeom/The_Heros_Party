@@ -185,6 +185,6 @@ public class PlayerController : MonoBehaviour,IDamageable
     void Die()
     {
         Debug.Log("Player has died!");
-        // 게임 오버 처리 로직 추가 가능
+        GameManager.Instance.GameOver();
     }
 }
