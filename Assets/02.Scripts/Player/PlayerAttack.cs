@@ -24,14 +24,14 @@ public class PlayerAttack : MonoBehaviour
     void Update()
 {
     FindEnemy();
-    if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+    if (Keyboard.current != null && Keyboard.current.qKey.wasPressedThisFrame)
     {
         TryAttack();
     }
     if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
-        {
-            dpmTracker.ResetTracker();
-        }
+    {
+        dpmTracker.ResetTracker();
+    }
 }
 
     void FindEnemy()
@@ -78,9 +78,9 @@ public class PlayerAttack : MonoBehaviour
             {
                 if (enemy.TryGetComponent<IDamageable>(out var damageable))
                 {
-                    damageable.TakeDamage(playerController.atk);
-                    dpmTracker.RecordDamage(playerController.atk); 
-                    Debug.Log($"Attacked {enemy.name} for {playerController.atk} damage!");
+                    damageable.TakeDamage(playerController.stats.base_Attack);
+                    dpmTracker.RecordDamage(playerController.stats.base_Attack); 
+                    Debug.Log($"Attacked {enemy.name} for {playerController.stats.base_Attack} damage!");
                     hitAny = true;
                 }
             }
