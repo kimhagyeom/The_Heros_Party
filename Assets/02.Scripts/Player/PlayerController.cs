@@ -43,12 +43,11 @@ public class PlayerController : MonoBehaviour,IDamageable
     [SerializeField] private Transform spriteVisual;
     [SerializeField] private Camera mainCamera;
     public PlayerStats stats = new PlayerStats();
-    [SerializeField] private int maxPlayerMentalPoint = 100;
-    [SerializeField] private int currentPlayerMentalPoint = 100;
     private CharacterController controller;
     private Animator animator;
     private bool isDash = false;
     private bool isInvincible = false;
+    public float facingSign;
 
     private Coroutine regenRoutine;
     
@@ -59,7 +58,7 @@ public class PlayerController : MonoBehaviour,IDamageable
         animator = GetComponentInChildren<Animator>(); 
         if (mainCamera == null) mainCamera = Camera.main;
         stats.Init();
-        currentPlayerMentalPoint = maxPlayerMentalPoint;
+        stats.currentStamina = stats.maxStamina;
 
     }
     void Update()
@@ -121,9 +120,10 @@ public class PlayerController : MonoBehaviour,IDamageable
                 {
                     spriteVisual.rotation = Quaternion.identity;
                 
-                    float sign = directionToMouse.x >= 0 ? 1f : -1f;
+                    facingSign = directionToMouse.x >= 0 ? 1f : -1f;
+                    
                     Vector3 localScale = spriteVisual.localScale;
-                    spriteVisual.localScale = new Vector3(Mathf.Abs(localScale.x) * sign, localScale.y, localScale.z);
+                    spriteVisual.localScale = new Vector3(Mathf.Abs(localScale.x) * facingSign, localScale.y, localScale.z);
                 }
             }
         }
