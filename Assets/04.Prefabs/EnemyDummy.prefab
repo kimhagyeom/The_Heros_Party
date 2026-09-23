@@ -70,6 +70,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyData: {fileID: 11400000, guid: ab024e4e7225d4418a7ea0fc4369256d, type: 2}
+  damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
+  damageTextOffset: {x: 0, y: 2, z: 0}
 --- !u!1 &5160504822350764843
 GameObject:
   m_ObjectHideFlags: 0
