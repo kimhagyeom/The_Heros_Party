@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using System;
+using Unity.VisualScripting;
 
 
 [System.Serializable]
@@ -23,10 +24,10 @@ public class PlayerStats
     public float hit_Invincible_Time = 0.5f;
     public float dash_Stamina_Cost = 50f;
     //대시 거리 = dashSpeed * dashDuration
-    public float dashSpeed = 5f;
+    public float dash_Distance = 5f;
     public float dashDuration = 4f;
     public float dash_Invincible_Duration = 0.2f;
-    public float base_Attack = 10f;
+    public float base_Atk = 10f;
 
 
     public float currentHealth;
@@ -42,6 +43,10 @@ public class PlayerController : MonoBehaviour,IDamageable
 {
     [SerializeField] private Transform spriteVisual;
     [SerializeField] private Camera mainCamera;
+    private PlayerInputActions inputActions; // 실제 값을 저장하는 필드 (소문자, private)
+
+    public PlayerInputActions InputActions => inputActions;
+    private Vector2 moveInput;
     public PlayerStats stats = new PlayerStats();
     private CharacterController controller;
     private Animator animator;
@@ -58,46 +63,47 @@ public class PlayerController : MonoBehaviour,IDamageable
         animator = GetComponentInChildren<Animator>(); 
         if (mainCamera == null) mainCamera = Camera.main;
         stats.Init();
-        stats.currentStamina = stats.maxStamina;
 
+        inputActions = new PlayerInputActions();
+    }
+    
+    void OnEnable()
+    {
+        inputActions.Player.Move.performed += OnMove;
+        inputActions.Player.Move.canceled += OnMove;
+        inputActions.Player.Dodge.performed += OnDodgePerformed;
+        inputActions.Player.Enable();
+    }
+    void OnDisable()
+    {
+        inputActions.Player.Move.performed -= OnMove;
+        inputActions.Player.Move.canceled -= OnMove;
+        inputActions.Player.Dodge.performed -= OnDodgePerformed;
+        inputActions.Player.Disable();
+    }
+    
+    private void OnMove(InputAction.CallbackContext ctx)
+    {
+        moveInput = ctx.ReadValue<Vector2>();
+    }
+    private void OnDodgePerformed(InputAction.CallbackContext ctx)
+    {
+        HandleDodge();
     }
     void Update()
     {
-        HandleMove();
-        HandleFacing();
-    }
-         
-    private void HandleMove()
-    {
-        if(isDash) return;
-        Keyboard keyboard = Keyboard.current;
-        float h = 0f;
-        float v = 0f;
-
-        if (keyboard != null)
-        {
-            if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) h -= 1f;
-            if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) h += 1f;
-            if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) v -= 1f;
-            if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) v += 1f;
-            if (Keyboard.current.spaceKey.wasPressedThisFrame) HandleDodge();
-        }
-
-        Vector3 moveDirection = new Vector3(h, 0f, v);
-        if (moveDirection.sqrMagnitude > 1f)
-        {
-            moveDirection.Normalize();
-        }
-
+        Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
         controller.SimpleMove(moveDirection * stats.Move_Speed);
-        
-        bool isMoving = moveDirection.magnitude > 0.0001f;
+
+        bool isMoving = moveDirection.sqrMagnitude > 0.0001f;
         if (animator != null)
         {
             animator.SetBool(AnimHash.IsMoving, isMoving);
         }
 
+        HandleFacing();
     }
+         
     private void HandleFacing()
     {
         Mouse mouse = Mouse.current; 
@@ -164,7 +170,7 @@ public class PlayerController : MonoBehaviour,IDamageable
         while(elapsed < stats.dashDuration)
         {
             elapsed += Time.deltaTime;
-            controller.Move(direction.normalized * stats.dashSpeed * Time.deltaTime);
+            controller.Move(direction.normalized * stats.dash_Distance * Time.deltaTime);
             yield return null;
         }
 

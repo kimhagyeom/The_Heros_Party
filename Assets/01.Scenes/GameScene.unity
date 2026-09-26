@@ -294,10 +294,10 @@ MonoBehaviour:
     start_Infection: 0
     hit_Invincible_Time: 0.5
     dash_Stamina_Cost: 50
-    dashSpeed: 16
+    dash_Distance: 5
     dashDuration: 0.25
     dash_Invincible_Duration: 0.2
-    base_Attack: 10
+    base_Atk: 10
     currentHealth: 0
     currentStamina: 0
   facingSign: 0
@@ -334,7 +334,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 460401733}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -342,7 +342,7 @@ Transform:
   - {fileID: 1098819238}
   - {fileID: 851249521}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &460401737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,16 +355,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78984f558dfd341aca5cbf103f7cb2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  detectRange: 5
+  weaponData: {fileID: 11400000, guid: dc69e8297cb1e410d871232326824f7e, type: 2}
   attackInterval: 1
-  closeAttackRange: 8
-  closeAttackAngle: 65
+  hitDetectionWidth: 15
   playerController: {fileID: 460401734}
   dpmTracker: {fileID: 460401738}
   weaponPivot: {fileID: 851249521}
-  swingDuration: 0.25
-  swingAngle: 120
-  hitDetectionWidth: 15
 --- !u!114 &460401738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,8 +427,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
