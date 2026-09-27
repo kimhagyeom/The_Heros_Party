@@ -355,12 +355,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78984f558dfd341aca5cbf103f7cb2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  weaponData: {fileID: 11400000, guid: dc69e8297cb1e410d871232326824f7e, type: 2}
-  attackInterval: 1
+  currentWeaponData: {fileID: 11400000, guid: dc69e8297cb1e410d871232326824f7e, type: 2}
+  mainWeaponData: {fileID: 11400000, guid: dc69e8297cb1e410d871232326824f7e, type: 2}
+  subWeaponData: {fileID: 11400000, guid: bebd28b281f034941b9078ae65fc2497, type: 2}
+  attackInterval: 0
   hitDetectionWidth: 15
   playerController: {fileID: 460401734}
   dpmTracker: {fileID: 460401738}
   weaponPivot: {fileID: 851249521}
+  isAtk: 0
 --- !u!114 &460401738
 MonoBehaviour:
   m_ObjectHideFlags: 0

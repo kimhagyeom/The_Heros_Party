@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e33cd10380cc4961b48f28d3ed71437, type: 3}
+  m_Name: Sword_1001
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  weapon_ID: 1001
+  weapon_Name: "\uAC80"
+  weapon_Type: 0
+  weapon_Slot_Type: 0
+  combo_Count: 3
+  combo_Step:
+  - damageRate: 1.5
+    duration: 0.3
+  - damageRate: 1.5
+    duration: 0.3
+  - damageRate: 2.5
+    duration: 0.4
+  atk_Range: 2.5
+  atk_Type: 0
+  hitbox_Shape: 0
+  Angle: 200

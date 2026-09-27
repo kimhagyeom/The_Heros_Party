@@ -16,7 +16,6 @@ public class DPMTracker : MonoBehaviour
             elapsedTime += Time.deltaTime;
             if (elapsedTime >= measureWindow)
             {
-                Debug.Log($"1초간 데미지: {totalDamage}");
                 elapsedTime = 0f;
                 totalDamage = 0f;
             }

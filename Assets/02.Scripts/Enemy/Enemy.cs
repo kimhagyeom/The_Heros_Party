@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour,IDamageable
     private int currentHealth;
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private DamageText damageTextPrefab;                     
-    [SerializeField] private Vector3 damageTextOffset = new Vector3(0, 2f, 0); //¸Ó¸® À§ ³ôÀÌ
+    [SerializeField] private Vector3 damageTextOffset = new Vector3(0, 2f, 0); //ï¿½Ó¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public virtual void Start()
     {
@@ -20,12 +20,11 @@ public class Enemy : MonoBehaviour,IDamageable
     public void TakeDamage(float amount)
     {
         currentHealth -= (int)amount;
-        ShowDamageText(amount); //Á×±â Àü¿¡ ¶ç¿ö¾ß ÇÔ
+        ShowDamageText(amount); //ï¿½×±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         if(currentHealth <= 0)
         {
             Die();
         }
-        Debug.Log($"Enemy took {amount} damage!");
     }
     void ShowDamageText(float amount)
     {
