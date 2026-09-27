@@ -28,17 +28,7 @@ public class PlayerAttack : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         dpmTracker = GetComponent<DPMTracker>();
         currentWeaponData = mainWeaponData;
-    }
-    void Update()
-    {
-        FindEnemy();
-        if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
-        {
-            dpmTracker.ResetTracker();
-        }
-    }
-    void OnEnable()
-    {
+
         playerController.InputActions.Player.Atk.performed += OnAttackPerformed;
         playerController.InputActions.Player.DPMReset.performed += OnResetPerformed;
         playerController.InputActions.Player.WeaponSwitch.performed += OnWeaponSwitchPerformed;
@@ -50,6 +40,15 @@ public class PlayerAttack : MonoBehaviour
         playerController.InputActions.Player.DPMReset.performed -= OnResetPerformed;
         playerController.InputActions.Player.WeaponSwitch.performed -= OnWeaponSwitchPerformed;
     }
+    void Update()
+    {
+        FindEnemy();
+        if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
+        {
+            dpmTracker.ResetTracker();
+        }
+    }
+
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
         TryAttack();

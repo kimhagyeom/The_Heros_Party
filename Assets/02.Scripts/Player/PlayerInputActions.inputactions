@@ -55,6 +55,16 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "Skill_1",
+                    "type": "Button",
+                    "id": "333421eb-5ebd-4d5a-ad08-2bf949f6920e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -187,6 +197,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "WeaponSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0b7948a4-98a0-439e-9b4c-1269851911a8",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill_1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

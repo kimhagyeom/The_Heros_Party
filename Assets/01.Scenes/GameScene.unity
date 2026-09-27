@@ -259,6 +259,8 @@ GameObject:
   - component: {fileID: 460401734}
   - component: {fileID: 460401737}
   - component: {fileID: 460401738}
+  - component: {fileID: 460401740}
+  - component: {fileID: 460401739}
   m_Layer: 0
   m_Name: Player (1)
   m_TagString: Untagged
@@ -280,6 +282,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   spriteVisual: {fileID: 1098819238}
   mainCamera: {fileID: 534153988}
+  damageTextPrefab: {fileID: 0}
+  damageTextOffset: {x: 0, y: 2, z: 0}
   stats:
     Character_ID: 1001
     Character_Name: "\uC544\uB974\uB9C8"
@@ -300,6 +304,7 @@ MonoBehaviour:
     base_Atk: 10
     currentHealth: 0
     currentStamina: 0
+    currentInfection: 0
   facingSign: 0
 --- !u!143 &460401735
 CharacterController:
@@ -376,6 +381,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f8a33cef61c94608b4dc31e1c971434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DPMTracker
+--- !u!114 &460401739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460401733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d5d9a33a574fe28fce1b22d0dddf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillExecutor
+--- !u!114 &460401740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460401733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf87b960b7f44e93a934c9191a96925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSkillController
+  playerController: {fileID: 460401734}
+  dashSkillData: {fileID: 11400000, guid: c0f8ea14a50dc4bc0983dab5cd56ee14, type: 2}
+  skillExecutor: {fileID: 460401739}
 --- !u!1 &534153987
 GameObject:
   m_ObjectHideFlags: 0

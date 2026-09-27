@@ -32,17 +32,21 @@ public class PlayerStats
 
     public float currentHealth;
     public float currentStamina;
+    public float currentInfection;
 
     public void Init()
     {
         currentHealth = maxHealth;
         currentStamina = maxStamina;
+        currentInfection = start_Infection;
     }
 }
 public class PlayerController : MonoBehaviour,IDamageable
 {
     [SerializeField] private Transform spriteVisual;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private DamageText damageTextPrefab;
+    [SerializeField] private Vector3 damageTextOffset = new Vector3(0, 2f, 0);
     private PlayerInputActions inputActions; // 실제 값을 저장하는 필드 (소문자, private)
 
     public PlayerInputActions InputActions => inputActions;
@@ -181,12 +185,42 @@ public class PlayerController : MonoBehaviour,IDamageable
     public void TakeDamage(float amount)
     {
         if(isInvincible) return;
-        Debug.Log($"Player took {amount} damage!");
+        ShowDamageText(amount);
         stats.currentHealth -= amount;
         if(stats.currentHealth <= 0)
         {
             Die();
         }
+        StartCoroutine(HitInvincibleRoutine());
+    }
+    IEnumerator Increase_Infection(float amount) // 정신감염도 상승
+    {
+        while (true)
+        {
+            stats.currentInfection += Time.deltaTime * amount;
+            stats.currentInfection = Mathf.Clamp(stats.currentInfection, stats.start_Infection, stats.max_Infection);
+            if(stats.currentInfection >= stats.max_Infection)
+            {
+                Die();
+                yield break;
+            }
+
+            yield return null;
+        }        
+    }
+    IEnumerator HitInvincibleRoutine()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(stats.hit_Invincible_Time);
+        isInvincible = false;
+    }
+    
+    void ShowDamageText(float amount)
+    {
+        if (damageTextPrefab == null) return;
+
+        DamageText dt = Instantiate(damageTextPrefab, transform.position + damageTextOffset, Quaternion.identity);
+        dt.Setup(amount);
     }
     void Die()
     {

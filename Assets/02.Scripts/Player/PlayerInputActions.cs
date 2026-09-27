@@ -141,6 +141,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""Skill_1"",
+                    ""type"": ""Button"",
+                    ""id"": ""333421eb-5ebd-4d5a-ad08-2bf949f6920e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -275,6 +285,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""WeaponSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b7948a4-98a0-439e-9b4c-1269851911a8"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -288,6 +309,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
         m_Player_DPMReset = m_Player.FindAction("DPMReset", throwIfNotFound: true);
         m_Player_WeaponSwitch = m_Player.FindAction("WeaponSwitch", throwIfNotFound: true);
+        m_Player_Skill_1 = m_Player.FindAction("Skill_1", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -373,6 +395,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dodge;
     private readonly InputAction m_Player_DPMReset;
     private readonly InputAction m_Player_WeaponSwitch;
+    private readonly InputAction m_Player_Skill_1;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -404,6 +427,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/WeaponSwitch".
         /// </summary>
         public InputAction @WeaponSwitch => m_Wrapper.m_Player_WeaponSwitch;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Skill_1".
+        /// </summary>
+        public InputAction @Skill_1 => m_Wrapper.m_Player_Skill_1;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -445,6 +472,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @WeaponSwitch.started += instance.OnWeaponSwitch;
             @WeaponSwitch.performed += instance.OnWeaponSwitch;
             @WeaponSwitch.canceled += instance.OnWeaponSwitch;
+            @Skill_1.started += instance.OnSkill_1;
+            @Skill_1.performed += instance.OnSkill_1;
+            @Skill_1.canceled += instance.OnSkill_1;
         }
 
         /// <summary>
@@ -471,6 +501,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @WeaponSwitch.started -= instance.OnWeaponSwitch;
             @WeaponSwitch.performed -= instance.OnWeaponSwitch;
             @WeaponSwitch.canceled -= instance.OnWeaponSwitch;
+            @Skill_1.started -= instance.OnSkill_1;
+            @Skill_1.performed -= instance.OnSkill_1;
+            @Skill_1.canceled -= instance.OnSkill_1;
         }
 
         /// <summary>
@@ -546,5 +579,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnWeaponSwitch(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Skill_1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkill_1(InputAction.CallbackContext context);
     }
 }
