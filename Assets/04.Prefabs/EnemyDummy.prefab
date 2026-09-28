@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6651643471190806381}
   - component: {fileID: 6976167474124605300}
   - component: {fileID: 1994828562325376701}
+  - component: {fileID: 4984200746855826227}
   m_Layer: 8
   m_Name: EnemyDummy
   m_TagString: Untagged
@@ -72,6 +73,19 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: ab024e4e7225d4418a7ea0fc4369256d, type: 2}
   damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
   damageTextOffset: {x: 0, y: 2, z: 0}
+--- !u!114 &4984200746855826227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762907494526445813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f6ebc153b09b814eb4abf5316220fd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  currentState: 0
 --- !u!1 &5160504822350764843
 GameObject:
   m_ObjectHideFlags: 0

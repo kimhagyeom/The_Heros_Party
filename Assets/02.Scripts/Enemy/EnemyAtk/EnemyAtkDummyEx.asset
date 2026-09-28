@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa323beb7871084bb538ec751458ab6, type: 3}
+  m_Name: EnemyAtkDummyEx
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAtkData
+  atk_ID: 1
+  enemy_ID: 1001
+  atk_Name: Slash
+  atk_Type: 0
+  hp_Damage: 10
+  infection_Value: 0
+  atk_Range: 1.5
+  windup_Time: 0.5
+  active_Time: 0.2
+  recovery_Time: 0.8
+  cooldown: 1
+  hitbox_Shape: 0
+  radius: 2
+  angle: 90
+  width: 0
+  length: 0
+  has_Super_Armor: 0
+  has_Knockback: 0
+  knockback_Distance: 0
+  has_Slow: 0
+  slow_Time: 0
+  slow_Per: 0

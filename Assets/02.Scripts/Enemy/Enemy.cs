@@ -9,6 +9,9 @@ public class Enemy : MonoBehaviour,IDamageable
     [SerializeField] private DamageText damageTextPrefab;                     
     [SerializeField] private Vector3 damageTextOffset = new Vector3(0, 2f, 0);
 
+    public EnemyData Data => enemyData;
+    public bool IsDead => isDead;
+
     public virtual void Start()
     {
         maxHealth = enemyData.max_HP;
@@ -20,7 +23,7 @@ public class Enemy : MonoBehaviour,IDamageable
     
     public void TakeDamage(float amount)
     {
-        if (isDead) return; // Destroy는 프레임 끝에 처리되므로 같은 프레임의 추가 피격 무시
+        if (isDead) return;
         currentHealth -= amount;
         ShowDamageText(amount);
         if(currentHealth <= 0)

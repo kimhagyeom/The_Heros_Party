@@ -16,12 +16,13 @@ MonoBehaviour:
   enemy_ID: 1001
   enemy_Name: Dummy
   max_HP: 30
-  move_Speed: 0
+  move_Speed: 3
   can_Stagger: 0
   stagger_Duration: 0
   can_Knockback: 0
   knockback_Resistance: 0
   collision_Radius: 0
-  stop_Distance: 0
+  stop_Distance: 1
   special_Ability: 0
-  atk_List: []
+  atk_List:
+  - {fileID: 11400000, guid: 0aa019c45e31987489ace6464f3a0d64, type: 2}
