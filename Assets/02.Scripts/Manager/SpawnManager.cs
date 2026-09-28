@@ -3,11 +3,17 @@ using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
-    [SerializeField] private Enemy[] enemyPrefabs;
-    [SerializeField] private Transform spawnAreaCenter;
-    [SerializeField] private float spawnRadius = 10f;
-    [SerializeField] private int enemyCountPerWave = 5;
-    [SerializeField] private float spawnInterval = 1f;
+    [System.Serializable]
+    public class SpawnEntry
+    {
+        public Enemy enemyPrefab;
+        public Vector3 position;
+        [Tooltip("이전 스폰 이후 이 적이 스폰되기까지 대기 시간(초)")]
+        public float delay;
+    }
+
+    // 리스트 순서대로 스폰 (월드좌표)
+    [SerializeField] private SpawnEntry[] spawnEntries;
 
     public void StartSpawning()
     {
@@ -16,34 +22,39 @@ public class SpawnManager : Singleton<SpawnManager>
 
     private IEnumerator SpawnWaveRoutine()
     {
-        for (int i = 0; i < enemyCountPerWave; i++)
+        foreach (SpawnEntry entry in spawnEntries)
         {
-            SpawnEnemy();
-            yield return new WaitForSeconds(spawnInterval);
+            if (entry.delay > 0f) yield return new WaitForSeconds(entry.delay);
+            SpawnEnemy(entry);
         }
 
-        // Enemy.Die()가 EnemyRegistry.Unregister()를 호출하는 것에 의존함 — 나중에 적 풀링(재사용)으로 바꾸면 Unregister 타이밍도 맞춰줘야 함
+        // Enemy는 Start()에서 Register하므로 한 프레임 기다려야 방금 스폰한 적이 카운트에 잡힘
+        yield return null;
+
+        // Enemy.Die()가 EnemyRegistry.Unregister()를 호출하는 것에 의존함 -나중에 적 풀링(재사용)으로 바꾸면 Unregister 타이밍도 맞춰줘야 함
         yield return new WaitUntil(() => EnemyRegistry.Instance.ActiveEnemies.Count == 0);
         GameManager.Instance.ClearStage();
     }
 
-    private void SpawnEnemy()
+    private void SpawnEnemy(SpawnEntry entry)
     {
-        if (enemyPrefabs.Length == 0) return;
-
-        Enemy prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
-        Vector3 center = spawnAreaCenter != null ? spawnAreaCenter.position : transform.position;
-        Vector2 randomOffset = Random.insideUnitCircle * spawnRadius;
-        // insideUnitCircle의 y값을 z에 매핑 (바닥이 XZ 평면이라 y는 항상 0으로 고정)
-        Vector3 spawnPos = center + new Vector3(randomOffset.x, 0f, randomOffset.y);
-
-        Instantiate(prefab, spawnPos, Quaternion.identity);
+        if (entry.enemyPrefab == null)
+        {
+            Debug.LogWarning("[SpawnManager] enemyPrefab이 비어 있는 SpawnEntry가 있음", this);
+            return;
+        }
+        Instantiate(entry.enemyPrefab, entry.position, Quaternion.identity);
     }
 
-    private void OnDrawGizmosSelected()
+    // 씬 뷰에서 스폰 위치 확인용
+    private void OnDrawGizmos()
     {
-        Vector3 center = spawnAreaCenter != null ? spawnAreaCenter.position : transform.position;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(center, spawnRadius);
+        if (spawnEntries == null) return;
+
+        foreach (SpawnEntry entry in spawnEntries)
+        {
+            Gizmos.color = entry.enemyPrefab != null ? Color.red : Color.gray;
+            Gizmos.DrawWireSphere(entry.position, 0.5f);
+        }
     }
 }

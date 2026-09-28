@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e99db426a860498b93d33ae39a59d7d, type: 3}
   m_Name: Dummy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyType: 0
-  enemyName: Dummy
-  maxHP: 110000
-  moveSpeed: 0
+  enemyType: 1
+  enemy_ID: 1001
+  enemy_Name: Dummy
+  max_HP: 30
+  move_Speed: 0
+  can_Stagger: 0
+  stagger_Duration: 0
+  can_Knockback: 0
+  knockback_Resistance: 0
+  collision_Radius: 0
+  stop_Distance: 0
+  special_Ability: 0
+  atk_List: []
