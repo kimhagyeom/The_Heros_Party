@@ -185,6 +185,7 @@ public class PlayerController : MonoBehaviour,IDamageable
     public void TakeDamage(float amount)
     {
         if(isInvincible) return;
+        Debug.Log(amount);
         ShowDamageText(amount);
         stats.currentHealth -= amount;
         if(stats.currentHealth <= 0)

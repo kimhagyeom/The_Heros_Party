@@ -19,15 +19,15 @@ MonoBehaviour:
   hp_Damage: 10
   infection_Value: 0
   atk_Range: 1.5
-  windup_Time: 0.5
+  windup_Time: 3
   active_Time: 0.2
   recovery_Time: 0.8
   cooldown: 1
-  hitbox_Shape: 0
+  hitbox_Shape: 1
   radius: 2
   angle: 90
-  width: 0
-  length: 0
+  width: 4
+  length: 4
   has_Super_Armor: 0
   has_Knockback: 0
   knockback_Distance: 0

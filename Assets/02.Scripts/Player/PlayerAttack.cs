@@ -161,38 +161,38 @@ public class PlayerAttack : MonoBehaviour
         currentWeaponData = currentWeaponData == mainWeaponData ? subWeaponData : mainWeaponData;
     }
 
-    void OnDrawGizmos()
-    {
-        // Gizmos.color = Color.red;
-        // Gizmos.DrawWireSphere(transform.position, detectRange);
-        // Vector3 rightBoundary = Quaternion.Euler(0, attackAngle, 0) * transform.forward;
-        // Vector3 leftBoundary = Quaternion.Euler(0, -attackAngle, 0) * transform.forward;
-        // Gizmos.DrawLine(transform.position, transform.position + rightBoundary * detectRange);
-        // Gizmos.DrawLine(transform.position, transform.position + leftBoundary * detectRange);
+    // void OnDrawGizmos()
+    // {
+    //     // Gizmos.color = Color.red;
+    //     // Gizmos.DrawWireSphere(transform.position, detectRange);
+    //     // Vector3 rightBoundary = Quaternion.Euler(0, attackAngle, 0) * transform.forward;
+    //     // Vector3 leftBoundary = Quaternion.Euler(0, -attackAngle, 0) * transform.forward;
+    //     // Gizmos.DrawLine(transform.position, transform.position + rightBoundary * detectRange);
+    //     // Gizmos.DrawLine(transform.position, transform.position + leftBoundary * detectRange);
 
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, currentWeaponData.atk_Range);
-        Vector3 forwardBoundary = Quaternion.Euler(0, currentWeaponData.Angle, 0) * transform.forward;
-        Vector3 backwardBoundary = Quaternion.Euler(0, -currentWeaponData.Angle, 0) * transform.forward;
-        Gizmos.DrawLine(transform.position, transform.position + forwardBoundary * currentWeaponData.atk_Range);
-        Gizmos.DrawLine(transform.position, transform.position + backwardBoundary * currentWeaponData.atk_Range);
+    //     Gizmos.color = Color.white;
+    //     Gizmos.DrawWireSphere(transform.position, currentWeaponData.atk_Range);
+    //     Vector3 forwardBoundary = Quaternion.Euler(0, currentWeaponData.Angle, 0) * transform.forward;
+    //     Vector3 backwardBoundary = Quaternion.Euler(0, -currentWeaponData.Angle, 0) * transform.forward;
+    //     Gizmos.DrawLine(transform.position, transform.position + forwardBoundary * currentWeaponData.atk_Range);
+    //     Gizmos.DrawLine(transform.position, transform.position + backwardBoundary * currentWeaponData.atk_Range);
 
-        if(weaponPivot != null)
-        {
-            Gizmos.color = Color.blue;
-            Vector3 widthL = Quaternion.Euler(0, -hitDetectionWidth * 0.5f, 0) * weaponPivot.forward;
-            Vector3 widthR = Quaternion.Euler(0, hitDetectionWidth * 0.5f, 0) * weaponPivot.forward;
-            Gizmos.DrawLine(transform.position, transform.position + widthL * currentWeaponData.atk_Range);
-            Gizmos.DrawLine(transform.position, transform.position + widthR * currentWeaponData.atk_Range);
-        }
+    //     if(weaponPivot != null)
+    //     {
+    //         Gizmos.color = Color.blue;
+    //         Vector3 widthL = Quaternion.Euler(0, -hitDetectionWidth * 0.5f, 0) * weaponPivot.forward;
+    //         Vector3 widthR = Quaternion.Euler(0, hitDetectionWidth * 0.5f, 0) * weaponPivot.forward;
+    //         Gizmos.DrawLine(transform.position, transform.position + widthL * currentWeaponData.atk_Range);
+    //         Gizmos.DrawLine(transform.position, transform.position + widthR * currentWeaponData.atk_Range);
+    //     }
 
-         // 스윙의 시작/끝 경계선을 항상 그려서 확인 가능하게
-        Gizmos.color = Color.green; // 시작 각도
-        Vector3 startDir = Quaternion.Euler(0, lastStartYaw, 0) * Vector3.forward;
-        Gizmos.DrawLine(transform.position, transform.position + startDir * (currentWeaponData.atk_Range + 2f));
+    //      // 스윙의 시작/끝 경계선을 항상 그려서 확인 가능하게
+    //     Gizmos.color = Color.green; // 시작 각도
+    //     Vector3 startDir = Quaternion.Euler(0, lastStartYaw, 0) * Vector3.forward;
+    //     Gizmos.DrawLine(transform.position, transform.position + startDir * (currentWeaponData.atk_Range + 2f));
 
-        Gizmos.color = Color.magenta; // 끝 각도
-        Vector3 endDir = Quaternion.Euler(0, lastEndYaw, 0) * Vector3.forward;
-        Gizmos.DrawLine(transform.position, transform.position + endDir * currentWeaponData.atk_Range);
-    }
+    //     Gizmos.color = Color.magenta; // 끝 각도
+    //     Vector3 endDir = Quaternion.Euler(0, lastEndYaw, 0) * Vector3.forward;
+    //     Gizmos.DrawLine(transform.position, transform.position + endDir * currentWeaponData.atk_Range);
+    // }
 }
