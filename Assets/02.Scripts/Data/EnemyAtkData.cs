@@ -34,4 +34,6 @@ public class EnemyAtkData : ScriptableObject
     public bool has_Slow;
     public float slow_Time;
     public float slow_Per;
+    [Header("기타")]
+    public Projectile projectilePrefab;
 }

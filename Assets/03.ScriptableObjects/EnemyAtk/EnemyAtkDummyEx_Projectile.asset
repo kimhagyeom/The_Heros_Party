@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aaa323beb7871084bb538ec751458ab6, type: 3}
-  m_Name: EnemyAtkDummyEx
+  m_Name: EnemyAtkDummyEx_Projectile
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAtkData
   atk_ID: 1
   enemy_ID: 1001
   atk_Name: Slash
-  atk_Type: 0
+  atk_Type: 1
   hp_Damage: 10
   infection_Value: 0
-  atk_Range: 1.5
-  windup_Time: 1
-  active_Time: 0.2
+  atk_Range: 20
+  windup_Time: 0
+  active_Time: 7
   recovery_Time: 0.8
-  cooldown: 1
+  cooldown: 1.5
   hitbox_Shape: 1
   radius: 2
-  angle: 90
-  width: 4
-  length: 10
+  angle: 360
+  width: 0
+  length: 0
   has_Super_Armor: 0
   has_Knockback: 0
   knockback_Distance: 0
   has_Slow: 0
   slow_Time: 0
   slow_Per: 0
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 7648211592940456836, guid: 68519ff5823954c38a471a07276072f4, type: 3}
