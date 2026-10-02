@@ -30,7 +30,7 @@ public class EnemyAI : MonoBehaviour
         if (player != null)
         {
             target = player.transform;
-            targetDamageable = player;
+            targetDamageable = player.GetComponent<IDamageable>();
         }
     }
 
