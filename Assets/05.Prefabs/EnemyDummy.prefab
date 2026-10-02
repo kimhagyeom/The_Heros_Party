@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6976167474124605300}
   - component: {fileID: 1994828562325376701}
   - component: {fileID: 4984200746855826227}
+  - component: {fileID: -3886177523315610382}
   m_Layer: 8
   m_Name: EnemyDummy
   m_TagString: Untagged
@@ -86,6 +87,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   currentState: 0
+--- !u!114 &-3886177523315610382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762907494526445813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9c7a50d2f14901ad2be4770cd71c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
 --- !u!1 &5160504822350764843
 GameObject:
   m_ObjectHideFlags: 0

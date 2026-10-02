@@ -1,36 +1,30 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour,IDamageable
+[RequireComponent(typeof(Health))]
+public class Enemy : MonoBehaviour
 {
-    private float maxHealth;
-    private float currentHealth;
-    private bool isDead = false; //Die
+    private Health health;
     [SerializeField] private EnemyData enemyData;
-    [SerializeField] private DamageText damageTextPrefab;                     
+    [SerializeField] private DamageText damageTextPrefab;
     [SerializeField] private Vector3 damageTextOffset = new Vector3(0, 2f, 0);
 
     public EnemyData Data => enemyData;
-    public bool IsDead => isDead;
+    public bool IsDead => health.IsDead;
+
+    void Awake()
+    {
+        health = GetComponent<Health>();
+        health.OnDamaged += ShowDamageText;
+        health.OnDied += Die;
+    }
 
     public virtual void Start()
     {
-        maxHealth = enemyData.max_HP;
-        currentHealth = maxHealth;
+        health.Init(enemyData.max_HP);
 
         EnemyRegistry.Instance.Register(this);
     }
 
-    
-    public void TakeDamage(float amount)
-    {
-        if (isDead) return;
-        currentHealth -= amount;
-        ShowDamageText(amount);
-        if(currentHealth <= 0)
-        {
-            Die();
-        }
-    }
     void ShowDamageText(float amount)
     {
         if (damageTextPrefab == null) return;
@@ -40,7 +34,6 @@ public class Enemy : MonoBehaviour,IDamageable
     }
     void Die()
     {
-        isDead = true;
         EnemyRegistry.Instance.Unregister(this);
         Destroy(gameObject);
     }

@@ -4,8 +4,6 @@ using UnityEngine.Serialization;
 
 public enum EnemyType { Normal, MiniBoss , Boss }
 //데이터 시트 : 적 Enum
-public enum Enemy_Atk_Type { Melee, Projectile, Aoe }
-public enum Enemy_Hitbox_Shape { Sector, Box }
 public enum Special_Ability { None }
 
 //데이터 시트 : 적 데이터 시트

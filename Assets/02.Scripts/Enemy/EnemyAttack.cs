@@ -14,10 +14,10 @@ public class EnemyAttack : MonoBehaviour
     {
         switch (d.atk_Type)
         {
-            case Enemy_Atk_Type.Melee:
+            case AttackType.Melee:
                 meleeAttack.CheckAttackType(transform, d, targetMask);
                 break;
-            case Enemy_Atk_Type.Projectile:
+            case AttackType.Projectile:
                 break;
         }
     }

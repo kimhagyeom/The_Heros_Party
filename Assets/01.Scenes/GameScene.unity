@@ -362,7 +362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 98709209e3b4b2d4293d0b697bc7865c, type: 3}
       propertyPath: m_Name
-      value: all
+      value: Map01
       objectReference: {fileID: 0}
     - target: {fileID: 2538057606817204104, guid: 98709209e3b4b2d4293d0b697bc7865c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -502,6 +502,7 @@ GameObject:
   - component: {fileID: 460401740}
   - component: {fileID: 460401739}
   - component: {fileID: 460401741}
+  - component: {fileID: 460401742}
   m_Layer: 6
   m_Name: Player (1)
   m_TagString: Player
@@ -543,7 +544,6 @@ MonoBehaviour:
     dashDuration: 0.25
     dash_Invincible_Duration: 0.2
     base_Atk: 10
-    currentHealth: 0
     currentStamina: 0
     currentInfection: 0
   facingSign: 0
@@ -670,6 +670,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 3, z: 1}
   m_Center: {x: 0.01999998, y: 1.3121632, z: 0}
+--- !u!114 &460401742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460401733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9c7a50d2f14901ad2be4770cd71c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
 --- !u!1 &534153987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,6 +1103,9 @@ MonoBehaviour:
   spawnEntries:
   - enemyPrefab: {fileID: 1994828562325376701, guid: 675c35389cac34c9f9e1d9597d13b408, type: 3}
     position: {x: 3, y: 0, z: 3}
+    delay: 0
+  - enemyPrefab: {fileID: 1994828562325376701, guid: 675c35389cac34c9f9e1d9597d13b408, type: 3}
+    position: {x: 3, y: 0, z: 1}
     delay: 0
 --- !u!4 &938897150
 Transform:

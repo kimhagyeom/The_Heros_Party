@@ -9,10 +9,10 @@ public class MeleeAttack
 
         switch (d.hitbox_Shape)
         {
-            case Enemy_Hitbox_Shape.Box : 
+            case HitboxShape.Box : 
                 targets = HitDetector.CheckBox(owner,d.width, d.length, targetMask);
                 break;
-            case Enemy_Hitbox_Shape.Sector : 
+            case HitboxShape.Sector : 
                 targets = HitDetector.CheckSector(owner, d.radius, d.angle, targetMask);
                 break;   
         }

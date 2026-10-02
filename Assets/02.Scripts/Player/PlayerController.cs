@@ -30,18 +30,17 @@ public class PlayerStats
     public float base_Atk = 10f;
 
 
-    public float currentHealth;
     public float currentStamina;
     public float currentInfection;
 
     public void Init()
     {
-        currentHealth = maxHealth;
         currentStamina = maxStamina;
         currentInfection = start_Infection;
     }
 }
-public class PlayerController : MonoBehaviour,IDamageable
+[RequireComponent(typeof(Health))]
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform spriteVisual;
     [SerializeField] private Camera mainCamera;
@@ -54,8 +53,8 @@ public class PlayerController : MonoBehaviour,IDamageable
     public PlayerStats stats = new PlayerStats();
     private CharacterController controller;
     private Animator animator;
+    private Health health;
     private bool isDash = false;
-    private bool isInvincible = false;
     public float facingSign;
 
     private Coroutine regenRoutine;
@@ -67,6 +66,11 @@ public class PlayerController : MonoBehaviour,IDamageable
         animator = GetComponentInChildren<Animator>(); 
         if (mainCamera == null) mainCamera = Camera.main;
         stats.Init();
+
+        health = GetComponent<Health>();
+        health.Init(stats.maxHealth, stats.startHealth);
+        health.OnDamaged += OnDamaged;
+        health.OnDied += Die;
 
         inputActions = new PlayerInputActions();
     }
@@ -166,8 +170,8 @@ public class PlayerController : MonoBehaviour,IDamageable
     IEnumerator DashRoutine()
     {
         isDash = true;
-        isInvincible = true;
-        
+        health.AddInvincible(stats.dashDuration); // 지금은 대쉬 전체 시간 동안 무적
+
         Vector3 direction = transform.forward;
         float elapsed = 0f;
 
@@ -179,20 +183,14 @@ public class PlayerController : MonoBehaviour,IDamageable
         }
 
         isDash = false;
-        isInvincible = false;        
     }
 
-    public void TakeDamage(float amount)
+    // 실제 HP 감소는 Health가 처리하고, 여기선 피격 후 처리만
+    void OnDamaged(float amount)
     {
-        if(isInvincible) return;
         Debug.Log(amount);
         ShowDamageText(amount);
-        stats.currentHealth -= amount;
-        if(stats.currentHealth <= 0)
-        {
-            Die();
-        }
-        StartCoroutine(HitInvincibleRoutine());
+        health.AddInvincible(stats.hit_Invincible_Time);
     }
     IEnumerator Increase_Infection(float amount) // 정신감염도 상승
     {
@@ -209,13 +207,6 @@ public class PlayerController : MonoBehaviour,IDamageable
             yield return null;
         }        
     }
-    IEnumerator HitInvincibleRoutine()
-    {
-        isInvincible = true;
-        yield return new WaitForSeconds(stats.hit_Invincible_Time);
-        isInvincible = false;
-    }
-    
     void ShowDamageText(float amount)
     {
         if (damageTextPrefab == null) return;

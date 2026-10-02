@@ -7,7 +7,7 @@ public class EnemyAtkData : ScriptableObject
     public int atk_ID;
     public int enemy_ID;
     public string atk_Name;
-    public Enemy_Atk_Type atk_Type;
+    public AttackType atk_Type;
 
     [Header("피해")]
     public float hp_Damage;
@@ -21,7 +21,7 @@ public class EnemyAtkData : ScriptableObject
     public float cooldown;
 
     [Header("판정 형태")]
-    public Enemy_Hitbox_Shape hitbox_Shape;
+    public HitboxShape hitbox_Shape;
     public float radius;
     public float angle;
     public float width;

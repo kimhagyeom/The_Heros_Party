@@ -8,8 +8,6 @@ public enum Weapon_Type
     Trowin_Dagger
 }
 public enum Weapon_Slot_Type{ Main, Sub }
-public enum Atk_Type { Melee, projectile, Aoe }
-public enum Hitbox_Shape{ Sector, Box }
 [CreateAssetMenu(menuName = "WeaponData")]
 public class WeaponData : ScriptableObject
 {
@@ -26,7 +24,7 @@ public class WeaponData : ScriptableObject
     public int combo_Count;
     public ComboStep[] combo_Step;
     public float atk_Range;
-    public Atk_Type atk_Type;
-    public Hitbox_Shape hitbox_Shape;
+    public AttackType atk_Type;
+    public HitboxShape hitbox_Shape;
     public float Angle;
 }
