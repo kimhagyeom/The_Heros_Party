@@ -131,11 +131,11 @@ public class EnemyAI : MonoBehaviour
 
         switch (atk.hitbox_Shape)
         {
-            case Enemy_Hitbox_Shape.Sector:
+            case HitboxShape.Sector:
                 if (toTarget.sqrMagnitude > atk.radius * atk.radius) return false;
                 return Vector3.Angle(attackDir, toTarget) <= atk.angle * 0.5f;
 
-            case Enemy_Hitbox_Shape.Box:
+            case HitboxShape.Box:
                 float forward = Vector3.Dot(toTarget, attackDir);
                 float side = Vector3.Dot(toTarget, Vector3.Cross(Vector3.up, attackDir));
                 return forward >= 0f && forward <= atk.length && Mathf.Abs(side) <= atk.width * 0.5f;

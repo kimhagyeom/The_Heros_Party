@@ -145,10 +145,10 @@ public class EnemyAI_S : MonoBehaviour
 
         switch (a.hitbox_Shape)
         {
-            case Enemy_Hitbox_Shape.Box:
+            case HitboxShape.Box:
                 DrawBoxGizmo(a.width, a.length);
                 break;
-            case Enemy_Hitbox_Shape.Sector:
+            case HitboxShape.Sector:
                 DrawSectorGizmo(a.radius, a.angle);
                 break;
         }
