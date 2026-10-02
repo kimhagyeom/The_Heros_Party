@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -2278551635225172606}
   - component: {fileID: 388261740422618470}
   m_Layer: 8
-  m_Name: EnemyDummy 1
+  m_Name: Dummy_Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff75d3557f148475daa390956d0e181a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyData: {fileID: 11400000, guid: ab024e4e7225d4418a7ea0fc4369256d, type: 2}
+  enemyData: {fileID: 11400000, guid: 5a1530ca60a2240a69202963c641785e, type: 2}
   damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
   damageTextOffset: {x: 0, y: 2, z: 0}
 --- !u!114 &-7329974092497900245
