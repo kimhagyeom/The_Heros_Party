@@ -26,3 +26,4 @@ MonoBehaviour:
   special_Ability: 0
   atk_List:
   - {fileID: 11400000, guid: b7593ca2b3cd74089b397ba90c74bdbb, type: 2}
+  - {fileID: 11400000, guid: 0aa019c45e31987489ace6464f3a0d64, type: 2}

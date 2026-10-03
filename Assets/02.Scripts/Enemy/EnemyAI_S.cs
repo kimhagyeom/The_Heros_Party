@@ -1,22 +1,33 @@
 using UnityEngine;
+using System.Collections.Generic; 
 
 // 테스트용 AI: 추적 → 선딜 → 판정 1회 → 후딜 → 추적
 // 경직/넉백/슈퍼아머/둔화는 아직 미구현
 [RequireComponent(typeof(Enemy))]
 [RequireComponent(typeof(EnemyAttack))]
+[RequireComponent(typeof(EnemyMovement))]
 public class EnemyAI_S : MonoBehaviour
 {
     private enum State { Chase, Windup, Recovery }
 
+    [Header("디버그 / 연결")]
     [SerializeField] private State currentState = State.Chase;
     [SerializeField] private AttackTelegraph telegraph; // 자식 Telegraph 오브젝트 드래그
 
+    // 컴포넌트
     private Enemy enemy;
     private EnemyAttack enemyAttack;
+    private EnemyMovement movement;
+
+    // 데이터
     private EnemyData data;
     private EnemyAtkData atk;
+    private EnemyAtkData[] atkList => data.atk_List;
+    private List<EnemyAtkData> canAttackList = new List<EnemyAtkData>();
+    private Dictionary<EnemyAtkData, float> lastUsedTime = new Dictionary<EnemyAtkData, float>();
     private Transform target;
 
+    // 상태
     private float stateTimer;
     private float lastAttackTime = -999f;
 
@@ -24,6 +35,7 @@ public class EnemyAI_S : MonoBehaviour
     {
         enemy = GetComponent<Enemy>();
         enemyAttack = GetComponent<EnemyAttack>();
+        movement = GetComponent<EnemyMovement>();
         data = enemy.Data;
 
         if (data.atk_List != null && data.atk_List.Length > 0)
@@ -59,23 +71,42 @@ public class EnemyAI_S : MonoBehaviour
     {
         Vector3 toTarget = FlatDirTo(target.position);
 
-        if (toTarget.sqrMagnitude <= atk.atk_Range * atk.atk_Range)
+        CheckAttackList(toTarget);// 공격 가능 목록 갱신
+        
+        if(canAttackList.Count > 0)
         {
-            if (Time.time - lastAttackTime >= atk.cooldown)
-                StartWindup(toTarget);
+            StartWindup(toTarget);
             return;
         }
 
-        transform.position += toTarget.normalized * data.move_Speed * Time.deltaTime;
+        movement.Move(toTarget);
+    }
+    private void CheckAttackList(Vector3 toTarget)
+    {
+        canAttackList.Clear();
+        float distSqr = toTarget.sqrMagnitude;
+        
+        foreach (EnemyAtkData a in atkList)
+        {
+            if (a == null) continue;
+            if (distSqr > a.atk_Range * a.atk_Range) continue;     // 사거리 밖
+
+            if (lastUsedTime.TryGetValue(a, out float last) &&
+                Time.time - last < a.cooldown) continue;           // 쿨타임 중
+
+            canAttackList.Add(a);
+        }
     }
 
-    // 선딜 시작: 플레이어 쪽으로 몸을 돌려 공격 방향 고정
     void StartWindup(Vector3 toTarget)
     {
-        if (toTarget.sqrMagnitude > 0.001f)
-            transform.rotation = Quaternion.LookRotation(toTarget);
-
-        // TODO: 데이터에 Show_Attack_Area가 추가되면 조건으로 걸기
+        movement.LookAt(toTarget);
+        if(canAttackList.Count > 0)
+        {
+            // 공격 가능 목록에서 랜덤 선택
+            int index = Random.Range(0, canAttackList.Count);
+            atk = canAttackList[index];
+        }
         if (telegraph != null)
             telegraph.Show(atk);
 
@@ -94,7 +125,7 @@ public class EnemyAI_S : MonoBehaviour
 
         HideTelegraph();
         enemyAttack.Attack(atk);
-        lastAttackTime = Time.time;
+        lastUsedTime[atk] = Time.time;
         ChangeState(State.Recovery);
     }
 
@@ -181,4 +212,5 @@ public class EnemyAI_S : MonoBehaviour
 
         if (angle < 360f) Gizmos.DrawLine(origin, prev); // 오른쪽 가장자리
     }
+    
 }

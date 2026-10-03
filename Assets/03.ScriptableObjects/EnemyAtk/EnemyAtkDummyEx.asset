@@ -18,7 +18,7 @@ MonoBehaviour:
   atk_Type: 0
   hp_Damage: 10
   infection_Value: 0
-  atk_Range: 1.5
+  atk_Range: 30
   windup_Time: 1
   active_Time: 0.2
   recovery_Time: 0.8
