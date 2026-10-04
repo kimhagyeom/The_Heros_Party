@@ -8,7 +8,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(EnemyMovement))]
 public class EnemyAI_S : MonoBehaviour
 {
-    private enum State { Chase, Windup, Recovery }
+    private enum State { Chase, Windup, Recovery, ChainDelay}
 
     [Header("디버그 / 연결")]
     [SerializeField] private State currentState = State.Chase;
@@ -25,6 +25,7 @@ public class EnemyAI_S : MonoBehaviour
     private EnemyAtkData[] atkList => data.atk_List;
     private List<EnemyAtkData> canAttackList = new List<EnemyAtkData>();
     private Dictionary<EnemyAtkData, float> lastUsedTime = new Dictionary<EnemyAtkData, float>();
+    private Dictionary<EnemyAtkData,EnemyAtkData> chainMap = new Dictionary<EnemyAtkData, EnemyAtkData>();
     private Transform target;
 
     // 상태
@@ -37,6 +38,7 @@ public class EnemyAI_S : MonoBehaviour
         enemyAttack = GetComponent<EnemyAttack>();
         movement = GetComponent<EnemyMovement>();
         data = enemy.Data;
+        BuildChainMap();
 
         if (data.atk_List != null && data.atk_List.Length > 0)
             atk = data.atk_List[0];
@@ -62,7 +64,24 @@ public class EnemyAI_S : MonoBehaviour
         {
             case State.Chase:    UpdateChase();    break;
             case State.Windup:   UpdateWindup();   break;
+            case State.ChainDelay: UpdateChainDelay(); break;
             case State.Recovery: UpdateRecovery(); break;
+        }
+    }
+    void BuildChainMap()
+    {
+        chainMap.Clear();
+        foreach (EnemyAtkData a in atkList)
+        {
+            if(a.required_Atk_ID == 0) continue;
+            foreach(EnemyAtkData prev in atkList)
+            {
+                if(prev.atk_ID == a.required_Atk_ID)
+                {
+                    chainMap[prev] = a;
+                    break;
+                }
+            }
         }
     }
 
@@ -89,6 +108,7 @@ public class EnemyAI_S : MonoBehaviour
         foreach (EnemyAtkData a in atkList)
         {
             if (a == null) continue;
+            if (a.required_Atk_ID > 0) continue;
             if (distSqr > a.atk_Range * a.atk_Range) continue;     // 사거리 밖
 
             if (lastUsedTime.TryGetValue(a, out float last) &&
@@ -124,9 +144,27 @@ public class EnemyAI_S : MonoBehaviour
         if (stateTimer < atk.windup_Time) return;
 
         HideTelegraph();
-        enemyAttack.Attack(atk);
+        enemyAttack.Attack(atk,target.position);
         lastUsedTime[atk] = Time.time;
-        ChangeState(State.Recovery);
+        if(chainMap.TryGetValue(atk, out EnemyAtkData nextAtk))
+        {
+            // 체인 공격이 있으면 다음 공격으로 교체
+            atk = nextAtk;
+            ChangeState(State.ChainDelay);
+        }
+        else
+        {
+            ChangeState(State.Recovery);
+        }
+    }
+    void UpdateChainDelay()
+    {
+        stateTimer += Time.deltaTime;
+        if (stateTimer < atk.chain_Delay) return;
+
+        if (telegraph != null)
+            telegraph.Show(atk);
+        ChangeState(State.Windup);
     }
 
     // 후딜 동안 아무것도 안 하고, 끝나면 다시 추적

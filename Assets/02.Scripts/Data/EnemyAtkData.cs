@@ -8,6 +8,8 @@ public class EnemyAtkData : ScriptableObject
     public int enemy_ID;
     public string atk_Name;
     public AttackType atk_Type;
+    public int required_Atk_ID;
+    public float chain_Delay;
 
     [Header("피해")]
     public float hp_Damage;
