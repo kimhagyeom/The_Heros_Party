@@ -27,6 +27,7 @@ public class EnemyAI_S : MonoBehaviour
     private Dictionary<EnemyAtkData, float> lastUsedTime = new Dictionary<EnemyAtkData, float>();
     private Dictionary<EnemyAtkData,EnemyAtkData> chainMap = new Dictionary<EnemyAtkData, EnemyAtkData>();
     private Transform target;
+    private Vector3 targetPos;
 
     // 상태
     private float stateTimer;
@@ -121,6 +122,7 @@ public class EnemyAI_S : MonoBehaviour
     void StartWindup(Vector3 toTarget)
     {
         movement.LookAt(toTarget);
+        targetPos = target.position; // 선딜 시작 시점의 위치를 기록, 선딜 중에 이동해도 그 위치로 공격
         if(canAttackList.Count > 0)
         {
             // 공격 가능 목록에서 랜덤 선택
@@ -128,7 +130,7 @@ public class EnemyAI_S : MonoBehaviour
             atk = canAttackList[index];
         }
         if (telegraph != null)
-            telegraph.Show(atk);
+            telegraph.Show(atk, targetPos);
 
         ChangeState(State.Windup);
     }
@@ -144,7 +146,7 @@ public class EnemyAI_S : MonoBehaviour
         if (stateTimer < atk.windup_Time) return;
 
         HideTelegraph();
-        enemyAttack.Attack(atk,target.position);
+        enemyAttack.Attack(atk, targetPos);
         lastUsedTime[atk] = Time.time;
         if(chainMap.TryGetValue(atk, out EnemyAtkData nextAtk))
         {
@@ -163,7 +165,7 @@ public class EnemyAI_S : MonoBehaviour
         if (stateTimer < atk.chain_Delay) return;
 
         if (telegraph != null)
-            telegraph.Show(atk);
+            telegraph.Show(atk, targetPos);
         ChangeState(State.Windup);
     }
 

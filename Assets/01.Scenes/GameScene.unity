@@ -1104,15 +1104,6 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 1994828562325376701, guid: 4e7541c36a652402cb33c32800a46f61, type: 3}
     position: {x: 3, y: 0, z: 3}
     delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 675c35389cac34c9f9e1d9597d13b408, type: 3}
-    position: {x: 3, y: 0, z: 1}
-    delay: 6
-  - enemyPrefab: {fileID: 1994828562325376701, guid: eab29f1397bd748f2a696c09222e5e39, type: 3}
-    position: {x: 4, y: 0, z: 5}
-    delay: 6
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 8c0df37a8868241c9a45464123bb8d05, type: 3}
-    position: {x: -5, y: 0, z: -5}
-    delay: 6
 --- !u!4 &938897150
 Transform:
   m_ObjectHideFlags: 0

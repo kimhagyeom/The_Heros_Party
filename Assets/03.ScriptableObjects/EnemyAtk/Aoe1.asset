@@ -15,7 +15,7 @@ MonoBehaviour:
   atk_ID: 10302
   enemy_ID: 103
   atk_Name: Aoe
-  atk_Type: 0
+  atk_Type: 2
   required_Atk_ID: 0
   chain_Delay: 0
   hp_Damage: 10

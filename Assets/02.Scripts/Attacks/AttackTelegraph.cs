@@ -11,15 +11,17 @@ public class AttackTelegraph : MonoBehaviour
  
     private Mesh mesh;
  
-    public void Show(EnemyAtkData d)
+    public void Show(EnemyAtkData d,Vector3 targetPos)
     {
         if (mesh == null)
         {
             mesh = new Mesh();
             inlineFilter.mesh = mesh;
         }
- 
-        transform.localPosition = new Vector3(0f, 0.02f, 0f);
+        if (d.atk_Type == AttackType.Aoe)
+            transform.position = targetPos + Vector3.up * 0.02f;    
+        else
+            transform.localPosition = new Vector3(0f, 0.02f, 0f);
  
         List<Vector3> vertices = GetVertices(d);
         if (vertices == null) return;
