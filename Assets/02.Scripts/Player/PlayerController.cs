@@ -6,40 +6,6 @@ using UnityEngine.UIElements;
 using System;
 using Unity.VisualScripting;
 
-
-[System.Serializable]
-public class PlayerStats
-{
-    public int Character_ID = 1001;
-    public string Character_Name = "아르마";
-    public float maxHealth = 100f;
-    public float startHealth = 100f;
-    public float Move_Speed = 7f;
-    public float maxStamina = 100f;
-    public float startStamina = 100f;
-    public float stamina_Regen = 12.5f;
-    public float stamina_Regen_Delay = 1f;
-    public float max_Infection = 100f;
-    public float start_Infection = 0f;
-    public float hit_Invincible_Time = 0.5f;
-    public float dash_Stamina_Cost = 50f;
-    //대시 거리 = dashSpeed * dashDuration
-    public float dash_Distance = 5f;
-    public float dashDuration = 4f;
-    public float dash_Invincible_Duration = 0.2f;
-    public float base_Atk = 10f;
-
-
-    public float currentStamina;
-    public float currentInfection;
-
-    public void Init()
-    {
-        currentStamina = maxStamina;
-        currentInfection = start_Infection;
-    }
-}
-
 // 입력, 이동, 바라보는 방향, 대시, 넉백 실행 담당
 // 피격 반응(데미지 텍스트, 무적, 감염도, 사망)은 Player가 담당
 [RequireComponent(typeof(Health))]
@@ -56,12 +22,19 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Animator animator;
     private Health health;   // 대시 무적에 사용
+    private PlayerAttack playerAttack; // 공격 중 여부 확인용
     private bool isDash = false;
     public float facingSign;
 
     private Coroutine regenRoutine;
     private Coroutine knockbackRoutine;
+
+    // 플레이어 행동 상태 / 공격이나 스킬을 시작할 수 있는지 판단할 때 IsBusy 하나만 보면 되도록 모아둠/
+    // 새 행동(스킬 등)이 생기면 IsBusy에 추가!!
     public bool IsKnockback { get; private set; }
+    public bool IsDashing => isDash;
+    public bool IsAttacking => playerAttack != null && playerAttack.IsAttacking;
+    public bool IsBusy => IsKnockback || IsDashing || IsAttacking;
 
 
     void Awake()
@@ -72,6 +45,7 @@ public class PlayerController : MonoBehaviour
         stats.Init();
 
         health = GetComponent<Health>();
+        playerAttack = GetComponent<PlayerAttack>();
 
         inputActions = new PlayerInputActions();
     }
@@ -174,15 +148,29 @@ public class PlayerController : MonoBehaviour
     IEnumerator DashRoutine()
     {
         isDash = true;
-        health.AddInvincible(stats.dashDuration); // 지금은 대쉬 전체 시간 동안 무적
 
         Vector3 direction = transform.forward;
+        direction.y = 0f;
+        direction.Normalize();
+
+        // dashDuration 동안 dash_Distance만큼 가도록 속도 계산 (넉백과 같은 방식)
+        float speed = stats.dashDuration > 0f ? stats.dash_Distance / stats.dashDuration : 0f;
+        bool invincibleApplied = false;
         float elapsed = 0f;
 
         while(elapsed < stats.dashDuration)
         {
-            elapsed += Time.deltaTime;
-            controller.Move(direction.normalized * stats.dash_Distance * Time.deltaTime);
+            // 무적은 시작 시간이 지난 시점에 한 번만 적용
+            if (!invincibleApplied && elapsed >= stats.dash_Invincible_Start)
+            {
+                health.AddInvincible(stats.dash_Invincible_Duration);
+                invincibleApplied = true;
+            }
+
+            // 마지막 프레임은 남은 시간만큼만 이동해서 거리 초과 방지
+            float step = Mathf.Min(Time.deltaTime, stats.dashDuration - elapsed);
+            controller.Move(direction * speed * step);
+            elapsed += step;
             yield return null;
         }
 

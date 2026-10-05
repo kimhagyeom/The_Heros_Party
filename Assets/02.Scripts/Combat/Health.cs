@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 // 플레이어/적 공용 체력
-// 피격 후 처리(데미지 텍스트, 사망 연출 등)는 각 주인이 이벤트를 구독해서 처리
 public class Health : MonoBehaviour, IDamageable
 {
     private float maxHealth;

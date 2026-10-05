@@ -21,8 +21,9 @@ public class PlayerAttack : MonoBehaviour
     public Transform weaponPivot; // 빈 오브젝트, Player 자식으로 배치
     private List<Transform> enemiesInRange = new List<Transform>(); // 감지된 적 리스트
 
-    public bool isAtk = false;
- 
+    private bool isAtk = false;
+    public bool IsAttacking => isAtk;
+
     void Start()
     {
         playerController = GetComponent<PlayerController>();
