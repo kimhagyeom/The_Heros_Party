@@ -31,7 +31,13 @@ public class PlayerSkillController : MonoBehaviour
 
     [SerializeField] private SkillData[] slotSkills = new SkillData[SlotCount];
 
+    [Header("판정 범위 표시")]
+    [SerializeField] private AttackTelegraph telegraph; 
+    [SerializeField] private Color telegraphColor = new Color(0.3f, 0.6f, 1f);
+    [SerializeField] private float telegraphLingerTime = 0f; 
+
     private PlayerController playerController;
+    private Coroutine hideTelegraphRoutine;
     private SkillExecutor skillExecutor;
     private SkillSlot[] slots;
     private InputAction[] skillActions;
@@ -46,6 +52,9 @@ public class PlayerSkillController : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         skillExecutor = GetComponent<SkillExecutor>();
+
+        if (telegraph == null)
+            telegraph = AttackTelegraph.Create(transform, telegraphColor);
 
         slots = new SkillSlot[SlotCount];
         for (int i = 0; i < SlotCount; i++)
@@ -126,22 +135,62 @@ public class PlayerSkillController : MonoBehaviour
         IsCasting = true;
         CastingSlot = index;
 
+        // 선딜: 범위 표시 후 안쪽이 차오름
         SetPhase(SkillPhase.Windup, data);
-        if (data.windup_Time > 0f)
-            yield return new WaitForSeconds(data.windup_Time);
+        bool hasTelegraph = ShowTelegraph(data);
+        float elapsed = 0f;
+        while (elapsed < data.windup_Time)
+        {
+            elapsed += Time.deltaTime;
+            if (hasTelegraph) telegraph.SetProgress(elapsed / data.windup_Time);
+            yield return null;
+        }
 
+        // 판정: 범위 꽉 찬 상태로 유지
         SetPhase(SkillPhase.Active, data);
+        if (hasTelegraph) telegraph.SetProgress(1f);
         skillExecutor.Execute(playerController, data);
         if (data.atk_Type != AttackType.Projectile && data.active_Time > 0f)
             yield return new WaitForSeconds(data.active_Time);
 
+        // 후딜: 범위 숨김
         SetPhase(SkillPhase.Recovery, data);
+        if (hasTelegraph) HideTelegraph();
         if (data.recovery_Time > 0f)
             yield return new WaitForSeconds(data.recovery_Time);
 
         SetPhase(SkillPhase.None, data);
         IsCasting = false;
         CastingSlot = -1;
+    }
+
+    bool ShowTelegraph(SkillData data)
+    {
+        if (telegraph == null) return false;
+        if (data.atk_Type != AttackType.Melee || data.hitbox_Shape != HitboxShape.Sector) return false;
+
+        if (hideTelegraphRoutine != null)
+        {
+            StopCoroutine(hideTelegraphRoutine);
+            hideTelegraphRoutine = null;
+        }
+        telegraph.ShowSector(data.range, data.angle);
+        return true;
+    }
+
+    void HideTelegraph()
+    {
+        if (telegraphLingerTime > 0f)
+            hideTelegraphRoutine = StartCoroutine(HideTelegraphAfter(telegraphLingerTime));
+        else
+            telegraph.Hide();
+    }
+
+    IEnumerator HideTelegraphAfter(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        telegraph.Hide();
+        hideTelegraphRoutine = null;
     }
 
     void SetPhase(SkillPhase phase, SkillData data)

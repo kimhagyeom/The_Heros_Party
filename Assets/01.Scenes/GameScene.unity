@@ -542,6 +542,7 @@ MonoBehaviour:
     dash_Stamina_Cost: 50
     dash_Distance: 5
     dashDuration: 0.25
+    dash_Invincible_Start: 0
     dash_Invincible_Duration: 0.2
     base_Atk: 10
     currentStamina: 0
@@ -609,7 +610,6 @@ MonoBehaviour:
   playerController: {fileID: 460401734}
   dpmTracker: {fileID: 460401738}
   weaponPivot: {fileID: 851249521}
-  isAtk: 0
 --- !u!114 &460401738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,6 +634,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f0d5d9a33a574fe28fce1b22d0dddf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillExecutor
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &460401740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,9 +649,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcf87b960b7f44e93a934c9191a96925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSkillController
-  playerController: {fileID: 460401734}
-  dashSkillData: {fileID: 11400000, guid: c0f8ea14a50dc4bc0983dab5cd56ee14, type: 2}
-  skillExecutor: {fileID: 460401739}
+  slotSkills:
+  - {fileID: 11400000, guid: 8b88d99c88273a04e94e04e3e3958d82, type: 2}
+  - {fileID: 11400000, guid: 2a1b6fe9ee9d2354d872857a3f66c70a, type: 2}
+  - {fileID: 11400000, guid: 5bd9e4a1f04d332479bfb62a5c8a82c9, type: 2}
+  - {fileID: 0}
+  telegraph: {fileID: 0}
+  telegraphLingerTime: 0
 --- !u!65 &460401741
 BoxCollider:
   m_ObjectHideFlags: 0

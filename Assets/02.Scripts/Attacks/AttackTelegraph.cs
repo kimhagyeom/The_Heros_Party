@@ -10,22 +10,72 @@ public class AttackTelegraph : MonoBehaviour
     [SerializeField] private float lineWidth = 0.05f;
  
     private Mesh mesh;
- 
+
+    public static AttackTelegraph Create(Transform parent, Color color)
+    {
+        GameObject root = new GameObject("SkillTelegraph");
+        root.transform.SetParent(parent, false);
+        root.SetActive(false);
+
+        LineRenderer line = root.AddComponent<LineRenderer>();
+        line.useWorldSpace = false;
+        line.loop = true;
+        line.sharedMaterial = CreateMaterial(new Color(color.r, color.g, color.b, 0.9f));
+        line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        line.receiveShadows = false;
+
+        GameObject inline = new GameObject("Inline");
+        inline.transform.SetParent(root.transform, false);
+        MeshFilter filter = inline.AddComponent<MeshFilter>();
+        MeshRenderer meshRenderer = inline.AddComponent<MeshRenderer>();
+        meshRenderer.sharedMaterial = CreateMaterial(new Color(color.r, color.g, color.b, 0.35f));
+        meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        meshRenderer.receiveShadows = false;
+
+        AttackTelegraph telegraph = root.AddComponent<AttackTelegraph>();
+        telegraph.outline = line;
+        telegraph.inlineFilter = filter;
+        return telegraph;
+    }
+
+    private static Material CreateMaterial(Color color)
+    {
+        Shader shader = Shader.Find("Sprites/Default");
+        if (shader == null)
+            shader = Shader.Find("Universal Render Pipeline/Unlit");
+
+        Material material = new Material(shader);
+        material.color = color;
+        return material;
+    }
+
     public void Show(EnemyAtkData d,Vector3 targetPos)
+    {
+        if (d.atk_Type == AttackType.Aoe)
+            transform.position = targetPos + Vector3.up * 0.02f;
+        else
+            transform.localPosition = new Vector3(0f, 0.02f, 0f);
+
+        Draw(GetVertices(d));
+    }
+
+    public void ShowSector(float radius, float angle)
+    {
+        transform.localPosition = new Vector3(0f, 0.02f, 0f);
+
+        Draw(GetSectorVertices(radius, angle, SectorSegments));
+    }
+
+    //(적/플레이어 공용)
+    private void Draw(List<Vector3> vertices)
     {
         if (mesh == null)
         {
             mesh = new Mesh();
             inlineFilter.mesh = mesh;
         }
-        if (d.atk_Type == AttackType.Aoe)
-            transform.position = targetPos + Vector3.up * 0.02f;    
-        else
-            transform.localPosition = new Vector3(0f, 0.02f, 0f);
- 
-        List<Vector3> vertices = GetVertices(d);
         if (vertices == null) return;
- 
+
         outline.widthMultiplier = lineWidth;
         outline.positionCount = vertices.Count;
         outline.SetPositions(vertices.ToArray());
