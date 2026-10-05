@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Health health;   // 대시 무적에 사용
     private PlayerAttack playerAttack; // 공격 중 여부 확인용
+    private PlayerSkillController skillController; // 스킬 사용 중 여부 확인용
     private bool isDash = false;
     public float facingSign;
 
@@ -34,7 +35,8 @@ public class PlayerController : MonoBehaviour
     public bool IsKnockback { get; private set; }
     public bool IsDashing => isDash;
     public bool IsAttacking => playerAttack != null && playerAttack.IsAttacking;
-    public bool IsBusy => IsKnockback || IsDashing || IsAttacking;
+    public bool IsCasting => skillController != null && skillController.IsCasting;
+    public bool IsBusy => IsKnockback || IsDashing || IsAttacking || IsCasting;
 
 
     void Awake()
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour
 
         health = GetComponent<Health>();
         playerAttack = GetComponent<PlayerAttack>();
+        skillController = GetComponent<PlayerSkillController>();
 
         inputActions = new PlayerInputActions();
     }
@@ -77,17 +80,20 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
 
-        // 넉백 중에는 입력 이동 무시
-        if (!IsKnockback)
+        // 넉백 중, 스킬 사용 중에는 입력 이동 무시
+        bool canMove = !IsKnockback && !IsCasting;
+        if (canMove)
             controller.SimpleMove(moveDirection * stats.Move_Speed);
 
-        bool isMoving = !IsKnockback && moveDirection.sqrMagnitude > 0.0001f;
+        bool isMoving = canMove && moveDirection.sqrMagnitude > 0.0001f;
         if (animator != null)
         {
             animator.SetBool(AnimHash.IsMoving, isMoving);
         }
 
-        HandleFacing();
+        // 스킬 사용 중에는 시작할 때 방향 유지 (마우스를 돌려도 안 바뀜)
+        if (!IsCasting)
+            HandleFacing();
     }
 
     private void HandleFacing()
@@ -123,7 +129,8 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleDodge()
     {
-        if(isDash || stats.currentStamina < stats.dash_Stamina_Cost) return;
+        // 스킬 사용 중에는 대시 불가 (스킬 도중 위치가 바뀌지 않도록)
+        if(isDash || IsCasting || stats.currentStamina < stats.dash_Stamina_Cost) return;
 
         stats.currentStamina -= stats.dash_Stamina_Cost;
         stats.currentStamina = Mathf.Clamp(stats.currentStamina, 0, stats.maxStamina);

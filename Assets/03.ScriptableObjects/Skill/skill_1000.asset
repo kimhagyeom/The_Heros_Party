@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e75bf1a76d02461bb4388f724f93e2f, type: 3}
+  m_Name: skill_1000
+  m_EditorClassIdentifier: Assembly-CSharp::SkillData
+  skill_ID: 1000
+  skill_Name: "\uD68C\uC804 \uBCA0\uAE30"
+  base_Skill_ID: 0
+  atk_Type: 0
+  has_Target: 0
+  dmg_Rate: 10
+  cooldown: 12
+  max_Stacks: 1
+  windup_Time: 0.1
+  active_Time: 0.2
+  recovery_Time: 0.1
+  hitbox_Shape: 0
+  range: 3
+  angle: 360
+  width: 0
+  length: 0
+  move_Type: 0
+  move_Distance: 0
+  move_Time: 0
+  has_Invincibility: 0
+  projectile_Pierce: 0
+  projectile_Speed: 0
+  projectile_Count: 0
+  spread_Angle: 0
+  projectilePrefab: {fileID: 0}
+  effectPrefab: {fileID: 0}

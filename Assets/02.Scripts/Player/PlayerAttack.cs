@@ -82,6 +82,7 @@ public class PlayerAttack : MonoBehaviour
     void TryAttack()
     {
         if (isAtk) return;
+        if (playerController.IsCasting) return; // 스킬 사용 중에는 기본 공격 불가
         if (Time.time - lastAttackTime < attackInterval) return;
 
         if (Time.time - lastAttackTime > comboResetTime)

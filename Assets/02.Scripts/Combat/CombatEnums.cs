@@ -2,3 +2,4 @@
 // 주의: 에셋에는 순서(숫자)로 저장되므로 기존 항목 순서를 바꾸지 말고 뒤에만 추가할 것
 public enum AttackType { Melee, Projectile, Aoe }
 public enum HitboxShape { Sector, Box }
+public enum MoveType { None, Move, Teleport, Target_Back } // 일정 시간 이동 / 즉시 위치 변경 / 지정한 적 뒤로 이동
