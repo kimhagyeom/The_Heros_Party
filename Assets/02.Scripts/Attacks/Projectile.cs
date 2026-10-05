@@ -35,8 +35,8 @@ public class Projectile : MonoBehaviour
         atkData = d;
         targetLayer = mask;
         damage = d.hp_Damage;
-        hitRadius = d.radius;
-        speed = d.atk_Range / d.active_Time;  
+        if(d.active_Time > 0f)
+            speed = d.atk_Range / d.active_Time;  
         
         if (d.radius > 0f) hitRadius = d.radius;
         if (d.active_Time > 0f) lifeTime = d.active_Time;
@@ -53,7 +53,14 @@ public class Projectile : MonoBehaviour
             if (!hit.TryGetComponent(out IDamageable target)) continue;
             if (!hitTargets.Add(target)) continue;   // 이미 맞은 대상이면 건너뜀
 
-            target.TakeDamage(damage);
+            DamageInfo damageInfo = new DamageInfo
+            {
+                damage = atkData.hp_Damage,
+                infection = atkData.infection_Value,
+                hitDirection = (target.transform.position - transform.position).normalized,
+                knockbackDistance = atkData.has_Knockback ? atkData .knockback_Distance : 0f
+            };
+            target.TakeDamage(damageInfo);
         }
     }
 }

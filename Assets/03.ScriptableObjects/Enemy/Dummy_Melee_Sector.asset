@@ -15,12 +15,12 @@ MonoBehaviour:
   enemyType: 1
   enemy_ID: 1001
   enemy_Name: Dummy
-  max_HP: 30
+  max_HP: 300
   move_Speed: 3
   can_Stagger: 0
   stagger_Duration: 0
-  can_Knockback: 0
-  knockback_Resistance: 0
+  can_Knockback: 1
+  knockback_Resistance: 4
   collision_Radius: 0
   stop_Distance: 1
   special_Ability: 0

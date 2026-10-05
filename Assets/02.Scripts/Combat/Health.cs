@@ -15,7 +15,7 @@ public class Health : MonoBehaviour, IDamageable
     public bool IsDead => isDead;
     public bool IsInvincible => Time.time < invincibleUntil;
 
-    public event Action<float> OnDamaged; // 받은 데미지량
+    public event Action<DamageInfo> OnDamaged; // 받은 데미지량
     public event Action OnDied;
 
     public void Init(float max, float start)
@@ -37,13 +37,13 @@ public class Health : MonoBehaviour, IDamageable
         invincibleUntil = Mathf.Max(invincibleUntil, Time.time + duration);
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(DamageInfo damageInfo)
     {
         if (IsInvincible) Debug.Log("무적 , 데미지무시");
         if (isDead || IsInvincible) return;
 
-        currentHealth -= amount;
-        OnDamaged?.Invoke(amount);
+        currentHealth -= damageInfo.damage;
+        OnDamaged?.Invoke(damageInfo);
 
         if (currentHealth <= 0)
         {

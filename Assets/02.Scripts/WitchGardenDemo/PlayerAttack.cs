@@ -38,7 +38,14 @@ namespace WitchGardenDemo
             foreach (Collider hit in hits)
             {
                 IDamageable damageable = hit.GetComponent<IDamageable>();
-                damageable?.TakeDamage(attackDamage);
+                DamageInfo damageInfo = new DamageInfo
+                {
+                    damage = attackDamage,
+                    infection = 0f,
+                    hitDirection = (hit.transform.position - transform.position).normalized,
+                    knockbackDistance = 0f
+                };
+                damageable?.TakeDamage(damageInfo);
             }
 
             Debug.Log($"공격! 대상 {hits.Length}명 적중");

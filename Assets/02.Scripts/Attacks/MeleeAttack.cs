@@ -18,7 +18,14 @@ public class MeleeAttack
         }
         foreach(IDamageable target in targets)
         {
-            target.TakeDamage(d.hp_Damage);
+            DamageInfo damageInfo = new DamageInfo
+            {
+                damage = d.hp_Damage,
+                infection = d.infection_Value,
+                hitDirection = (target.transform.position - owner.position).normalized,
+                knockbackDistance = d.has_Knockback ? d.knockback_Distance : 0f
+            };
+            target.TakeDamage(damageInfo);
         }
         
     }

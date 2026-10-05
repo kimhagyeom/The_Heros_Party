@@ -37,3 +37,4 @@ MonoBehaviour:
   slow_Time: 0
   slow_Per: 0
   projectilePrefab: {fileID: 7648211592940456836, guid: 68519ff5823954c38a471a07276072f4, type: 3}
+  effectPrefab: {fileID: 2691841446480377768, guid: e0fc6226af12e4f99b1bb4fff0e72379, type: 3}

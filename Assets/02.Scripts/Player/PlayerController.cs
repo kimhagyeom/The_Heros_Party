@@ -39,13 +39,15 @@ public class PlayerStats
         currentInfection = start_Infection;
     }
 }
+
+// 입력, 이동, 바라보는 방향, 대시, 넉백 실행 담당
+// 피격 반응(데미지 텍스트, 무적, 감염도, 사망)은 Player가 담당
 [RequireComponent(typeof(Health))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform spriteVisual;
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private DamageText damageTextPrefab;
-    [SerializeField] private Vector3 damageTextOffset = new Vector3(0, 2f, 0);
+    [SerializeField] private float knockbackDuration = 0.2f;
     private PlayerInputActions inputActions; // 실제 값을 저장하는 필드 (소문자, private)
 
     public PlayerInputActions InputActions => inputActions;
@@ -53,28 +55,27 @@ public class PlayerController : MonoBehaviour
     public PlayerStats stats = new PlayerStats();
     private CharacterController controller;
     private Animator animator;
-    private Health health;
+    private Health health;   // 대시 무적에 사용
     private bool isDash = false;
     public float facingSign;
 
     private Coroutine regenRoutine;
-    
-    
+    private Coroutine knockbackRoutine;
+    public bool IsKnockback { get; private set; }
+
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponentInChildren<Animator>(); 
+        animator = GetComponentInChildren<Animator>();
         if (mainCamera == null) mainCamera = Camera.main;
         stats.Init();
 
         health = GetComponent<Health>();
-        health.Init(stats.maxHealth, stats.startHealth);
-        health.OnDamaged += OnDamaged;
-        health.OnDied += Die;
 
         inputActions = new PlayerInputActions();
     }
-    
+
     void OnEnable()
     {
         inputActions.Player.Move.performed += OnMove;
@@ -89,7 +90,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Dodge.performed -= OnDodgePerformed;
         inputActions.Player.Disable();
     }
-    
+
     private void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector2>();
@@ -101,9 +102,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
-        controller.SimpleMove(moveDirection * stats.Move_Speed);
 
-        bool isMoving = moveDirection.sqrMagnitude > 0.0001f;
+        // 넉백 중에는 입력 이동 무시
+        if (!IsKnockback)
+            controller.SimpleMove(moveDirection * stats.Move_Speed);
+
+        bool isMoving = !IsKnockback && moveDirection.sqrMagnitude > 0.0001f;
         if (animator != null)
         {
             animator.SetBool(AnimHash.IsMoving, isMoving);
@@ -111,10 +115,10 @@ public class PlayerController : MonoBehaviour
 
         HandleFacing();
     }
-         
+
     private void HandleFacing()
     {
-        Mouse mouse = Mouse.current; 
+        Mouse mouse = Mouse.current;
         if(mouse == null) return;
 
         Vector2 mousePos = mouse.position.ReadValue();
@@ -133,9 +137,9 @@ public class PlayerController : MonoBehaviour
                 if(spriteVisual != null)
                 {
                     spriteVisual.rotation = Quaternion.identity;
-                
+
                     facingSign = directionToMouse.x >= 0 ? 1f : -1f;
-                    
+
                     Vector3 localScale = spriteVisual.localScale;
                     spriteVisual.localScale = new Vector3(Mathf.Abs(localScale.x) * facingSign, localScale.y, localScale.z);
                 }
@@ -149,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
         stats.currentStamina -= stats.dash_Stamina_Cost;
         stats.currentStamina = Mathf.Clamp(stats.currentStamina, 0, stats.maxStamina);
-        
+
         StartCoroutine(DashRoutine());
 
         if(regenRoutine != null) StopCoroutine(regenRoutine);
@@ -163,7 +167,7 @@ public class PlayerController : MonoBehaviour
         {
             stats.currentStamina += stats.stamina_Regen * Time.deltaTime; // 초당 회복량
             stats.currentStamina = Mathf.Clamp(stats.currentStamina, 0, stats.maxStamina);
-            yield return null;  
+            yield return null;
         }
         regenRoutine = null;
     }
@@ -185,13 +189,36 @@ public class PlayerController : MonoBehaviour
         isDash = false;
     }
 
-    // 실제 HP 감소는 Health가 처리하고, 여기선 피격 후 처리만
-    void OnDamaged(float amount)
+    // Player가 호출: 방향으로 거리만큼 짧은 시간 동안 밀림
+    public void Knockback(Vector3 dir, float distance)
     {
-        Debug.Log(amount);
-        ShowDamageText(amount);
-        health.AddInvincible(stats.hit_Invincible_Time);
+        if (knockbackRoutine != null)
+            StopCoroutine(knockbackRoutine);
+
+        knockbackRoutine = StartCoroutine(KnockbackCoroutine(dir, distance));
     }
+
+    IEnumerator KnockbackCoroutine(Vector3 dir, float distance)
+    {
+        IsKnockback = true;
+
+        dir.y = 0f;
+        dir.Normalize();
+
+        float speed = distance / knockbackDuration;
+        float elapsed = 0f;
+
+        while (elapsed < knockbackDuration)
+        {
+            controller.Move(dir * speed * Time.deltaTime);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        IsKnockback = false;
+        knockbackRoutine = null;
+    }
+
     IEnumerator Increase_Infection(float amount) // 정신감염도 상승
     {
         while (true)
@@ -200,23 +227,11 @@ public class PlayerController : MonoBehaviour
             stats.currentInfection = Mathf.Clamp(stats.currentInfection, stats.start_Infection, stats.max_Infection);
             if(stats.currentInfection >= stats.max_Infection)
             {
-                Die();
+                // TODO: 사망 처리는 Player 담당. 이 코루틴을 쓸 때 Player로 옮기기
                 yield break;
             }
 
             yield return null;
-        }        
-    }
-    void ShowDamageText(float amount)
-    {
-        if (damageTextPrefab == null) return;
-
-        DamageText dt = Instantiate(damageTextPrefab, transform.position + damageTextOffset, Quaternion.identity);
-        dt.Setup(amount);
-    }
-    void Die()
-    {
-        Debug.Log("Player has died!");
-        GameManager.Instance.GameOver();
+        }
     }
 }

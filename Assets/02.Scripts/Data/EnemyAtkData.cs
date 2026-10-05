@@ -38,4 +38,5 @@ public class EnemyAtkData : ScriptableObject
     public float slow_Per;
     [Header("기타")]
     public Projectile projectilePrefab;
+    public GameObject effectPrefab;
 }

@@ -16,6 +16,8 @@ MonoBehaviour:
   enemy_ID: 1001
   atk_Name: Slash
   atk_Type: 0
+  required_Atk_ID: 0
+  chain_Delay: 0
   hp_Damage: 10
   infection_Value: 0
   atk_Range: 1.5
@@ -29,9 +31,10 @@ MonoBehaviour:
   width: 0
   length: 0
   has_Super_Armor: 0
-  has_Knockback: 0
-  knockback_Distance: 0
+  has_Knockback: 1
+  knockback_Distance: 2
   has_Slow: 0
   slow_Time: 0
   slow_Per: 0
   projectilePrefab: {fileID: 0}
+  effectPrefab: {fileID: 0}

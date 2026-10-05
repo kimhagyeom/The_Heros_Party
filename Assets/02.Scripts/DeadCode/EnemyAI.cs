@@ -88,7 +88,14 @@ public class EnemyAI : MonoBehaviour
         if (!hasHit && IsTargetInHitbox())
         {
             hasHit = true;
-            targetDamageable.TakeDamage(atk.hp_Damage);
+            DamageInfo damageInfo = new DamageInfo
+            {
+                damage = atk.hp_Damage,
+                infection = atk.infection_Value,
+                hitDirection = (targetDamageable.transform.position - transform.position).normalized,
+                knockbackDistance = atk.knockback_Distance
+            };
+            targetDamageable.TakeDamage(damageInfo);
         }
 
         if (stateTimer >= atk.active_Time)

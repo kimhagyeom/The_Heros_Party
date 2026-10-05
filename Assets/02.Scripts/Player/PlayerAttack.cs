@@ -90,7 +90,6 @@ public class PlayerAttack : MonoBehaviour
         lastAttackTime = Time.time;
         StartCoroutine(SwingAttack(comboIndex));
         comboIndex = (comboIndex + 1) % currentWeaponData.combo_Step.Length;
-        Debug.Log(comboIndex +  " comboIndex" + currentWeaponData.combo_Step.Length);
     }
     private float lastStartYaw;
     private float lastEndYaw;
@@ -110,7 +109,6 @@ public class PlayerAttack : MonoBehaviour
         lastStartYaw = startYaw; // Gizmo용으로 저장
         lastEndYaw = endYaw;
         isAtk = true;
-        Debug.Log($"startYaw: {startYaw}, endYaw: {endYaw}");
 
         HashSet<Transform> hit = new HashSet<Transform>();
         float elapsed = 0f;
@@ -147,7 +145,14 @@ public class PlayerAttack : MonoBehaviour
                 hit.Add(enemy);
                 if (enemy.TryGetComponent<IDamageable>(out var damageable))
                 {
-                    damageable.TakeDamage(playerController.stats.base_Atk * damageRate); // 캐릭터 공격력 * 무기 비율
+                    DamageInfo damageInfo = new DamageInfo
+                    {
+                        damage = playerController.stats.base_Atk * damageRate,
+                        infection = 0f,
+                        hitDirection = (enemy.position - transform.position).normalized,
+                        knockbackDistance = 0f
+                    };
+                    damageable.TakeDamage(damageInfo); // 캐릭터 공격력 * 무기 비율
                     dpmTracker.RecordDamage(playerController.stats.base_Atk * damageRate);
                 }
             }
