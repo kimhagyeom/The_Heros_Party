@@ -17,8 +17,8 @@ MonoBehaviour:
   enemy_Name: Dummy
   max_HP: 300
   move_Speed: 3
-  can_Stagger: 0
-  stagger_Duration: 0
+  can_Stagger: 1
+  stagger_Duration: 4
   can_Knockback: 1
   knockback_Resistance: 4
   collision_Radius: 0

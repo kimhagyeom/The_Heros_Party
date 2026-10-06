@@ -20,7 +20,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void Move(Vector3 dir)
     {
-        if (IsKnockback) return;  // 밀리는 중엔 추적 이동 무시
+        if (IsKnockback) return;  // 밀리는 중에는 이동 입력 무시
 
         dir.y = 0f;
         transform.position += dir.normalized * moveSpeed * Time.deltaTime;
@@ -33,10 +33,9 @@ public class EnemyMovement : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(dir);
     }
 
-    public void OnHit(DamageInfo info)
+    
+    public void KnockBack(DamageInfo info)
     {
-        if (!enemyData.can_Knockback) return;
-
         if (knockbackRoutine != null)             // 이미 밀리는 중이면 멈추고 새로 시작
             StopCoroutine(knockbackRoutine);
 
