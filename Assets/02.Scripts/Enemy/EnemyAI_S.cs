@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections.Generic; 
 
 // 테스트용 AI: 추적 → 선딜 → 판정 1회 → 후딜 → 추적
-// 경직/넉백/슈퍼아머/둔화는 아직 미구현
+// 슈퍼아머/둔화는 아직 미구현
 [RequireComponent(typeof(Enemy))]
 [RequireComponent(typeof(EnemyAttack))]
 [RequireComponent(typeof(EnemyMovement))]
 public class EnemyAI_S : MonoBehaviour
 {
-    private enum State { Chase, Windup, Recovery, ChainDelay}
+    private enum State { Chase, Windup, Recovery, ChainDelay, Stagger}
 
     [Header("디버그 / 연결")]
     [SerializeField] private State currentState = State.Chase;
@@ -31,7 +31,8 @@ public class EnemyAI_S : MonoBehaviour
 
     // 상태
     private float stateTimer;
-    private float lastAttackTime = -999f;
+    private float staggerDuration;public bool IsSuperArmor =>
+                    currentState == State.Windup && atk != null && atk.has_Super_Armor;
 
     void Start()
     {
@@ -67,6 +68,7 @@ public class EnemyAI_S : MonoBehaviour
             case State.Windup:   UpdateWindup();   break;
             case State.ChainDelay: UpdateChainDelay(); break;
             case State.Recovery: UpdateRecovery(); break;
+            case State.Stagger: UpdateStagger();  break; 
         }
     }
     void BuildChainMap()
@@ -196,6 +198,19 @@ public class EnemyAI_S : MonoBehaviour
         return dir;
     }
 
+    private void UpdateStagger()
+    {
+        if(movement.IsKnockback) return; // 넉백 중이면 경직 상태 유지
+        stateTimer += Time.deltaTime ;
+        if(stateTimer >= staggerDuration)
+            ChangeState(State.Chase);
+    }
+    public void Stagger(float duration)
+    {
+        staggerDuration = duration;
+        ChangeState(State.Stagger);
+        HideTelegraph();
+    }
     void OnDrawGizmosSelected()
     {
         // 플레이 전에도 보이도록, atk가 없으면 Enemy 데이터에서 직접 가져옴
