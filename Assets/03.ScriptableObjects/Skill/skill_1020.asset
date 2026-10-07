@@ -18,17 +18,17 @@ MonoBehaviour:
   atk_Type: 0
   has_Target: 1
   dmg_Rate: 3
-  cooldown: 8
+  cooldown: 0
   max_Stacks: 2
   windup_Time: 0
   active_Time: 0.1
   recovery_Time: 0
   hitbox_Shape: 1
-  range: 0
+  range: 6
   angle: 0
   width: 1.5
-  length: 4
-  move_Type: 2
+  length: 5
+  move_Type: 3
   move_Distance: 0
   move_Time: 0
   has_Invincibility: 0

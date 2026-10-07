@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -7329974092497900245}
   - component: {fileID: -2278551635225172606}
   - component: {fileID: 388261740422618470}
+  - component: {fileID: 4099987681321387997}
   m_Layer: 8
   m_Name: Dummy_Melee_Sector
   m_TagString: Untagged
@@ -114,6 +115,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9c7a50d2f14901ad2be4770cd71c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
+--- !u!114 &4099987681321387997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762907494526445813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cbd32e319974421f9be081c3bca98fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+  knockbackDuration: 0
 --- !u!1 &5160504822350764843
 GameObject:
   m_ObjectHideFlags: 0

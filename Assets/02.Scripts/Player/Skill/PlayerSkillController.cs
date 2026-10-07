@@ -34,9 +34,14 @@ public class PlayerSkillController : MonoBehaviour
     [Header("판정 범위 표시")]
     [SerializeField] private AttackTelegraph telegraph; 
     [SerializeField] private Color telegraphColor = new Color(0.3f, 0.6f, 1f);
-    [SerializeField] private float telegraphLingerTime = 0f; 
+    [SerializeField] private float telegraphLingerTime = 0f;
+    [SerializeField] private Color targetMarkerColor = new Color(1f, 0.85f, 0.2f); // 일섬 대상 미리 표시 색
+    [SerializeField] private float targetMarkerRadius = 0.7f;
 
     private PlayerController playerController;
+    private AttackTelegraph pathTelegraph;   // 일섬 경로 표시
+    private AttackTelegraph targetMarker;    // 일섬 대상 미리 표시
+    private AttackTelegraph shownTelegraph;  // 지금 보이는 범위(경로)
     private Coroutine hideTelegraphRoutine;
     private SkillExecutor skillExecutor;
     private SkillSlot[] slots;
@@ -55,6 +60,8 @@ public class PlayerSkillController : MonoBehaviour
 
         if (telegraph == null)
             telegraph = AttackTelegraph.Create(transform, telegraphColor);
+        pathTelegraph = AttackTelegraph.Create(null, telegraphColor);
+        targetMarker = AttackTelegraph.Create(null, targetMarkerColor);
 
         slots = new SkillSlot[SlotCount];
         for (int i = 0; i < SlotCount; i++)
@@ -85,6 +92,27 @@ public class PlayerSkillController : MonoBehaviour
     void Update()
     {
         RechargeSlots();
+        UpdateTargetMarker();
+    }
+
+    // 일섬? : 대상 지정 스킬을 지금 쓸 수 있으면, 누르면 잡힐 적 발밑에 원 표시
+    void UpdateTargetMarker()
+    {
+        Enemy target = null;
+        if (!playerController.IsBusy)
+        {
+            foreach (SkillSlot slot in slots)
+            {
+                if (slot.IsEmpty || !slot.data.has_Target || slot.stacks <= 0) continue;
+                target = skillExecutor.FindTarget(playerController, slot.data);
+                break;
+            }
+        }
+
+        if (target != null)
+            targetMarker.ShowCircleAt(target.transform.position, targetMarkerRadius);
+        else
+            targetMarker.Hide();
     }
 
     private void OnSkillPerformed(InputAction.CallbackContext ctx)
@@ -122,34 +150,47 @@ public class PlayerSkillController : MonoBehaviour
         if (playerController.IsBusy) return false;
         if (slot.stacks <= 0) return false;
 
+        // 대상 지정 스킬은 충전을 쓰기 전에 대상부터 확인 (없으면 스킬 안 나가고 충전도 그대로)
+        Enemy target = null;
+        if (slot.data.has_Target)
+        {
+            target = skillExecutor.FindTarget(playerController, slot.data);
+            if (target == null)
+            {
+                Debug.Log($"[{slot.data.skill_Name}] 대상 없음 ({slot.data.range}m 안에 적이 없음)");
+                return false;
+            }
+            playerController.FaceDirection(target.transform.position - transform.position);
+        }
+
         if (slot.IsFull)
             slot.rechargeRemaining = slot.data.cooldown;
         slot.stacks--;
 
-        StartCoroutine(CastRoutine(index, slot.data));
+        StartCoroutine(CastRoutine(index, slot.data, target));
         return true;
     }
 
-    IEnumerator CastRoutine(int index, SkillData data)
+    IEnumerator CastRoutine(int index, SkillData data, Enemy target)
     {
         IsCasting = true;
         CastingSlot = index;
 
         // 선딜: 범위 표시 후 안쪽이 차오름
         SetPhase(SkillPhase.Windup, data);
-        bool hasTelegraph = ShowTelegraph(data);
+        bool hasTelegraph = ShowTelegraph(data, target);
         float elapsed = 0f;
         while (elapsed < data.windup_Time)
         {
             elapsed += Time.deltaTime;
-            if (hasTelegraph) telegraph.SetProgress(elapsed / data.windup_Time);
+            if (hasTelegraph) shownTelegraph.SetProgress(elapsed / data.windup_Time);
             yield return null;
         }
 
         // 판정: 범위 꽉 찬 상태로 유지
         SetPhase(SkillPhase.Active, data);
-        if (hasTelegraph) telegraph.SetProgress(1f);
-        skillExecutor.Execute(playerController, data);
+        if (hasTelegraph) shownTelegraph.SetProgress(1f);
+        skillExecutor.Execute(playerController, data, target);
         if (data.atk_Type != AttackType.Projectile && data.active_Time > 0f)
             yield return new WaitForSeconds(data.active_Time);
 
@@ -164,32 +205,44 @@ public class PlayerSkillController : MonoBehaviour
         CastingSlot = -1;
     }
 
-    bool ShowTelegraph(SkillData data)
+    //범위
+    bool ShowTelegraph(SkillData data, Enemy target)
     {
-        if (telegraph == null) return false;
-        if (data.atk_Type != AttackType.Melee || data.hitbox_Shape != HitboxShape.Sector) return false;
+        bool isSector = data.atk_Type == AttackType.Melee && data.hitbox_Shape == HitboxShape.Sector;
+        bool isTargetPath = data.move_Type == MoveType.Target_Back && target != null;
 
+        AttackTelegraph next = isSector ? telegraph : isTargetPath ? pathTelegraph : null;
+        if (next == null) return false;
+
+        // 이전 스킬 범위가 아직 남아있으면 바로 숨기고 새로 그림
         if (hideTelegraphRoutine != null)
         {
             StopCoroutine(hideTelegraphRoutine);
             hideTelegraphRoutine = null;
+            shownTelegraph.Hide();
         }
-        telegraph.ShowSector(data.range, data.angle);
+
+        shownTelegraph = next;
+        if (isSector)
+            telegraph.ShowSector(data.range, data.angle);
+        else
+            pathTelegraph.ShowBoxAt(transform.position, transform.rotation, data.width,
+                skillExecutor.GetPathLength(transform, target, data));
         return true;
     }
 
     void HideTelegraph()
     {
         if (telegraphLingerTime > 0f)
-            hideTelegraphRoutine = StartCoroutine(HideTelegraphAfter(telegraphLingerTime));
+            hideTelegraphRoutine = StartCoroutine(HideTelegraphAfter(shownTelegraph, telegraphLingerTime));
         else
-            telegraph.Hide();
+            shownTelegraph.Hide();
     }
 
-    IEnumerator HideTelegraphAfter(float delay)
+    IEnumerator HideTelegraphAfter(AttackTelegraph target, float delay)
     {
         yield return new WaitForSeconds(delay);
-        telegraph.Hide();
+        target.Hide();
         hideTelegraphRoutine = null;
     }
 

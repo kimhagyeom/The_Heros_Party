@@ -96,36 +96,53 @@ public class PlayerController : MonoBehaviour
             HandleFacing();
     }
 
-    private void HandleFacing()
+    //마우스 커서가 가리키는 위치 (바라보는 방향, 스킬 대상 찾기에 사용)
+    public bool TryGetMouseWorldPosition(out Vector3 mouseWorldPos)
     {
+        mouseWorldPos = Vector3.zero;
+
         Mouse mouse = Mouse.current;
-        if(mouse == null) return;
+        if(mouse == null) return false;
 
         Vector2 mousePos = mouse.position.ReadValue();
         Ray ray = mainCamera.ScreenPointToRay(mousePos);
 
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-        if (groundPlane.Raycast(ray, out float distance))
+        if (!groundPlane.Raycast(ray, out float distance)) return false;
+
+        mouseWorldPos = ray.GetPoint(distance);
+        return true;
+    }
+
+    public void FaceDirection(Vector3 direction)
+    {
+        direction.y = 0f;
+        if(direction.sqrMagnitude <= 0.0001f) return;
+
+        transform.forward = direction.normalized;
+        if(spriteVisual != null)
         {
-            Vector3 mouseWorldPos = ray.GetPoint(distance);
-            Vector3 directionToMouse = mouseWorldPos - transform.position;
-            directionToMouse.y = 0f; // 수직 방향 무시
+            spriteVisual.rotation = Quaternion.identity;
 
-            if(directionToMouse.sqrMagnitude > 0.0001f)
-            {
-                transform.forward = directionToMouse.normalized;
-                if(spriteVisual != null)
-                {
-                    spriteVisual.rotation = Quaternion.identity;
+            facingSign = direction.x >= 0 ? 1f : -1f;
 
-                    facingSign = directionToMouse.x >= 0 ? 1f : -1f;
-
-                    Vector3 localScale = spriteVisual.localScale;
-                    spriteVisual.localScale = new Vector3(Mathf.Abs(localScale.x) * facingSign, localScale.y, localScale.z);
-                }
-            }
+            Vector3 localScale = spriteVisual.localScale;
+            spriteVisual.localScale = new Vector3(Mathf.Abs(localScale.x) * facingSign, localScale.y, localScale.z);
         }
+    }
 
+    // 순간이동: CharacterController가 켜져 있으면 위치를 직접 바꿔도 되돌려지므로 잠깐 끄고 이동
+    public void Teleport(Vector3 position)
+    {
+        controller.enabled = false;
+        transform.position = position;
+        controller.enabled = true;
+    }
+
+    private void HandleFacing()
+    {
+        if (TryGetMouseWorldPosition(out Vector3 mouseWorldPos))
+            FaceDirection(mouseWorldPos - transform.position);
     }
     private void HandleDodge()
     {

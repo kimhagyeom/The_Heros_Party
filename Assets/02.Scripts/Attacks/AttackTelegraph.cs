@@ -66,6 +66,22 @@ public class AttackTelegraph : MonoBehaviour
         Draw(GetSectorVertices(radius, angle, SectorSegments));
     }
 
+    // 일섬 경로Box
+    public void ShowBoxAt(Vector3 worldStart, Quaternion rotation, float width, float length)
+    {
+        transform.SetPositionAndRotation(worldStart + Vector3.up * 0.02f, rotation);
+
+        Draw(GetBoxVertices(width, length));
+    }
+
+    // 일섬 대상 표시: 월드 위치에 원 테두리
+    public void ShowCircleAt(Vector3 worldPos, float radius)
+    {
+        transform.SetPositionAndRotation(worldPos + Vector3.up * 0.02f, Quaternion.identity);
+
+        Draw(GetSectorVertices(radius, 360f, SectorSegments));
+    }
+
     //(적/플레이어 공용)
     private void Draw(List<Vector3> vertices)
     {

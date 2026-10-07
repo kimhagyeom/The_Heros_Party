@@ -18,7 +18,7 @@ MonoBehaviour:
   atk_Type: 0
   has_Target: 0
   dmg_Rate: 10
-  cooldown: 12
+  cooldown: 0
   max_Stacks: 1
   windup_Time: 0.1
   active_Time: 0.2

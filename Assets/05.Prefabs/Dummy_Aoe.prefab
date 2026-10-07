@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cbd32e319974421f9be081c3bca98fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+  knockbackDuration: 0
 --- !u!1 &5160504822350764843
 GameObject:
   m_ObjectHideFlags: 0

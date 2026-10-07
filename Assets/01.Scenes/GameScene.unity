@@ -637,6 +637,10 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 256
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 1
+  behindDistance: 3.5
 --- !u!114 &460401740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,7 +659,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5bd9e4a1f04d332479bfb62a5c8a82c9, type: 2}
   - {fileID: 0}
   telegraph: {fileID: 0}
+  telegraphColor: {r: 0.3, g: 0.6, b: 1, a: 1}
   telegraphLingerTime: 0
+  targetMarkerColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  targetMarkerRadius: 0.7
 --- !u!65 &460401741
 BoxCollider:
   m_ObjectHideFlags: 0
