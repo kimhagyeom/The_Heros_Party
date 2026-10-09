@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
 
 [RequireComponent(typeof(Enemy))]
@@ -7,6 +8,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float knockbackDuration = 0.2f;
 
     private EnemyData enemyData;
+    private NavMeshAgent agent;
     private float moveSpeed;
 
     private Coroutine knockbackRoutine;
@@ -15,15 +17,32 @@ public class EnemyMovement : MonoBehaviour
     void Awake()
     {
         enemyData = GetComponent<Enemy>().Data;   
+        agent = GetComponent<NavMeshAgent>();
         moveSpeed = enemyData.move_Speed;
+
+        agent.speed = enemyData.move_Speed;
+        agent.updateRotation = false; // 회전은 LookAt/flip으로 처리
     }
 
-    public void Move(Vector3 dir)
+    public void MoveTo(Vector3 targetPos)
     {
-        if (IsKnockback) return;  // 밀리는 중에는 이동 입력 무시
+        if (IsKnockback || !agent.enabled || !agent.isOnNavMesh) return;  // 밀리는 중에는 이동 입력 무시
 
-        dir.y = 0f;
-        transform.position += dir.normalized * moveSpeed * Time.deltaTime;
+        agent.isStopped = false;
+        agent.SetDestination(targetPos);
+    }
+    public void Stop()
+    {
+         if (!agent.enabled || !agent.isOnNavMesh) return;
+
+        agent.isStopped = true;
+        agent.ResetPath();
+    }
+    // 사망 시 호출
+    public void Disable()
+    {
+        Stop();
+        agent.enabled = false;
     }
 
     public void LookAt(Vector3 dir)
@@ -36,6 +55,8 @@ public class EnemyMovement : MonoBehaviour
     
     public void KnockBack(DamageInfo info)
     {
+        if(!agent.enabled) return;
+
         if (knockbackRoutine != null)             // 이미 밀리는 중이면 멈추고 새로 시작
             StopCoroutine(knockbackRoutine);
 
@@ -45,6 +66,7 @@ public class EnemyMovement : MonoBehaviour
     IEnumerator KnockbackCoroutine(Vector3 dir, float distance)
     {
         IsKnockback = true;
+        Stop();
 
         dir.y = 0f;
         dir.Normalize();

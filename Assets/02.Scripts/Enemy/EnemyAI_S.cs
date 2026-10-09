@@ -29,6 +29,9 @@ public class EnemyAI_S : MonoBehaviour
     private Transform target;
     private Vector3 targetPos;
 
+    //Movement
+    private float repathTimer;
+    private const float RepathInterval = 0.2f;  
     // 상태
     private float stateTimer;
     private float staggerDuration;public bool IsSuperArmor =>
@@ -58,6 +61,7 @@ public class EnemyAI_S : MonoBehaviour
         if (enemy.IsDead)
         {
             HideTelegraph(); // 선딜 중에 죽으면 예고도 끄기
+            movement.Disable();
             return;
         }
         if (target == null || atk == null) return;
@@ -100,8 +104,12 @@ public class EnemyAI_S : MonoBehaviour
             StartWindup(toTarget);
             return;
         }
-
-        movement.Move(toTarget);
+        repathTimer -= Time.deltaTime;
+        if (repathTimer <= 0f)
+        {
+            repathTimer = RepathInterval;
+            movement.MoveTo(target.position);
+        }  
     }
     private void CheckAttackList(Vector3 toTarget)
     {
@@ -123,6 +131,7 @@ public class EnemyAI_S : MonoBehaviour
 
     void StartWindup(Vector3 toTarget)
     {
+        movement.Stop();
         movement.LookAt(toTarget);
         targetPos = target.position; // 선딜 시작 시점의 위치를 기록, 선딜 중에 이동해도 그 위치로 공격
         if(canAttackList.Count > 0)
@@ -189,6 +198,7 @@ public class EnemyAI_S : MonoBehaviour
     {
         currentState = next;
         stateTimer = 0f;
+        if (next == State.Chase) repathTimer = 0f;
     }
 
     Vector3 FlatDirTo(Vector3 pos)
@@ -207,6 +217,7 @@ public class EnemyAI_S : MonoBehaviour
     }
     public void Stagger(float duration)
     {
+        movement.Stop(); 
         staggerDuration = duration;
         ChangeState(State.Stagger);
         HideTelegraph();
