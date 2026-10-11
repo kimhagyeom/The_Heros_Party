@@ -1,4 +1,6 @@
+using UnityEditor.Search;
 using UnityEngine;
+using WitchGardenDemo;
 
 // 플레이어 본체: Health 알림을 받아서 반응을 결정하고 지시
 // (Enemy와 같은 역할. 입력·이동·대시·넉백 실행은 PlayerController가 담당)
@@ -8,12 +10,12 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private DamageText damageTextPrefab;
     [SerializeField] private Vector3 damageTextOffset = new Vector3(0, 2f, 0);
-
     private Health health;
     private PlayerController controller;
 
     private PlayerStats Stats => controller.stats;
     public bool IsDead => health.IsDead;
+    [SerializeField]private  CameraFollow cameraFollow;
 
     void Awake()
     {
@@ -39,6 +41,7 @@ public class Player : MonoBehaviour
     void OnHit(DamageInfo info)
     {
         ShowDamageText(info.damage);
+        cameraFollow.ShakeCamera();
         health.AddInvincible(Stats.hit_Invincible_Time);
 
         // 넉백: 플레이어는 기본적으로 안 밀리고, 공격 쪽이 넉백 거리를 보냈을 때만 밀림

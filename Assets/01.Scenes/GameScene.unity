@@ -832,6 +832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
   damageTextOffset: {x: 0, y: 2, z: 0}
+  cameraFollow: {fileID: 534153989}
 --- !u!1 &534153987
 GameObject:
   m_ObjectHideFlags: 0
@@ -918,6 +919,9 @@ MonoBehaviour:
   target: {fileID: 460401736}
   offset: {x: 0, y: 10, z: -6}
   followSpeed: 10
+  amplitude: 5
+  shakeDuration: 0.2
+  frequency: 25
 --- !u!81 &534153990
 AudioListener:
   m_ObjectHideFlags: 0

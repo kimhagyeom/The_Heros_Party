@@ -76,9 +76,11 @@ public class PlayerController : MonoBehaviour
     {
         HandleDodge();
     }
+    private Vector3 moveDir = new Vector3();
     void Update()
     {
         Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
+        moveDir = moveDirection;
 
         // 넉백 중, 스킬 사용 중에는 입력 이동 무시
         bool canMove = !IsKnockback && !IsCasting;
@@ -193,7 +195,7 @@ public class PlayerController : MonoBehaviour
 
             // 마지막 프레임은 남은 시간만큼만 이동해서 거리 초과 방지
             float step = Mathf.Min(Time.deltaTime, stats.dashDuration - elapsed);
-            controller.Move(direction * speed * step);
+            controller.Move(moveDir * speed * step);
             elapsed += step;
             yield return null;
         }
