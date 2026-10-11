@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private DamageText damageTextPrefab;
     [SerializeField] private Vector3 damageTextOffset = new Vector3(0, 2f, 0);
+    [SerializeField] private HitFlash hitFlash;
     private Health health;
     private PlayerController controller;
 
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
         ShowDamageText(info.damage);
         cameraFollow.ShakeCamera();
         health.AddInvincible(Stats.hit_Invincible_Time);
+        if (hitFlash != null) hitFlash.PlayBlink(Stats.hit_Invincible_Time);
 
         // 넉백: 플레이어는 기본적으로 안 밀리고, 공격 쪽이 넉백 거리를 보냈을 때만 밀림
         if (info.knockbackDistance > 0f)

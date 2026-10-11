@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 4491374753299902491}
   - component: {fileID: 1905997018075846486}
   - component: {fileID: 2242615276933524646}
+  - component: {fileID: 723859432178575946}
   m_Layer: 0
   m_Name: SpriteVisual
   m_TagString: Untagged
@@ -255,6 +256,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10bc2161e3f55764cb988e54987e0f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &723859432178575946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5160504822350764843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72feecca5fa894de9907ab5625ab27ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFlash
+  blinkInterval: 0.1
+  blinkAlpha: 0.3
+  tintColor: {r: 0.12771448, g: 0.22035098, b: 0.6603774, a: 1}
+  tintDuration: 3
+  health: {fileID: 388261740422618470}
+  tintOnDamaged: 1
 --- !u!1 &5791170371766530381
 GameObject:
   m_ObjectHideFlags: 0

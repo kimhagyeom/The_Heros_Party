@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     private EnemyAI_S ai;
     private EnemyMovement movement;
     [SerializeField] private EnemyData enemyData;
+    //[SerializeField] private HitFlash hitFlash;
     [SerializeField] private DamageText damageTextPrefab;
     [SerializeField] private Vector3 damageTextOffset = new Vector3(0, 2f, 0);
 
@@ -40,6 +41,7 @@ public class Enemy : MonoBehaviour
     }
     public void OnHit(DamageInfo info)
     {
+        //if(hitFlash != null) hitFlash.PlayTint();
         if (ai != null && ai.IsSuperArmor) return;
 
         // 경직과 넉백이 동시에 발생한다면 
