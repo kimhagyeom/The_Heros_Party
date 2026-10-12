@@ -36,11 +36,17 @@ public class PlayerSkillController : MonoBehaviour
     [SerializeField] private Color telegraphColor = new Color(0.3f, 0.6f, 1f);
     [SerializeField] private float telegraphLingerTime = 0f;
     [SerializeField] private Color targetMarkerColor = new Color(1f, 0.85f, 0.2f); // 일섬 대상 미리 표시 색
+    [SerializeField] private Color outOfRangeMarkerColor = new Color(1f, 0.25f, 0.25f); // 일섬 사거리 밖 대상 표시 색
     [SerializeField] private float targetMarkerRadius = 0.7f;
+    [Header("대상 지정 조준")]
+    [SerializeField] private float hoverRadius = 0.8f;
 
     private PlayerController playerController;
     private AttackTelegraph pathTelegraph;   // 일섬 경로 표시
     private AttackTelegraph targetMarker;    // 일섬 대상 미리 표시
+    private AttackTelegraph outOfRangeMarker; //일섬 사거리 밖 대상 표시
+    private AttackTelegraph rangeTelegraph;  // 일섬 조준 중 사거리 원
+    private int aimingSlot = -1;             //일섬 조준 중인 슬롯
     private AttackTelegraph shownTelegraph;  // 지금 보이는 범위(경로)
     private Coroutine hideTelegraphRoutine;
     private SkillExecutor skillExecutor;
@@ -48,6 +54,7 @@ public class PlayerSkillController : MonoBehaviour
     private InputAction[] skillActions;
 
     public bool IsCasting { get; private set; }
+    public bool IsAiming => aimingSlot >= 0;
     public SkillPhase Phase { get; private set; }
     public int CastingSlot { get; private set; } = -1;
 
@@ -62,6 +69,8 @@ public class PlayerSkillController : MonoBehaviour
             telegraph = AttackTelegraph.Create(transform, telegraphColor);
         pathTelegraph = AttackTelegraph.Create(null, telegraphColor);
         targetMarker = AttackTelegraph.Create(null, targetMarkerColor);
+        outOfRangeMarker = AttackTelegraph.Create(null, outOfRangeMarkerColor);
+        rangeTelegraph = AttackTelegraph.Create(transform, targetMarkerColor);
 
         slots = new SkillSlot[SlotCount];
         for (int i = 0; i < SlotCount; i++)
@@ -83,6 +92,7 @@ public class PlayerSkillController : MonoBehaviour
 
     void OnDisable()
     {
+        if (IsAiming) CancelAim();
         if (skillActions == null) return;
 
         foreach (InputAction action in skillActions)
@@ -92,27 +102,58 @@ public class PlayerSkillController : MonoBehaviour
     void Update()
     {
         RechargeSlots();
-        UpdateTargetMarker();
+        UpdateAim();
     }
 
-    // 일섬? : 대상 지정 스킬을 지금 쓸 수 있으면, 누르면 잡힐 적 발밑에 원 표시
-    void UpdateTargetMarker()
+    // 일섬 : 조준 중이면 커서 밑 적에 원 표시(사거리 밖이면 빨강), 좌클릭하면 그 적에게 시전(적 몸클릭 x 표시 원 클릭 해야 적용)
+    void UpdateAim()
     {
-        Enemy target = null;
-        if (!playerController.IsBusy)
+        if (!IsAiming) return;
+
+        Mouse mouse = Mouse.current;
+        Keyboard keyboard = Keyboard.current;
+        bool cancelPressed = (mouse != null && mouse.rightButton.wasPressedThisFrame) ||
+                             (keyboard != null && keyboard.escapeKey.wasPressedThisFrame);
+        if (cancelPressed)
         {
-            foreach (SkillSlot slot in slots)
-            {
-                if (slot.IsEmpty || !slot.data.has_Target || slot.stacks <= 0) continue;
-                target = skillExecutor.FindTarget(playerController, slot.data);
-                break;
-            }
+            CancelAim();
+            return;
         }
 
-        if (target != null)
-            targetMarker.ShowCircleAt(target.transform.position, targetMarkerRadius);
+        SkillSlot slot = slots[aimingSlot];
+
+        // 대시/넉백/공격 중에는 대상 표시도 클릭도 받지 않음 (조준은 유지)
+        Enemy hovered = playerController.IsBusy ? null : skillExecutor.FindHoveredEnemy(playerController, hoverRadius);
+        bool inRange = hovered != null && skillExecutor.IsInRange(transform, hovered, slot.data);
+
+        if (inRange)
+            targetMarker.ShowCircleAt(hovered.transform.position, targetMarkerRadius);
         else
             targetMarker.Hide();
+        if (hovered != null && !inRange)
+            outOfRangeMarker.ShowCircleAt(hovered.transform.position, targetMarkerRadius);
+        else
+            outOfRangeMarker.Hide();
+        if (inRange && mouse != null && mouse.leftButton.wasPressedThisFrame)
+        {
+            int index = aimingSlot;
+            CancelAim();
+            StartCast(index, hovered);
+        }
+    }
+
+    void StartAim(int index)
+    {
+        aimingSlot = index;
+        rangeTelegraph.ShowSector(slots[index].data.range, 360f);
+    }
+
+    void CancelAim()
+    {
+        aimingSlot = -1;
+        rangeTelegraph.Hide();
+        targetMarker.Hide();
+        outOfRangeMarker.Hide();
     }
 
     private void OnSkillPerformed(InputAction.CallbackContext ctx)
@@ -140,6 +181,14 @@ public class PlayerSkillController : MonoBehaviour
 
     public bool TryUseSkill(int index)
     {
+        // 조준 중인 키를 다시 누르면 조준 취소, 다른 스킬 키를 누르면 조준 취소 후 그 스킬 사용
+        if (IsAiming)
+        {
+            bool sameSlot = aimingSlot == index;
+            CancelAim();
+            if (sameSlot) return false;
+        }
+
         SkillSlot slot = GetSlot(index);
         if (slot == null || slot.IsEmpty)
         {
@@ -150,25 +199,29 @@ public class PlayerSkillController : MonoBehaviour
         if (playerController.IsBusy) return false;
         if (slot.stacks <= 0) return false;
 
-        // 대상 지정 스킬은 충전을 쓰기 전에 대상부터 확인 (없으면 스킬 안 나가고 충전도 그대로)
-        Enemy target = null;
+        // 대상 지정 스킬은 바로 쓰지 않고 조준 모드로 (충전은 클릭해서 시전할 때 사용)
         if (slot.data.has_Target)
         {
-            target = skillExecutor.FindTarget(playerController, slot.data);
-            if (target == null)
-            {
-                Debug.Log($"[{slot.data.skill_Name}] 대상 없음 ({slot.data.range}m 안에 적이 없음)");
-                return false;
-            }
-            playerController.FaceDirection(target.transform.position - transform.position);
+            StartAim(index);
+            return true;
         }
+
+        StartCast(index, null);
+        return true;
+    }
+
+    void StartCast(int index, Enemy target)
+    {
+        SkillSlot slot = slots[index];
+
+        if (target != null)
+            playerController.FaceDirection(target.transform.position - transform.position);
 
         if (slot.IsFull)
             slot.rechargeRemaining = slot.data.cooldown;
         slot.stacks--;
 
         StartCoroutine(CastRoutine(index, slot.data, target));
-        return true;
     }
 
     IEnumerator CastRoutine(int index, SkillData data, Enemy target)

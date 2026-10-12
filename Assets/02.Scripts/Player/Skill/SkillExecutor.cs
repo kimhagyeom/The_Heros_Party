@@ -17,32 +17,34 @@ public class SkillExecutor : MonoBehaviour
         characterController = GetComponent<CharacterController>();
     }
 
-    //일섬?:플레이어와 range 안에 있는 적 중 커서에 가장 가까운 적, 없으면 null
-    public Enemy FindTarget(PlayerController player, SkillData data)
+    //일섬: 커서 밑에 있는 적 중 커서에 가장 가까운 적, 없으면 null (사거리는 안 봄)
+    public Enemy FindHoveredEnemy(PlayerController player, float hoverRadius)
     {
         if (!player.TryGetMouseWorldPosition(out Vector3 mousePos)) return null;
 
-        float sqrRange = data.range * data.range;
         Enemy best = null;
-        float bestSqrToMouse = float.MaxValue;
+        float bestSqrToMouse = hoverRadius * hoverRadius;
 
         foreach (Enemy enemy in EnemyRegistry.Instance.ActiveEnemies)
         {
             if (enemy == null || enemy.IsDead) continue;
 
-            Vector3 toEnemy = enemy.transform.position - player.transform.position;
-            toEnemy.y = 0f;
-            if (toEnemy.sqrMagnitude > sqrRange) continue;
-
             Vector3 toMouse = enemy.transform.position - mousePos;
             toMouse.y = 0f;
-            if (toMouse.sqrMagnitude < bestSqrToMouse)
+            if (toMouse.sqrMagnitude <= bestSqrToMouse)
             {
                 bestSqrToMouse = toMouse.sqrMagnitude;
                 best = enemy;
             }
         }
         return best;
+    }
+
+    public bool IsInRange(Transform owner, Enemy target, SkillData data)
+    {
+        Vector3 toTarget = target.transform.position - owner.position;
+        toTarget.y = 0f;
+        return toTarget.sqrMagnitude <= data.range * data.range;
     }
 
     // 일섬 경로 길이
