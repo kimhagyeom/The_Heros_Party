@@ -17,17 +17,23 @@ public class SkillExecutor : MonoBehaviour
         characterController = GetComponent<CharacterController>();
     }
 
-    //일섬: 커서 밑에 있는 적 중 커서에 가장 가까운 적, 없으면 null (사거리는 안 봄)
-    public Enemy FindHoveredEnemy(PlayerController player, float hoverRadius)
+    //일섬: 커서 반경 안 + 사거리 안에 있는 적 중 커서에 가장 가까운 적, 없으면 null
+    public Enemy FindTargetInRange(PlayerController player, SkillData data, float hoverRadius)
     {
         if (!player.TryGetMouseWorldPosition(out Vector3 mousePos)) return null;
 
+        Vector3 ownerPos = player.transform.position;
+        float sqrRange = data.range * data.range;
         Enemy best = null;
         float bestSqrToMouse = hoverRadius * hoverRadius;
 
         foreach (Enemy enemy in EnemyRegistry.Instance.ActiveEnemies)
         {
             if (enemy == null || enemy.IsDead) continue;
+
+            Vector3 toEnemy = enemy.transform.position - ownerPos;
+            toEnemy.y = 0f;
+            if (toEnemy.sqrMagnitude > sqrRange) continue;
 
             Vector3 toMouse = enemy.transform.position - mousePos;
             toMouse.y = 0f;
@@ -38,13 +44,6 @@ public class SkillExecutor : MonoBehaviour
             }
         }
         return best;
-    }
-
-    public bool IsInRange(Transform owner, Enemy target, SkillData data)
-    {
-        Vector3 toTarget = target.transform.position - owner.position;
-        toTarget.y = 0f;
-        return toTarget.sqrMagnitude <= data.range * data.range;
     }
 
     // 일섬 경로 길이

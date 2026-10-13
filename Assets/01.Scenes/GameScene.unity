@@ -783,8 +783,7 @@ MonoBehaviour:
   telegraph: {fileID: 0}
   telegraphColor: {r: 0.3, g: 0.6, b: 1, a: 1}
   telegraphLingerTime: 0
-  targetMarkerColor: {r: 1, g: 0.85, b: 0.2, a: 1}
-  targetMarkerRadius: 0.7
+  hoverRadius: 1.2
 --- !u!65 &460401741
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -832,6 +831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
   damageTextOffset: {x: 0, y: 2, z: 0}
+  hitFlash: {fileID: 0}
   cameraFollow: {fileID: 534153989}
 --- !u!1 &534153987
 GameObject:
