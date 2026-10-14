@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private PlayerSkillController skillController; // 스킬 사용 중 여부 확인용
     private bool isDash = false;
     public float facingSign;
+    private Vector3 lastMoveDir;
 
     private Coroutine regenRoutine;
     private Coroutine knockbackRoutine;
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
         skillController = GetComponent<PlayerSkillController>();
 
         inputActions = new PlayerInputActions();
+        lastMoveDir = Vector3.forward;
     }
 
     void OnEnable()
@@ -76,11 +78,12 @@ public class PlayerController : MonoBehaviour
     {
         HandleDodge();
     }
-    private Vector3 moveDir = new Vector3();
+    
     void Update()
     {
         Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
-        moveDir = moveDirection;
+        if (moveDirection.sqrMagnitude > 0.0001f)
+            lastMoveDir = moveDirection.normalized;
 
         // 넉백 중, 스킬 사용 중에는 입력 이동 무시
         bool canMove = !IsKnockback && !IsCasting;
@@ -175,9 +178,7 @@ public class PlayerController : MonoBehaviour
     {
         isDash = true;
 
-        Vector3 direction = transform.forward;
-        direction.y = 0f;
-        direction.Normalize();
+        Vector3 direction = lastMoveDir;
 
         // dashDuration 동안 dash_Distance만큼 가도록 속도 계산 (넉백과 같은 방식)
         float speed = stats.dashDuration > 0f ? stats.dash_Distance / stats.dashDuration : 0f;
@@ -195,7 +196,7 @@ public class PlayerController : MonoBehaviour
 
             // 마지막 프레임은 남은 시간만큼만 이동해서 거리 초과 방지
             float step = Mathf.Min(Time.deltaTime, stats.dashDuration - elapsed);
-            controller.Move(moveDir * speed * step);
+            controller.Move(direction * speed * step);
             elapsed += step;
             yield return null;
         }

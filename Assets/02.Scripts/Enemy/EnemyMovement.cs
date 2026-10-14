@@ -8,6 +8,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float knockbackDuration = 0.2f;
 
     private EnemyData enemyData;
+    [SerializeField] float enemySqr; // 적의 둘레
     private NavMeshAgent agent;
     private float moveSpeed;
 
@@ -22,6 +23,7 @@ public class EnemyMovement : MonoBehaviour
 
         agent.speed = enemyData.move_Speed;
         agent.updateRotation = false; // 회전은 LookAt/flip으로 처리
+
     }
 
     public void MoveTo(Vector3 targetPos)

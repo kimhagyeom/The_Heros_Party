@@ -34,6 +34,7 @@ public class EnemyAI_S : MonoBehaviour
     private const float RepathInterval = 0.2f;  
     // 상태
     private float stateTimer;
+    private float shortestDis = 999f;
     private float staggerDuration;public bool IsSuperArmor =>
                     currentState == State.Windup && atk != null && atk.has_Super_Armor;
 
@@ -53,6 +54,12 @@ public class EnemyAI_S : MonoBehaviour
         {
             target = player.transform;
             enemyAttack.SetTargetMask(1 << player.gameObject.layer);
+        }
+
+        for(int i = 0; i < data.atk_List.Length; i++)
+        {
+            if(data.atk_List[i] != null && data.atk_List[i].atk_Range <= shortestDis && data.atk_List[i].required_Atk_ID == 0)
+                shortestDis = data.atk_List[i].atk_Range;
         }
     }
 
@@ -97,19 +104,30 @@ public class EnemyAI_S : MonoBehaviour
     {
         Vector3 toTarget = FlatDirTo(target.position);
 
-        CheckAttackList(toTarget);// 공격 가능 목록 갱신
-        
-        if(canAttackList.Count > 0)
+        CheckAttackList(toTarget); // 공격 가능 목록 갱신
+
+        if (canAttackList.Count > 0)
         {
             StartWindup(toTarget);
             return;
         }
+
+        // 최소 사거리 안인데 쓸 공격이 없으면(쿨타임) 그 자리에서 대기 → 플레이어를 밀지 않음
+        // 매 프레임 체크해서 repath 사이에 파고드는 것도 방지
+        if (toTarget.sqrMagnitude <= shortestDis * shortestDis)
+        {
+            movement.Stop();
+            movement.LookAt(toTarget); // 대기 중에도 플레이어 쪽을 바라봄
+            repathTimer = 0f;          // 사거리를 벗어나는 즉시 다시 추적
+            return;
+        }
+
         repathTimer -= Time.deltaTime;
         if (repathTimer <= 0f)
         {
             repathTimer = RepathInterval;
             movement.MoveTo(target.position);
-        }  
+        }
     }
     private void CheckAttackList(Vector3 toTarget)
     {

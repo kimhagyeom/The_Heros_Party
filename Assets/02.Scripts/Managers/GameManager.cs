@@ -17,7 +17,7 @@ public class GameManager : Singleton<GameManager>
     public void StartGame()
     {
         SetState(GameState.Playing);
-        SpawnManager.Instance.StartSpawning();
+        StageManager.Instance.BeginStage();
     }
 
     public void ClearStage()
