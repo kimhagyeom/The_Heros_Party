@@ -24,7 +24,7 @@ MonoBehaviour:
   active_Time: 0.1
   recovery_Time: 0
   hitbox_Shape: 1
-  range: 6
+  range: 10
   angle: 0
   width: 1.5
   length: 5

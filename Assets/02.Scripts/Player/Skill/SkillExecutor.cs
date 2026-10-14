@@ -7,6 +7,7 @@ public class SkillExecutor : MonoBehaviour
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private LayerMask obstacleMask = 1;    // 순간이동을 막는 벽 레이어 (기본: Default)
     [SerializeField] private float behindDistance = 1f;     //일섬?: 대상 중심에서 얼마나 뒤로 이동할지
+    [SerializeField] private float projectileSpawnOffset = 0.5f; // 단검 쇄도: 몸 앞 몇 m에서 투사체 생성
 
     private DPMTracker dpmTracker;
     private CharacterController characterController;
@@ -17,17 +18,23 @@ public class SkillExecutor : MonoBehaviour
         characterController = GetComponent<CharacterController>();
     }
 
-    //일섬: 커서 밑에 있는 적 중 커서에 가장 가까운 적, 없으면 null (사거리는 안 봄)
-    public Enemy FindHoveredEnemy(PlayerController player, float hoverRadius)
+    //일섬: 커서 반경 안 + 사거리 안에 있는 적 중 커서에 가장 가까운 적, 없으면 null
+    public Enemy FindTargetInRange(PlayerController player, SkillData data, float hoverRadius)
     {
         if (!player.TryGetMouseWorldPosition(out Vector3 mousePos)) return null;
 
+        Vector3 ownerPos = player.transform.position;
+        float sqrRange = data.range * data.range;
         Enemy best = null;
         float bestSqrToMouse = hoverRadius * hoverRadius;
 
         foreach (Enemy enemy in EnemyRegistry.Instance.ActiveEnemies)
         {
             if (enemy == null || enemy.IsDead) continue;
+
+            Vector3 toEnemy = enemy.transform.position - ownerPos;
+            toEnemy.y = 0f;
+            if (toEnemy.sqrMagnitude > sqrRange) continue;
 
             Vector3 toMouse = enemy.transform.position - mousePos;
             toMouse.y = 0f;
@@ -38,13 +45,6 @@ public class SkillExecutor : MonoBehaviour
             }
         }
         return best;
-    }
-
-    public bool IsInRange(Transform owner, Enemy target, SkillData data)
-    {
-        Vector3 toTarget = target.transform.position - owner.position;
-        toTarget.y = 0f;
-        return toTarget.sqrMagnitude <= data.range * data.range;
     }
 
     // 일섬 경로 길이
@@ -66,6 +66,12 @@ public class SkillExecutor : MonoBehaviour
         if (data.move_Type == MoveType.Target_Back && target != null)
         {
             TargetSlash(player, data, target);
+            return;
+        }
+
+        if (data.atk_Type == AttackType.Projectile)
+        {
+            FireProjectiles(player, data);
             return;
         }
 
@@ -95,6 +101,47 @@ public class SkillExecutor : MonoBehaviour
             DealDamage(player, hit, data);
 
         player.Teleport(destination);
+    }
+
+    // 단검 쇄도: 바라보는 방향 기준으로 확산각 안에 투사체를 고르게 퍼뜨려 발사
+    void FireProjectiles(PlayerController player, SkillData data)
+    {
+        if (data.projectilePrefab == null)
+        {
+            Debug.LogWarning($"{data.skill_Name}: projectilePrefab이 비어 있음");
+            return;
+        }
+
+        Transform owner = player.transform;
+        int count = Mathf.Max(1, data.projectile_Count);
+        float startAngle = count > 1 ? -data.spread_Angle / 2f : 0f;
+        float stepAngle = count > 1 ? data.spread_Angle / (count - 1) : 0f;
+        float height = characterController != null ? characterController.center.y : 1f;
+        Vector3 spawnPos = owner.position + Vector3.up * height + owner.forward * projectileSpawnOffset;
+        ProjectileSettings settings = new ProjectileSettings
+        {
+            speed = data.projectile_Speed,
+            lifeTime = data.active_Time,
+            width = data.width,
+            length = data.length,
+            pierce = data.projectile_Pierce,
+            targetMask = enemyMask,
+            obstacleMask = obstacleMask
+        };
+
+        for (int i = 0; i < count; i++)
+        {
+            Quaternion rotation = owner.rotation * Quaternion.Euler(0f, startAngle + stepAngle * i, 0f);
+            GameObject obj = Instantiate(data.projectilePrefab, spawnPos, rotation);
+
+            if (!obj.TryGetComponent(out Projectile projectile))
+            {
+                Debug.LogWarning($"{data.skill_Name}: projectilePrefab에 Projectile이 없음");
+                Destroy(obj);
+                return;
+            }
+            projectile.Init(settings, hit => DealDamage(player, hit, data));
+        }
     }
 
     // 캐릭터 몸통 크기의 구를 이동 방향으로 쏴서 벽에 닿으면 그 앞까지만
