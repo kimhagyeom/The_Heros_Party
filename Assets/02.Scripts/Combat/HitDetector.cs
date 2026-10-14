@@ -40,6 +40,20 @@ public class HitDetector
         return result;
     }
 
+    // 투사체 구 판정용
+    public static List<IDamageable> CheckSphere(Vector3 center, float radius, LayerMask mask)
+    {
+        List<IDamageable> result = new List<IDamageable>();
+
+        Collider[] hits = Physics.OverlapSphere(center, radius, mask);
+        foreach (Collider hit in hits)
+        {
+            AddTarget(result, hit);
+        }
+
+        return result;
+    }
+
     // AOE용 체크
     public static List<IDamageable> CheckSectorAoe(Vector3 center, float radius, float angle, LayerMask mask)
     {

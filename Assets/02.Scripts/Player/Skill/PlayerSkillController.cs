@@ -149,6 +149,8 @@ public class PlayerSkillController : MonoBehaviour
 
         if (target != null)
             playerController.FaceDirection(target.transform.position - transform.position);
+        else if (slot.data.atk_Type == AttackType.Projectile && playerController.TryGetMouseWorldPosition(out Vector3 mousePos))
+            playerController.FaceDirection(mousePos - transform.position); // 투사체(단검 쇄도): 커서 방향으로 발사
 
         if (slot.IsFull)
             slot.rechargeRemaining = slot.data.cooldown;

@@ -763,6 +763,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   behindDistance: 3.5
+  projectileSpawnOffset: 0.5
 --- !u!114 &460401740
 MonoBehaviour:
   m_ObjectHideFlags: 0

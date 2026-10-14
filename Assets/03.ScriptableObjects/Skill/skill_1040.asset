@@ -18,7 +18,7 @@ MonoBehaviour:
   atk_Type: 1
   has_Target: 0
   dmg_Rate: 1.5
-  cooldown: 8
+  cooldown: 0
   max_Stacks: 1
   windup_Time: 0.1
   active_Time: 2
@@ -36,5 +36,5 @@ MonoBehaviour:
   projectile_Speed: 12
   projectile_Count: 3
   spread_Angle: 20
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 2797148887561098527, guid: 040f35af0c1704642b74ea1dfb986790, type: 3}
   effectPrefab: {fileID: 0}
