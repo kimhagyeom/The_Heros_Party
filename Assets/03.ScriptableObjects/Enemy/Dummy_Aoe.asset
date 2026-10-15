@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyType: 0
   enemy_ID: 1001
   enemy_Name: Dummy
-  max_HP: 5555
+  max_HP: 344
   move_Speed: 3
   can_Stagger: 1
   stagger_Duration: 3

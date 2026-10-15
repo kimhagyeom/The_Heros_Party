@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class RoomExit : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private Room nextRoom;
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
+        if(!other.CompareTag("Player")) return;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        StageManager.Instance.RequestMoveTo(nextRoom);
     }
 }
