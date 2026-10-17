@@ -37,10 +37,10 @@ public class Room : MonoBehaviour
         {
             Debug.Log("RoomExit is null");
         }
-        else
-        {
-            roomExit.gameObject.SetActive(false);
-        }
+        // else
+        // {
+        //     roomExit.gameObject.SetActive(false);
+        // }
         switch (roomType)
         {
             case RoomType.Enemies : 
@@ -68,7 +68,7 @@ public class Room : MonoBehaviour
         }
         else
         {
-            roomExit.gameObject.SetActive(true);
+            roomExit.DisableFog();
         }
     }
     private void OnDrawGizmos()
