@@ -118,6 +118,18 @@ public class PlayerController : MonoBehaviour
         mouseWorldPos = ray.GetPoint(distance);
         return true;
     }
+    // 감지 방식 수정
+    public bool TryGetMouseRay(out Ray ray)
+    {
+        ray = default;
+        
+        Mouse mouse = Mouse.current;
+        if(mouse == null) return false;
+
+        ray = mainCamera.ScreenPointToRay(mouse.position.ReadValue());
+
+        return true;
+    }
 
     public void FaceDirection(Vector3 direction)
     {

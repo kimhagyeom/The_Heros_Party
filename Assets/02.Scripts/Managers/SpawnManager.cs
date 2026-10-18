@@ -10,7 +10,7 @@ public class SpawnManager : Singleton<SpawnManager>
     // 리스트 순서대로 스폰 (월드좌표)
     [SerializeField] private SpawnEntry[] spawnEntries;
 
-    private int pedingSpawnCount = 0;
+    private int pendingSpawnCount = 0;
 
     public void StartSpawning(SpawnEntry[] spawnEntries, Transform origin, Action onTotalDead)
     {
@@ -26,11 +26,11 @@ public class SpawnManager : Singleton<SpawnManager>
         foreach (SpawnEntry entry in spawnEntries)
         {
             if (entry.delay > 0f) yield return new WaitForSeconds(entry.delay);
-            Vector3 worldPos = entry.position;
+            Vector3 worldPos = origin.TransformPoint(entry.position);
 
             StartCoroutine(SpawnWithEffect(entry.enemyPrefab, worldPos));
         }
-        yield return new WaitUntil(()=> pedingSpawnCount == 0);
+        yield return new WaitUntil(()=> pendingSpawnCount == 0);
 
         // Enemy는 Start()에서 Register하므로 한 프레임 기다려야 방금 스폰한 적이 카운트에 잡힘
         yield return null;
@@ -45,11 +45,13 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         if(spawnEffect != null)
             Instantiate(spawnEffect, worldPos, Quaternion.identity);
-        if(spawnEffectDelay > 0f) yield return new WaitForSeconds(spawnEffectDelay);
+        
 
-        pedingSpawnCount++;
+        pendingSpawnCount++;
+        if(spawnEffectDelay > 0f) yield return new WaitForSeconds(spawnEffectDelay);
+        
         Instantiate(enemyPrefab, worldPos, Quaternion.identity);
-        pedingSpawnCount--;
+        pendingSpawnCount--;
     }
     // 씬 뷰에서 스폰 위치 확인용
     private void OnDrawGizmos()

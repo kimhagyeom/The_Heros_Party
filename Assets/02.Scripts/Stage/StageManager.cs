@@ -2,8 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 // 방 전환 시퀀스 담당
-// 순서: 입력 막기 → (페이드 아웃) → 텔레포트 → (페이드 인) → 입력 풀기 → room.StartCombat()
-// 페이드는 ScreenFader 작업 후 TODO 자리에 추가
+// 순서: 입력 막기 → 페이드 아웃 → 텔레포트 → 페이드 인 → 입력 풀기 → room.StartCombat()
 public class StageManager : Singleton<StageManager>
 {
     [SerializeField] private Room startRoom;          // 게임 시작 시 첫 방
@@ -50,17 +49,16 @@ public class StageManager : Singleton<StageManager>
 
         SetPlayerInput(false);
 
-        if (!isFirstRoom)
-        {
-            // TODO: ScreenFader → yield return ScreenFader.Instance.FadeOut();
-        }
+        // 첫 방은 검은 화면에서 시작하므로 FadeOut 생략
+        if (!isFirstRoom && ScreenFader.Instance != null)
+            yield return ScreenFader.Instance.FadeOut();
 
         CurrentRoom = nextRoom;
         player.Teleport(nextRoom.ArrivalPosition);
         yield return null; // 텔레포트 위치가 반영된 다음 프레임부터 진행
 
-        // TODO: ScreenFader → yield return ScreenFader.Instance.FadeIn();
-        // (첫 방은 검은 화면에서 시작하므로 FadeIn만)
+        if (ScreenFader.Instance != null)
+            yield return ScreenFader.Instance.FadeIn();
 
         SetPlayerInput(true);
         isTransitioning = false;

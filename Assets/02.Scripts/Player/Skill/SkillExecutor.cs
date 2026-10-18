@@ -46,6 +46,34 @@ public class SkillExecutor : MonoBehaviour
         }
         return best;
     }
+    // 콜라이더 감지 방식
+    public Enemy FindBestEnemy(PlayerController player, float hitRadius)
+    {
+        if(!player.TryGetMouseRay(out Ray ray)) return null;
+
+        RaycastHit[] hits = Physics.SphereCastAll(
+            ray,
+            hitRadius,
+            100f,
+            enemyMask,
+            QueryTriggerInteraction.Collide
+        );
+
+        Enemy best = null;
+        float bestDistance = float.MaxValue;
+
+        foreach(RaycastHit hit in hits)
+        {
+            Enemy enemy = hit.collider.GetComponent<Enemy>();
+            if (enemy == null || enemy.IsDead) continue;
+            if(hit.distance < bestDistance)
+            {
+                bestDistance = hit.distance;
+                best = enemy;
+            }
+        }
+        return best;
+    }
 
     // 일섬 경로 길이
     public float GetPathLength(Transform owner, Enemy target, SkillData data)

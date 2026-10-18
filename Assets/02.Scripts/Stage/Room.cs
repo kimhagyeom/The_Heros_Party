@@ -24,6 +24,7 @@ public class Room : MonoBehaviour
     [SerializeField] private RoomType roomType;
 
     [SerializeField] private SpawnEntry[] spawnEntries;
+    [SerializeField] private RoomExit roomExit;
 
     public bool isCleared {get; private set;}
     public Vector3 ArrivalPosition => arrivalPoint != null ? arrivalPoint.position : transform.position;
@@ -32,6 +33,14 @@ public class Room : MonoBehaviour
     public void StartCombat()
     {
         if (isCleared) return;
+        if(roomExit == null) 
+        {
+            Debug.Log("RoomExit is null");
+        }
+        // else
+        // {
+        //     roomExit.gameObject.SetActive(false);
+        // }
         switch (roomType)
         {
             case RoomType.Enemies : 
@@ -50,7 +59,27 @@ public class Room : MonoBehaviour
     public void ClearRoom()
     {
         if(isCleared) return;
+        Debug.Log("Cleared",this);
         isCleared = true;
         OnRoomCleared?.Invoke(this);
+        if(roomExit == null) 
+        {
+            Debug.Log("RoomExit is null" + "게임 클리어!");
+        }
+        else
+        {
+            roomExit.DisableFog();
+        }
+    }
+    private void OnDrawGizmos()
+    {
+        if (spawnEntries == null) return;
+ 
+        foreach (SpawnEntry entry in spawnEntries)
+        {
+            if (entry == null) continue;
+            Gizmos.color = entry.enemyPrefab != null ? Color.red : Color.gray;
+            Gizmos.DrawWireSphere(transform.TransformPoint(entry.position), 5f);
+        }
     }
 }

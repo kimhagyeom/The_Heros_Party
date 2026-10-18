@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
     void OnHit(DamageInfo info)
     {
         ShowDamageText(info.damage);
-        cameraFollow.ShakeCamera();
+        //cameraFollow.ShakeCamera();
         health.AddInvincible(Stats.hit_Invincible_Time);
         if (hitFlash != null) hitFlash.PlayBlink(Stats.hit_Invincible_Time);
 

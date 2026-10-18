@@ -131,7 +131,9 @@ public class PlayerSkillController : MonoBehaviour
         Enemy target = null;
         if (slot.data.has_Target)
         {
-            target = skillExecutor.FindTargetInRange(playerController, slot.data, hoverRadius);
+            //target = skillExecutor.FindTargetInRange(playerController, slot.data, hoverRadius);
+            //감지 범위 미설정 추후 수정 예정
+            target = skillExecutor.FindBestEnemy(playerController, 0.6f);
             if (target == null)
             {
                 Debug.Log($"[{slot.data.skill_Name}] 커서 근처 사거리 안에 대상 없음");
