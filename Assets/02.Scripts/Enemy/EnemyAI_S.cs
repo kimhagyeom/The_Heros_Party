@@ -38,12 +38,19 @@ public class EnemyAI_S : MonoBehaviour
     private float staggerDuration;public bool IsSuperArmor =>
                     currentState == State.Windup && atk != null && atk.has_Super_Armor;
 
+    private bool isRanged; // 투사체 확인용 
+    [SerializeField] private float fleeRange = 4f;      // 이 거리 안으로 들어오면 도망
+    [SerializeField] private float fleeDistance = 4f;   // 도망 지점을 얼마나 앞에 찍을지
     void Start()
     {
         enemy = GetComponent<Enemy>();
         enemyAttack = GetComponent<EnemyAttack>();
         movement = GetComponent<EnemyMovement>();
         data = enemy.Data;
+
+        foreach (EnemyAtkData a in data.atk_List)
+            if (a.atk_Type == AttackType.Projectile && a != null) isRanged = true;
+
         BuildChainMap();
 
         if (data.atk_List != null && data.atk_List.Length > 0)
@@ -62,6 +69,7 @@ public class EnemyAI_S : MonoBehaviour
                 shortestDis = data.atk_List[i].atk_Range;
         }
     }
+
 
     void Update()
     {
@@ -103,6 +111,19 @@ public class EnemyAI_S : MonoBehaviour
     void UpdateChase()
     {
         Vector3 toTarget = FlatDirTo(target.position);
+
+        // 도망 (가장 먼저 검사)
+        if (isRanged && toTarget.sqrMagnitude < fleeRange * fleeRange)
+        {
+            repathTimer -= Time.deltaTime;
+            if (repathTimer <= 0f)
+            {
+                repathTimer = RepathInterval;
+                Vector3 fleeDir = -toTarget.normalized;
+                movement.MoveTo(transform.position + fleeDir * fleeDistance);
+            }
+            return;
+        }
 
         CheckAttackList(toTarget); // 공격 가능 목록 갱신
 
