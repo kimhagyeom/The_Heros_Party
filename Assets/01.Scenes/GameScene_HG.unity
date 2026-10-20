@@ -1056,6 +1056,7 @@ MonoBehaviour:
   telegraph: {fileID: 0}
   telegraphColor: {r: 0.3, g: 0.6, b: 1, a: 1}
   telegraphLingerTime: 0
+  telegraphMaterial: {fileID: 0}
   hoverRadius: 1.2
 --- !u!65 &460401741
 BoxCollider:
@@ -1738,6 +1739,9 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 1994828562325376701, guid: eab29f1397bd748f2a696c09222e5e39, type: 3}
     position: {x: 0, y: 0, z: 0}
     delay: 0
+  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
+    position: {x: 0, y: 0, z: 0}
+    delay: 0
   roomExit: {fileID: 1940231627}
 --- !u!114 &998235932 stripped
 MonoBehaviour:
@@ -1997,71 +2001,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &1327546267
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1762907494526445813, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_Name
-      value: Enemy_101
-      objectReference: {fileID: 0}
-    - target: {fileID: 1969210839840465877, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1969210839840465877, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.48
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.26994
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651643471190806381, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
 --- !u!1 &1430026087
 GameObject:
   m_ObjectHideFlags: 0
@@ -2505,6 +2444,7 @@ MonoBehaviour:
   telegraph: {fileID: 0}
   telegraphColor: {r: 0.3, g: 0.6, b: 1, a: 1}
   telegraphLingerTime: 0
+  telegraphMaterial: {fileID: 0}
   hoverRadius: 1.2
 --- !u!114 &1683461053
 MonoBehaviour:
@@ -3274,4 +3214,3 @@ SceneRoots:
   - {fileID: 1720099713}
   - {fileID: 40198268}
   - {fileID: 1940231626}
-  - {fileID: 1327546267}
