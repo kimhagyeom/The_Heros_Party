@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI_S
   currentState: 0
   telegraph: {fileID: 1545449204285315867}
+  telegraphMaterial: {fileID: 2100000, guid: 161700c9c34f6430191e95e29d6bf36a, type: 2}
   fleeRange: 4
   fleeDistance: 4
 --- !u!114 &388261740422618470
@@ -133,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   knockbackDuration: 0.2
   enemySqr: 0
+  spriteVisual: {fileID: 0}
 --- !u!195 &-6938743883227580052
 NavMeshAgent:
   m_ObjectHideFlags: 0
