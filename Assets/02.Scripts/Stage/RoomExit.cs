@@ -14,4 +14,8 @@ public class RoomExit : MonoBehaviour
     {
         fog1.SetActive(false);
     }
+    public void EnableFog()
+    {
+        if (fog1 != null) fog1.SetActive(true);
+    }
 }

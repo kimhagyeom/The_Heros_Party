@@ -168,6 +168,14 @@ public class PlayerAttack : MonoBehaviour
         currentWeaponData = currentWeaponData == mainWeaponData ? subWeaponData : mainWeaponData;
     }
 
+    public void ResetAttack()
+    {
+        StopAllCoroutines();
+        isAtk = false;
+        comboIndex = 0;
+        currentWeaponData = mainWeaponData; //주무기로 되돌리는건데 (아직 보조무기 없어서..기획 후 수정 필요)
+    }
+
     // void OnDrawGizmos()
     // {
     //     // Gizmos.color = Color.red;

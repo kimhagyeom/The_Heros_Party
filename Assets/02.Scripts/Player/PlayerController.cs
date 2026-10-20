@@ -245,7 +245,21 @@ public class PlayerController : MonoBehaviour
         IsKnockback = false;
         knockbackRoutine = null;
     }
+    public void ResetState() //리셋 시 상태 처음으로
+    {
+        StopAllCoroutines();
+        regenRoutine = null;
+        knockbackRoutine = null;
 
+        isDash = false;
+        IsKnockback = false;
+        moveInput = Vector2.zero;
+
+        stats.Init();
+
+        if (animator != null)
+            animator.SetBool(AnimHash.IsMoving, false);
+    }
     IEnumerator Increase_Infection(float amount) // 정신감염도 상승
     {
         while (true)

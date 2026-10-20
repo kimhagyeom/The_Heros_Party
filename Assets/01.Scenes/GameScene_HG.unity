@@ -924,7 +924,7 @@ MonoBehaviour:
     Character_ID: 1001
     Character_Name: "\uC544\uB974\uB9C8"
     maxHealth: 100
-    startHealth: 100
+    startHealth: 50
     Move_Speed: 7
     maxStamina: 100
     startStamina: 100
@@ -2988,6 +2988,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   startRoom: {fileID: 977115088}
   player: {fileID: 460401734}
+  deathDelay: 1
 --- !u!4 &2043029360
 Transform:
   m_ObjectHideFlags: 0

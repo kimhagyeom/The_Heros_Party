@@ -71,6 +71,12 @@ public class Room : MonoBehaviour
             roomExit.DisableFog();
         }
     }
+    //플레이어 사망 리셋 시 처음 상태 호출
+    public void ResetRoom()
+    {
+        isCleared = false;
+        if (roomExit != null) roomExit.EnableFog();
+    }
     private void OnDrawGizmos()
     {
         if (spawnEntries == null) return;

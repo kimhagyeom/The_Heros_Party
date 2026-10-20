@@ -14,4 +14,13 @@ public class EnemyRegistry : Singleton<EnemyRegistry>
     {
         ActiveEnemies.Remove(enemy);
     }
+    public void ClearAll()
+    {
+        foreach (Enemy enemy in new List<Enemy>(ActiveEnemies))
+        {
+            if (enemy != null)
+                Destroy(enemy.gameObject);
+        }
+        ActiveEnemies.Clear();
+    }
 }

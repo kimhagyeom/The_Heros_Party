@@ -7,7 +7,7 @@ public class StageManager : Singleton<StageManager>
 {
     [SerializeField] private Room startRoom;          // 게임 시작 시 첫 방
     [SerializeField] private PlayerController player; // 비워두면 자동으로 찾음
-
+    [SerializeField] private float deathDelay = 1f; //사망 연출 시간
     public Room CurrentRoom { get; private set; }
     private bool isTransitioning; // 전환 중 중복 요청 방지
 
@@ -83,5 +83,42 @@ public class StageManager : Singleton<StageManager>
     {
         if (enabled) player.InputActions.Player.Enable();
         else player.InputActions.Player.Disable();
+    }
+    public void RestartStage()
+    {
+        StopAllCoroutines();
+        StartCoroutine(RestartRoutine());
+    }
+    private IEnumerator RestartRoutine()
+    {
+        isTransitioning = true;
+
+        if (!TryGetPlayer())
+        {
+            isTransitioning = false;
+            yield break;
+        }
+        SetPlayerInput(false);
+
+        yield return new WaitForSeconds(deathDelay);
+
+        if (ScreenFader.Instance != null)
+        {
+            yield return ScreenFader.Instance.FadeOut();
+        }
+        SpawnManager.Instance.StopAll();
+        EnemyRegistry.Instance.ClearAll();
+
+        foreach (Projectile projectile in FindObjectsByType<Projectile>(FindObjectsSortMode.None))
+            Destroy(projectile.gameObject);
+
+        foreach (Room room in FindObjectsByType<Room>(FindObjectsSortMode.None))
+            room.ResetRoom();
+
+        player.GetComponent<Player>().ResetPlayer();
+
+        GameManager.Instance.CompleteRestart();
+
+        yield return EnterRoomRoutine(startRoom, isFirstRoom: true); //페이드 아웃 후 처음 방 가기
     }
 }

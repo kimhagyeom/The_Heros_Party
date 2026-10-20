@@ -72,4 +72,13 @@ public class Player : MonoBehaviour
         Debug.Log("Player has died!");
         GameManager.Instance.GameOver();
     }
+    public void ResetPlayer() //리셋 시 stageManaver 가 호출 
+    {
+        controller.ResetState();
+
+        if (TryGetComponent(out PlayerSkillController skill)) skill.ResetSkills();
+        if (TryGetComponent(out PlayerAttack attack)) attack.ResetAttack();
+
+        health.Init(Stats.maxHealth, Stats.startHealth);
+    }
 }

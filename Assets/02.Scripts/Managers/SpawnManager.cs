@@ -20,6 +20,11 @@ public class SpawnManager : Singleton<SpawnManager>
         }
         StartCoroutine(SpawnWaveRoutine(spawnEntries,origin,onTotalDead));
     }
+    public void StopAll() //플레이어 사망시
+    {
+        StopAllCoroutines();
+        pendingSpawnCount = 0;
+    }
 
     private IEnumerator SpawnWaveRoutine(SpawnEntry[] spawnEntries, Transform origin, Action onTotalDead)
     {

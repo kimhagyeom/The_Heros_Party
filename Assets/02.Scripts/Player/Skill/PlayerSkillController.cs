@@ -160,7 +160,26 @@ public class PlayerSkillController : MonoBehaviour
 
         StartCoroutine(CastRoutine(index, slot.data, target));
     }
+    public void ResetSkills() //리셋 시 스킬 끊고 스택 초기화 , 코루틴도 정지
+    {
+        StopAllCoroutines();
+        skillExecutor.StopAllCoroutines();
+        hideTelegraphRoutine = null;
 
+        telegraph.Hide();
+        pathTelegraph.Hide();
+
+        IsCasting = false;
+        Phase = SkillPhase.None;
+        CastingSlot = -1;
+
+        foreach (SkillSlot slot in slots)
+        {
+            if (slot.IsEmpty) continue;
+            slot.stacks = slot.MaxStacks;
+            slot.rechargeRemaining = 0f;
+        }
+    }
     IEnumerator CastRoutine(int index, SkillData data, Enemy target)
     {
         IsCasting = true;

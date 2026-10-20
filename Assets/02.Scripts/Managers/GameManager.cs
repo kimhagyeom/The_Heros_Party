@@ -29,8 +29,14 @@ public class GameManager : Singleton<GameManager>
 
     public void GameOver()
     {
-        if (CurrentState == GameState.GameOver) return;
+        if (CurrentState != GameState.Playing) return;
         SetState(GameState.GameOver);
+        StageManager.Instance.RestartStage();
+    }
+    public void CompleteRestart()
+    {
+        if (CurrentState != GameState.GameOver) return;
+        SetState(GameState.Playing);
     }
 
     private void SetState(GameState state)
