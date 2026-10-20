@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Thry.ThryEditor.AnimationParser;
 
 public enum SkillPhase { None, Windup, Active, Recovery } // 선딜 / 판정 / 후딜
 
@@ -45,6 +46,7 @@ public class PlayerSkillController : MonoBehaviour
     private SkillExecutor skillExecutor;
     private SkillSlot[] slots;
     private InputAction[] skillActions;
+    private Animator animator;
 
     public bool IsCasting { get; private set; }
     public SkillPhase Phase { get; private set; }
@@ -56,6 +58,7 @@ public class PlayerSkillController : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         skillExecutor = GetComponent<SkillExecutor>();
+        animator = GetComponentInChildren<Animator>();
 
         if (telegraph == null)
             telegraph = AttackTelegraph.Create(transform, telegraphColor);
@@ -184,6 +187,7 @@ public class PlayerSkillController : MonoBehaviour
     {
         IsCasting = true;
         CastingSlot = index;
+        PlaySkillAnimation(data);
 
         // 선딜: 범위 표시 후 안쪽이 차오름
         SetPhase(SkillPhase.Windup, data);
@@ -212,6 +216,16 @@ public class PlayerSkillController : MonoBehaviour
         SetPhase(SkillPhase.None, data);
         IsCasting = false;
         CastingSlot = -1;
+    }
+
+    void PlaySkillAnimation(SkillData data)
+    {
+        if (animator == null) return;
+        int stateHash = Animator.StringToHash($"Player_Skill{data.skill_ID}");
+        if (animator.HasState(0, stateHash))
+        {
+            animator.Play(stateHash, 0, 0f);
+        }
     }
 
     //범위

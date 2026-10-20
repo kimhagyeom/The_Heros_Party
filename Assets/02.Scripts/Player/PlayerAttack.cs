@@ -17,6 +17,7 @@ public class PlayerAttack : MonoBehaviour
 
     public PlayerController playerController; // 플레이어 컨트롤러 참조
     public DPMTracker dpmTracker; // DPM 트래커 참조
+    private Animator animator;
 
     public Transform weaponPivot; // 빈 오브젝트, Player 자식으로 배치
     private List<Transform> enemiesInRange = new List<Transform>(); // 감지된 적 리스트
@@ -28,6 +29,7 @@ public class PlayerAttack : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         dpmTracker = GetComponent<DPMTracker>();
+        animator = GetComponentInChildren<Animator>();
         currentWeaponData = mainWeaponData;
 
         playerController.InputActions.Player.Atk.performed += OnAttackPerformed;
@@ -111,6 +113,7 @@ public class PlayerAttack : MonoBehaviour
         lastStartYaw = startYaw; // Gizmo용으로 저장
         lastEndYaw = endYaw;
         isAtk = true;
+        PlayAttackAnimation(step);
 
         HashSet<Transform> hit = new HashSet<Transform>();
         float elapsed = 0f;
@@ -174,6 +177,13 @@ public class PlayerAttack : MonoBehaviour
         isAtk = false;
         comboIndex = 0;
         currentWeaponData = mainWeaponData; //주무기로 되돌리는건데 (아직 보조무기 없어서..기획 후 수정 필요)
+    }
+    void PlayAttackAnimation(int step)
+    {
+        if (animator == null) return;
+        int stateHash = Animator.StringToHash($"Player_Attack{step + 1}");
+        if (animator.HasState(0, stateHash))
+            animator.Play(stateHash, 0, 0f);
     }
 
     // void OnDrawGizmos()
