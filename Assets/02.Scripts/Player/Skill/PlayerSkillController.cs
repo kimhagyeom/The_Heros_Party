@@ -36,6 +36,7 @@ public class PlayerSkillController : MonoBehaviour
     [SerializeField] private AttackTelegraph telegraph;
     [SerializeField] private Color telegraphColor = new Color(0.3f, 0.6f, 1f);
     [SerializeField] private float telegraphLingerTime = 0f;
+    [SerializeField] private Material telegraphMaterial;
     [Header("대상 지정")]
     [SerializeField] private float hoverRadius = 1.2f; // 커서에서 이 반경 안에 있는 적만 대상으로 잡음
 
@@ -61,8 +62,8 @@ public class PlayerSkillController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
 
         if (telegraph == null)
-            telegraph = AttackTelegraph.Create(transform, telegraphColor);
-        pathTelegraph = AttackTelegraph.Create(null, telegraphColor);
+            telegraph = AttackTelegraph.Create(transform, telegraphColor, telegraphMaterial);
+        pathTelegraph = AttackTelegraph.Create(null, telegraphColor, telegraphMaterial);
 
         slots = new SkillSlot[SlotCount];
         for (int i = 0; i < SlotCount; i++)
