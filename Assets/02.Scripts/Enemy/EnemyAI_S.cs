@@ -13,6 +13,7 @@ public class EnemyAI_S : MonoBehaviour
     [Header("디버그 / 연결")]
     [SerializeField] private State currentState = State.Chase;
     [SerializeField] private AttackTelegraph telegraph; // 자식 Telegraph 오브젝트 드래그
+    [SerializeField] private Material telegraphMaterial;
 
     // 컴포넌트
     private Enemy enemy;
