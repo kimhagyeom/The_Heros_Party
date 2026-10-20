@@ -18,6 +18,7 @@ public class EnemyAI_S : MonoBehaviour
     private Enemy enemy;
     private EnemyAttack enemyAttack;
     private EnemyMovement movement;
+    private Animator animator;
 
     // 데이터
     private EnemyData data;
@@ -46,6 +47,7 @@ public class EnemyAI_S : MonoBehaviour
         enemy = GetComponent<Enemy>();
         enemyAttack = GetComponent<EnemyAttack>();
         movement = GetComponent<EnemyMovement>();
+        animator = GetComponentInChildren<Animator>();
         data = enemy.Data;
 
         foreach (EnemyAtkData a in data.atk_List)
@@ -238,6 +240,7 @@ public class EnemyAI_S : MonoBehaviour
         currentState = next;
         stateTimer = 0f;
         if (next == State.Chase) repathTimer = 0f;
+        if (next == State.Windup) PlayAnimation($"Enemy{data.enemy_ID}_Atk{atk.atk_ID}");
     }
 
     Vector3 FlatDirTo(Vector3 pos)
@@ -260,6 +263,15 @@ public class EnemyAI_S : MonoBehaviour
         staggerDuration = duration;
         ChangeState(State.Stagger);
         HideTelegraph();
+        PlayAnimation($"Enemy{data.enemy_ID}_Idle");
+    }
+
+    void PlayAnimation(string stateName)
+    {
+        if (animator == null) return;
+        int stateHash = Animator.StringToHash(stateName);
+        if (animator.HasState(0, stateHash))
+            animator.Play(stateHash, 0, 0f);
     }
     void OnDrawGizmosSelected()
     {

@@ -11,6 +11,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] float enemySqr; // 적의 둘레
     private NavMeshAgent agent;
     private float moveSpeed;
+    [SerializeField] private Transform spriteVisual;
 
     private Coroutine knockbackRoutine;
     public bool IsKnockback { get; private set; }
@@ -24,6 +25,17 @@ public class EnemyMovement : MonoBehaviour
         agent.speed = enemyData.move_Speed;
         agent.updateRotation = false; // 회전은 LookAt/flip으로 처리
 
+        if (spriteVisual == null)
+        {
+            SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+            if (sr != null) spriteVisual = sr.transform;
+
+        }
+    }
+    void Update()
+    {
+        if (agent.enabled && agent.velocity.sqrMagnitude > 0.01f) //방향 조정
+            FaceX(agent.velocity.x);
     }
 
     public void MoveTo(Vector3 targetPos)
@@ -52,6 +64,7 @@ public class EnemyMovement : MonoBehaviour
         dir.y = 0f;
         if (dir.sqrMagnitude > 0.001f)
             transform.rotation = Quaternion.LookRotation(dir);
+        FaceX(dir.x);
     }
 
     
@@ -85,5 +98,13 @@ public class EnemyMovement : MonoBehaviour
 
         IsKnockback = false;
         knockbackRoutine = null;
+    }
+    void FaceX(float x)  //애니메이션 바라보는 쪽으로 방향 보기
+    {
+        if (spriteVisual == null || Mathf.Abs(x) < 0.01f) return;
+
+        Vector3 scale = spriteVisual.localScale;
+        scale.x = Mathf.Abs(scale.x) * (x > 0f ? 1f : -1f);
+        spriteVisual.localScale = scale;
     }
 }
