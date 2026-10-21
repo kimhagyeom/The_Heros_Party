@@ -87,7 +87,7 @@ public class PlayerAttack : MonoBehaviour
     }
     void TryAttack()
     {
-        if (playerController.IsCasting) return; // 스킬 사용 중에는 기본 공격 불가
+        if (playerController.IsCasting || playerController.IsDashing) return; // 스킬 및 대시 사용 중에는 기본 공격 불가
 
         // 스윙 버그 수정
         if (isAtk)
@@ -129,6 +129,11 @@ public class PlayerAttack : MonoBehaviour
 
         while (elapsed < comboStep.duration)
         {
+            if (playerController.IsDashing)
+            {
+                // 추후 대시 애니메이션 추가
+                break;
+            }
             elapsed += Time.deltaTime;
             float t = elapsed / comboStep.duration;
             float currentYaw = Mathf.Lerp(startYaw, endYaw, t);
