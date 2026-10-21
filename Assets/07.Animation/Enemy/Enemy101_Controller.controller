@@ -29,7 +29,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy101_Atk
+  m_Name: Enemy101_Atk10101
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

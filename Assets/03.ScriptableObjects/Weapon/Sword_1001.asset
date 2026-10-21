@@ -24,7 +24,7 @@ MonoBehaviour:
     duration: 0.3
   - damageRate: 2.5
     duration: 0.4
-  atk_Range: 2.5
+  atk_Range: 3.5
   atk_Type: 0
   hitbox_Shape: 0
   Angle: 200

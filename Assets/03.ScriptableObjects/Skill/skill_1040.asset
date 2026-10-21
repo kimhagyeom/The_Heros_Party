@@ -18,7 +18,7 @@ MonoBehaviour:
   atk_Type: 1
   has_Target: 0
   dmg_Rate: 1.5
-  cooldown: 0
+  cooldown: 2
   max_Stacks: 1
   windup_Time: 0.1
   active_Time: 2
@@ -26,13 +26,13 @@ MonoBehaviour:
   hitbox_Shape: 1
   range: 0
   angle: 0
-  width: 0.3
-  length: 0.8
+  width: 0.5
+  length: 1.3
   move_Type: 0
   move_Distance: 0
   move_Time: 0
   has_Invincibility: 0
-  projectile_Pierce: 1
+  projectile_Pierce: 0
   projectile_Speed: 12
   projectile_Count: 3
   spread_Angle: 20

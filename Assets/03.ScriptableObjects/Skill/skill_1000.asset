@@ -18,13 +18,13 @@ MonoBehaviour:
   atk_Type: 0
   has_Target: 0
   dmg_Rate: 10
-  cooldown: 0
+  cooldown: 4
   max_Stacks: 1
   windup_Time: 0.1
   active_Time: 0.2
   recovery_Time: 0.1
   hitbox_Shape: 0
-  range: 3
+  range: 3.5
   angle: 360
   width: 0
   length: 0

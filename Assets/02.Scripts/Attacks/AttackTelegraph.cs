@@ -95,7 +95,9 @@ public class AttackTelegraph : MonoBehaviour
     {
         transform.localPosition = new Vector3(0f, 0.02f, 0f);
 
-        DrawSector(radius, angle);
+        // 부모(플레이어) 스케일만큼 커지지 않도록 상쇄 → 월드 기준 반경과 판정이 일치
+        float parentScale = transform.parent != null ? transform.parent.lossyScale.x : 1f;
+        DrawSector(radius / parentScale, angle);
     }
 
     // 일섬 경로Box
