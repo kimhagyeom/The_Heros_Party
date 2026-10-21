@@ -13,7 +13,11 @@ public class PlayerAttack : MonoBehaviour
     private float lastAttackTime = -999f; // 마지막 공격 시간
     public float hitDetectionWidth = 15f;
     private int comboIndex = 0;
-    private float comboResetTime = 0.5f;
+    [SerializeField] private float comboResetTime = 0.5f;   // 스윙이 끝난 뒤 이 시간 안에 눌러야 다음 타로 이어짐
+    [SerializeField] private float comboFinishDelay = 0.2f; // 마지막 타 후딜 (0이면 없음)
+    private float lastSwingEndTime = -999f;                 // 마지막 스윙이 끝난 시각
+    private bool attackBuffered = false;                    // 스윙 중에 눌린 공격 입력
+
 
     public PlayerController playerController; // 플레이어 컨트롤러 참조
     public DPMTracker dpmTracker; // DPM 트래커 참조
@@ -69,13 +73,13 @@ public class PlayerAttack : MonoBehaviour
 
     void FindEnemy()
     {
-        enemiesInRange.Clear(); 
-        float sqrDetectRange = currentWeaponData.atk_Range * currentWeaponData.atk_Range;
+        enemiesInRange.Clear();
 
         foreach (Enemy enemy in EnemyRegistry.Instance.ActiveEnemies)
         {
+            float range = currentWeaponData.atk_Range + GetEnemyRadius(enemy.transform);
             float sqrDistance = (enemy.transform.position - transform.position).sqrMagnitude;
-            if (sqrDistance <= sqrDetectRange) 
+            if (sqrDistance <= range * range)
             {
                 enemiesInRange.Add(enemy.transform);
             }
@@ -83,11 +87,16 @@ public class PlayerAttack : MonoBehaviour
     }
     void TryAttack()
     {
-        if (isAtk) return;
         if (playerController.IsCasting) return; // 스킬 사용 중에는 기본 공격 불가
-        if (Time.time - lastAttackTime < attackInterval) return;
 
-        if (Time.time - lastAttackTime > comboResetTime)
+        // 스윙 버그 수정
+        if (isAtk)
+        {
+            attackBuffered = true;
+            return;
+        }
+        if (Time.time - lastAttackTime < attackInterval) return;
+        if (Time.time - lastSwingEndTime > comboResetTime)
         {
             comboIndex = 0;
         }
@@ -130,19 +139,33 @@ public class PlayerAttack : MonoBehaviour
 
             yield return null;
         }
+        // 마지막 타면 후딜 (이 동안은 isAtk 유지 → 입력은 버퍼에만 쌓임)
+        bool isLastStep = step == currentWeaponData.combo_Step.Length - 1;
+        if (isLastStep && comboFinishDelay > 0f)
+            yield return new WaitForSeconds(comboFinishDelay);
+        lastSwingEndTime = Time.time;
         isAtk = false;
+
+        // 스윙 중에 눌러둔 입력이 있으면 바로 다음 타
+        if (attackBuffered)
+        {
+            attackBuffered = false;
+            TryAttack();
+        }
     }
 
     void CheckWeaponHit(HashSet<Transform> hit, float damageRate)
     {
-        float sqrAttackRange = currentWeaponData.atk_Range * currentWeaponData.atk_Range;
+        //float sqrAttackRange = currentWeaponData.atk_Range * currentWeaponData.atk_Range;
+
 
         foreach (Transform enemy in enemiesInRange)
         {
             if (hit.Contains(enemy)) continue;
 
             Vector3 dirToEnemy = enemy.position - transform.position;
-            if (dirToEnemy.sqrMagnitude > sqrAttackRange) continue;
+            float range = currentWeaponData.atk_Range + GetEnemyRadius(enemy);
+            if (dirToEnemy.sqrMagnitude > range * range) continue;
 
             float angleToWeapon = Vector3.Angle(weaponPivot.forward, dirToEnemy);
             if (angleToWeapon <= hitDetectionWidth) 
@@ -163,6 +186,12 @@ public class PlayerAttack : MonoBehaviour
             }
         }
     }
+    float GetEnemyRadius(Transform enemy)
+    {
+        if (enemy.TryGetComponent<CapsuleCollider>(out var capsule))
+            return capsule.radius * Mathf.Max(enemy.lossyScale.x, enemy.lossyScale.z);
+        return 0f;
+    }
 
     void SwitchWeapon()
     {
@@ -175,6 +204,8 @@ public class PlayerAttack : MonoBehaviour
     {
         StopAllCoroutines();
         isAtk = false;
+        attackBuffered = false;
+        lastSwingEndTime = -999f;
         comboIndex = 0;
         currentWeaponData = mainWeaponData; //주무기로 되돌리는건데 (아직 보조무기 없어서..기획 후 수정 필요)
     }

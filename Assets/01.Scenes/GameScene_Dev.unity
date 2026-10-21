@@ -960,6 +960,8 @@ MonoBehaviour:
   subWeaponData: {fileID: 11400000, guid: bebd28b281f034941b9078ae65fc2497, type: 2}
   attackInterval: 0
   hitDetectionWidth: 15
+  comboResetTime: 0.5
+  comboFinishDelay: 0.7
   playerController: {fileID: 756309399}
   dpmTracker: {fileID: 756309397}
   weaponPivot: {fileID: 1595809368}
@@ -982,7 +984,7 @@ MonoBehaviour:
     Character_ID: 1001
     Character_Name: "\uC544\uB974\uB9C8"
     maxHealth: 100
-    startHealth: 50
+    startHealth: 100
     Move_Speed: 7
     maxStamina: 100
     startStamina: 100
@@ -1217,31 +1219,16 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     delay: 0
   - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 0.2, y: 0, z: 0}
+    position: {x: 4, y: 0, z: 0}
     delay: 0
   - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 0.5, y: 0, z: 0}
+    position: {x: 5, y: 0, z: 0}
     delay: 0
   - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 0.9, y: 0, z: 0}
+    position: {x: 3, y: 0, z: 0}
     delay: 0
   - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 0, y: 0, z: 0}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 0, y: 0, z: 0}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 0, y: 0, z: 0}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 0, y: 0, z: 0}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 0, y: 0, z: 0}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 2, y: 0, z: 0}
     delay: 0
   roomExit: {fileID: 2037634487}
 --- !u!1 &1064642839

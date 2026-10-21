@@ -20,7 +20,7 @@ MonoBehaviour:
   chain_Delay: 0
   hp_Damage: 3
   infection_Value: 0
-  atk_Range: 1.5
+  atk_Range: 3
   windup_Time: 0.4
   active_Time: 0
   recovery_Time: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
   radius: 0
   angle: 0
   width: 2
-  length: 2
+  length: 3
   has_Super_Armor: 0
   has_Knockback: 0
   knockback_Distance: 0
