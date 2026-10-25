@@ -1,16 +1,15 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class PhaseInfo
+{
+    public float hpRatio;              // 이 페이즈가 시작되는 체력 비율
+    public List<BossPattern> patterns; // 이 페이즈에서 쓰는 패턴
+}
 public class BossController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] List<PhaseInfo> phases;
+    [SerializeField] float idleTime;
 }
