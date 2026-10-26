@@ -105,8 +105,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 734
-        height: 564
+        width: 925
+        height: 622
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,10 +125,10 @@ TextureImporter:
       name: Player_Idle_Anim_1
       rect:
         serializedVersion: 2
-        x: 734
+        x: 925
         y: 0
-        width: 734
-        height: 564
+        width: 925
+        height: 622
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,8 +137,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 457df28cf824c1546b9dccd3f44196bc
-      internalID: -998032406
+      spriteID: be09925517fd9044c95de929b075ab87
+      internalID: 518938457
       vertices: []
       indices: 
       edges: []
@@ -147,10 +147,10 @@ TextureImporter:
       name: Player_Idle_Anim_2
       rect:
         serializedVersion: 2
-        x: 1468
+        x: 1850
         y: 0
-        width: 734
-        height: 564
+        width: 925
+        height: 622
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,8 +159,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 241d29df726f824439e6706d29e13b88
-      internalID: 2030370896
+      spriteID: 6704492c65c04d14f9275fdbc588f36c
+      internalID: -50749449
       vertices: []
       indices: 
       edges: []
@@ -169,7 +169,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e2981175befa073458790b266d808b2c
+    spriteID: 344e0dc4be335094ebddcc2ae6e51f55
     internalID: 0
     vertices: []
     indices: 
@@ -179,11 +179,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":3.0,"y":1.0},"gridSpriteSize":{"x":734.0,"y":564.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":3.0,"y":1.0},"gridSpriteSize":{"x":925.0,"y":622.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Player_Idle_Anim_0: 1368680578014025037
-      Player_Idle_Anim_1: -998032406
-      Player_Idle_Anim_2: 2030370896
+      Player_Idle_Anim_1: 518938457
+      Player_Idle_Anim_2: -50749449
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
