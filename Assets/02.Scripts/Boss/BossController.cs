@@ -14,12 +14,21 @@ public class BossController : MonoBehaviour
 {
     [SerializeField] List<PhaseInfo> phases;
     [SerializeField] float idleTime;
+    [SerializeField] float retryDelay = 0.2f;
     [SerializeField] private AttackTelegraph telegraph;
+
     BossContext ctx;
     BossPattern current; 
+    int phaseIndex;  
+
     void Start()
     {
         var player = FindFirstObjectByType<PlayerController>();
+        if (player == null) 
+        {
+            Debug.LogWarning("BossController : PlayerController를 찾지 못함");
+            return;
+        }
         Init(player.transform);
     }
 
@@ -31,6 +40,7 @@ public class BossController : MonoBehaviour
             targetMask = 1 << target.gameObject.layer, // 공격 안맞으면 이 부분 확인
             telegraph = telegraph
         };
+        
         PickNext();
     }
     private void PickNext()

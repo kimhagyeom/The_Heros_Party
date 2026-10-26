@@ -11,7 +11,7 @@ public class BossPatternData : ScriptableObject
 }
 
 // 패턴별 값은 상속해서 추가
-[CreateAssetMenu(menuName = "Boss/IceSpikeData")]
+[CreateAssetMenu(menuName = "Boss/Patterns/IceSpikeData")]
 public class IceSpikeData : BossPatternData
 {
     public int Spike_Set_Count;
@@ -23,7 +23,7 @@ public class IceSpikeData : BossPatternData
     public int Shard_Speed; //float?
 }
 
-[CreateAssetMenu(menuName = "Boss/MeteorData")]
+[CreateAssetMenu(menuName = "Boss/Patterns/MeteorData")]
 public class MeteorData : BossPatternData
 {
     public int meteorCount;

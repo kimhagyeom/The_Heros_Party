@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ProjectileAttack
 {
+    // EnemyAtkData가 있는 일반 몬스터
     public void ShootProjectile(Transform origin, EnemyAtkData d, LayerMask targetLayer)
     {
         if (d.projectilePrefab == null)
@@ -12,7 +13,6 @@ public class ProjectileAttack
 
         Vector3 spawnPos = origin.position + origin.forward * 0.5f;
 
-        Projectile p = Object.Instantiate(d.projectilePrefab, spawnPos, origin.rotation);
         ProjectileSettings settings = new ProjectileSettings
         {
             speed = d.active_Time > 0f ? d.atk_Range / d.active_Time : 0f, // 속도 시트 추가 문의
@@ -22,12 +22,27 @@ public class ProjectileAttack
             targetMask = targetLayer,
             obstacleMask = 0          // 적 투사체는 벽 무시
         };
-        p.Init(settings, target => target.TakeDamage(new DamageInfo
+        DamageInfo dmg = new DamageInfo
         {
             damage = d.hp_Damage,
             infection = d.infection_Value,
-            hitDirection = (target.transform.position - p.transform.position).normalized,
             knockbackDistance = d.has_Knockback ? d.knockback_Distance : 0f
-        }));
+        };
+
+        Shoot(d.projectilePrefab, spawnPos, origin.rotation, settings, dmg);
+       
+    }
+
+    // 단순 쏘기
+    public Projectile Shoot(Projectile prefab, Vector3 pos, Quaternion rotation, ProjectileSettings settings, DamageInfo damageInfo)
+    {
+        Projectile p = Object.Instantiate(prefab, pos, rotation);
+        p.Init(settings, target =>
+        {
+            DamageInfo dmg = damageInfo;
+            dmg.hitDirection = (target.transform.position - p.transform.position).normalized;
+            target.TakeDamage(dmg);
+        });
+        return p;
     }
 }
