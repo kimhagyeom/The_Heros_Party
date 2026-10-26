@@ -1800,7 +1800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 756309401}
-  offset: {x: 0, y: 10, z: -3}
+  offset: {x: 0, y: 6, z: -3}
   followSpeed: 10
   amplitude: 5
   shakeDuration: 0.2
