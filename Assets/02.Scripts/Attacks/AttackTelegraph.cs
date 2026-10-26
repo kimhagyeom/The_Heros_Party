@@ -1,6 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct TelegraphInfo
+{
+    public HitboxShape shape;
+    public float radius, angle;
+    public float width, length;
+    public float duration;
+}
 public class AttackTelegraph : MonoBehaviour
 {
     private const int SectorSegments = 24;
