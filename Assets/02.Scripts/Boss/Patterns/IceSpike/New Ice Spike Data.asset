@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: New Ice Spike
-  m_EditorClassIdentifier: Assembly-CSharp::IceSpike
-  patternId: 1001
+  m_Name: New Ice Spike Data
+  m_EditorClassIdentifier: Assembly-CSharp::IceSpikeData
+  patternId: 0
   castTime: 2
-  cooldown: 15
-  warningTime: 3
-  damage: 15
-  Spike_Set_Count: 3
-  Spike_interval: 0.33
-  S_Spike_interval: 0
-  M_Spike_interval: 0
-  L_Spike_interval: 0
+  cooldown: 2
+  warningTime: 0.5
+  damage: 10
+  Spike_Set_Count: 1
+  Spike_interval: 1
+  S_Spike_Radius: 1
+  M_Spike_Radius: 3
+  L_Spike_Radius: 5
   Shard_Count: 8
-  Shard_Speed: 0
+  Shard_Speed: 4

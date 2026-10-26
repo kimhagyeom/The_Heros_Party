@@ -229,7 +229,7 @@ SpriteRenderer:
   m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &40198268
 Transform:
@@ -2020,19 +2020,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   arrivalPoint: {fileID: 0}
   roomType: 0
-  spawnEntries:
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 4e7541c36a652402cb33c32800a46f61, type: 3}
-    position: {x: 1, y: 0, z: 1}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: ff6241ba9b08f495daffa4e0a160b9c4, type: 3}
-    position: {x: 2, y: 0, z: 2}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 8c0df37a8868241c9a45464123bb8d05, type: 3}
-    position: {x: -1, y: 0, z: -1}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: eab29f1397bd748f2a696c09222e5e39, type: 3}
-    position: {x: -2, y: 0, z: -2}
-    delay: 0
+  spawnEntries: []
   roomExit: {fileID: 1940231627}
 --- !u!114 &998235932 stripped
 MonoBehaviour:
@@ -2089,10 +2077,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617ff598f1645534eb51fbe43820f847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceSpikePattern
-  data: {fileID: 11400000, guid: d18bd660db930204f9db81e84a788d4d, type: 2}
-  iceSpike: {fileID: 0}
-  iceShard: {fileID: 0}
-  telegraph: {fileID: 0}
+  data: {fileID: 11400000, guid: 4dc5eafa4867f5946844fc645e5ac82c, type: 2}
+  iceSpikePrefab: {fileID: 2691841446480377768, guid: e0fc6226af12e4f99b1bb4fff0e72379, type: 3}
+  iceShardPrefab: {fileID: 8621090898542561031, guid: 040f35af0c1704642b74ea1dfb986790, type: 3}
+  spikeLifeTime: 1.4
+  shardLifeTime: 10
+  shardRadius: 0.3
+  shardPierce: 0
 --- !u!1 &1098819237
 GameObject:
   m_ObjectHideFlags: 0
@@ -2385,7 +2376,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91023f4745ede45a8a8ba632060e4239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestTelegraph
-  inlineFilter: {fileID: 1694561486}
 --- !u!1 &1430026087
 GameObject:
   m_ObjectHideFlags: 0
@@ -2981,7 +2971,7 @@ SpriteRenderer:
   m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1720099713
 Transform:
@@ -3559,6 +3549,7 @@ MonoBehaviour:
     patterns:
     - {fileID: 1089277498}
   idleTime: 6
+  retryDelay: 0.2
   telegraph: {fileID: 2400343628206462693, guid: 7de0be04e288049c5bd7b97606e95e60, type: 3}
 --- !u!4 &1995268946
 Transform:
@@ -3569,7 +3560,7 @@ Transform:
   m_GameObject: {fileID: 1995268944}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -130.87141, y: 6.17283, z: -8.6}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

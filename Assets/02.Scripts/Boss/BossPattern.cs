@@ -17,7 +17,7 @@ public abstract class BossPattern : MonoBehaviour
 
     public virtual bool CanUse()
     {
-        if (IsRunning) return false;
+        if (IsRunning || data == null) return false;
         return Time.time >= lastEndTime + data.cooldown;
     }   
     public void Run(BossContext ctx ,Action onEnd) // 시작
@@ -27,10 +27,21 @@ public abstract class BossPattern : MonoBehaviour
         IsRunning = true;
         routine = StartCoroutine(Wrapper(ctx));
     }    
-    public void Stop()  // 페이즈 페턴 진입 같은 경우에 강제 종료
+    public void Stop()
     {
-        
-    }              
+        if (!IsRunning) return;
+
+        if (routine != null) StopCoroutine(routine);
+        routine = null;
+
+        foreach (var obj in tracked)
+            if (obj != null) Destroy(obj);   // 이펙트가 이미 사라졌을 수 있으니 null 체크
+        tracked.Clear();
+
+        OnStopped();
+        IsRunning = false;
+        onEnd = null;                         // 중지 시에는 알리지 않음
+    }            
 
     protected abstract IEnumerator Execute(BossContext ctx);   // 패턴마다 구현 자식에서 실행
     
@@ -43,6 +54,15 @@ public abstract class BossPattern : MonoBehaviour
 
     IEnumerator Wrapper(BossContext ctx)
     {
-        yield return StartCoroutine(Execute(ctx));
-    }           
+        yield return Execute(ctx);
+
+        routine = null;
+        tracked.Clear();          // 정상 종료: 지우지 않고 목록만 비움
+        IsRunning = false;
+        lastEndTime = Time.time;  // 쿨타임은 끝난 시각 기준
+
+        var callback = onEnd;
+        onEnd = null;
+        callback?.Invoke();
+    }    
 }
