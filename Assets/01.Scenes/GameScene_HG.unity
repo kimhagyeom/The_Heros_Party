@@ -721,7 +721,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.05, y: 4.44}
+  m_Size: {x: 5.646154, y: 4.3421345}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1218,10 +1218,10 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
     position: {x: 0, y: 0, z: 0}
     delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
+  - enemyPrefab: {fileID: 1994828562325376701, guid: 62e8ca189e7e5c34197723b99dded83d, type: 3}
     position: {x: 4, y: 0, z: 0}
     delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
+  - enemyPrefab: {fileID: 1994828562325376701, guid: 62e8ca189e7e5c34197723b99dded83d, type: 3}
     position: {x: 5, y: 0, z: 0}
     delay: 0
   - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
