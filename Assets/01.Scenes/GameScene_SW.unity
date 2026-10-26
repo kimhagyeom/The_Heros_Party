@@ -229,7 +229,7 @@ SpriteRenderer:
   m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!4 &40198268
 Transform:
@@ -2090,6 +2090,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceSpikePattern
   data: {fileID: 11400000, guid: d18bd660db930204f9db81e84a788d4d, type: 2}
+  iceSpike: {fileID: 0}
+  iceShard: {fileID: 0}
+  telegraph: {fileID: 0}
 --- !u!1 &1098819237
 GameObject:
   m_ObjectHideFlags: 0
@@ -2978,7 +2981,7 @@ SpriteRenderer:
   m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!4 &1720099713
 Transform:
@@ -3552,10 +3555,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
   phases:
-  - hpRatio: 40
+  - hpRatio: 100
     patterns:
-    - {fileID: 1499055812}
+    - {fileID: 1089277498}
   idleTime: 6
+  telegraph: {fileID: 2400343628206462693, guid: 7de0be04e288049c5bd7b97606e95e60, type: 3}
 --- !u!4 &1995268946
 Transform:
   m_ObjectHideFlags: 0
