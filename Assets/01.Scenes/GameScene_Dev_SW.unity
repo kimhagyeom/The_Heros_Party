@@ -1624,6 +1624,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1530279503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1079522253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1079522254}
+  - component: {fileID: 1079522255}
+  m_Layer: 0
+  m_Name: Lighting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1079522254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079522253}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2091917035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1079522255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079522253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cb83705fabaf7d41b8c65463f11d463, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightingPattern
+  data: {fileID: 11400000, guid: b9cda16f623e54046babd52ba4a14565, type: 2}
+  lightingPrefab: {fileID: 60762599081345009, guid: 26922581865a244859945a59d33288bf, type: 3}
+  random_Atk_Radius: 10
+  lighting_duration: 0.2
+  maxPickTries: 10
 --- !u!1001 &1086605427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2686,9 +2735,10 @@ MonoBehaviour:
   phases:
   - hpRatio: 1
     patterns:
+    - {fileID: 1079522255}
     - {fileID: 745653514}
     entryPhasePattern: {fileID: 0}
-  idleTime: 0
+  idleTime: 1
   retryDelay: 0.2
   telegraph: {fileID: 117335641}
 --- !u!1001 &1521756995
@@ -3098,7 +3148,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: a822e7aaf63181c448c6c00fb78d89d5, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1941100882
 Transform:
@@ -3327,6 +3377,7 @@ Transform:
   m_Children:
   - {fileID: 745653513}
   - {fileID: 39959407}
+  - {fileID: 1079522254}
   m_Father: {fileID: 1506927869}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
