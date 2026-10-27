@@ -20,13 +20,13 @@ MonoBehaviour:
   chain_Delay: 0
   hp_Damage: 5
   infection_Value: 0
-  atk_Range: 20
+  atk_Range: 9
   windup_Time: 0.6
-  active_Time: 7
-  recovery_Time: 0.3
+  active_Time: 1.5
+  recovery_Time: 0.45
   cooldown: 2
   hitbox_Shape: 0
-  radius: 1
+  radius: 0.5
   angle: 360
   width: 0
   length: 0

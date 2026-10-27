@@ -1216,19 +1216,10 @@ MonoBehaviour:
   roomType: 0
   spawnEntries:
   - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
+    position: {x: 5, y: 5, z: 0}
+    delay: 0
+  - enemyPrefab: {fileID: 1994828562325376701, guid: 62e8ca189e7e5c34197723b99dded83d, type: 3}
     position: {x: 0, y: 0, z: 0}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 62e8ca189e7e5c34197723b99dded83d, type: 3}
-    position: {x: 4, y: 0, z: 0}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 62e8ca189e7e5c34197723b99dded83d, type: 3}
-    position: {x: 5, y: 0, z: 0}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 3, y: 0, z: 0}
-    delay: 0
-  - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 2, y: 0, z: 0}
     delay: 0
   roomExit: {fileID: 2037634487}
 --- !u!1 &1064642839

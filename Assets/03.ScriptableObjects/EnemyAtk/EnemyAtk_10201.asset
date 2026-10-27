@@ -20,14 +20,14 @@ MonoBehaviour:
   chain_Delay: 0
   hp_Damage: 5
   infection_Value: 0
-  atk_Range: 2.2
-  windup_Time: 0.4
+  atk_Range: 2
+  windup_Time: 0.5
   active_Time: 0
-  recovery_Time: 0
-  cooldown: 0
+  recovery_Time: 0.5
+  cooldown: 1
   hitbox_Shape: 0
-  radius: 4
-  angle: 200
+  radius: 2.5
+  angle: 180
   width: 0
   length: 0
   has_Super_Armor: 0

@@ -92,7 +92,10 @@ public class PlayerAttack : MonoBehaviour
         // 스윙 버그 수정
         if (isAtk)
         {
-            attackBuffered = true;
+            // 마지막 타 중에는 입력을 쌓지 않음( 3타 뒤에 1타가 이어서 나가지 않게)
+            //comboIndex는 스윙 시작 시 이미 다음 타로 넘어가 있어서 0이면 지금이 마지막 타
+            if (comboIndex != 0)
+                attackBuffered = true;
             return;
         }
         if (Time.time - lastAttackTime < attackInterval) return;

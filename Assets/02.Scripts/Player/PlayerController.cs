@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform spriteVisual;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float knockbackDuration = 0.2f;
+    [SerializeField] private float attackMoveSpeedRate = 0.1f; //기본 공격 중 이동 속도
     private PlayerInputActions inputActions; // 실제 값을 저장하는 필드 (소문자, private)
 
     public PlayerInputActions InputActions => inputActions;
@@ -88,8 +89,11 @@ public class PlayerController : MonoBehaviour
         // 넉백 중, 스킬 사용 중에는 입력 이동 무시
         bool canMove = !IsKnockback && !IsCasting;
         if (canMove)
-            controller.SimpleMove(moveDirection * stats.Move_Speed);
-
+        {
+            //기본 공격 중(attack)에는 거의 제자리 속도
+            float speed = IsAttacking ? stats.Move_Speed * attackMoveSpeedRate : stats.Move_Speed;
+            controller.SimpleMove(moveDirection * speed);
+        }
         bool isMoving = canMove && moveDirection.sqrMagnitude > 0.0001f;
         if (animator != null)
         {

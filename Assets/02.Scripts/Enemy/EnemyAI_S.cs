@@ -115,7 +115,14 @@ public class EnemyAI_S : MonoBehaviour
     {
         Vector3 toTarget = FlatDirTo(target.position);
 
-        // 도망 (가장 먼저 검사)
+        CheckAttackList(toTarget); // 공격 가능 목록 갱신
+        //근접 공격(가장먼저검사, player가 붙으면 도망 말고 공격)
+        if (canAttackList.Count > 0 && canAttackList[0].atk_Type == AttackType.Melee)
+        {
+            StartWindup(toTarget);
+            return;
+        }
+        // 도망(근접 사거리 밖 , 대신 fleeRange안이면 도망)
         if (isRanged && toTarget.sqrMagnitude < fleeRange * fleeRange)
         {
             repathTimer -= Time.deltaTime;
@@ -128,8 +135,7 @@ public class EnemyAI_S : MonoBehaviour
             return;
         }
 
-        CheckAttackList(toTarget); // 공격 가능 목록 갱신
-
+        //근접 외 공격
         if (canAttackList.Count > 0)
         {
             StartWindup(toTarget);
@@ -157,7 +163,7 @@ public class EnemyAI_S : MonoBehaviour
     {
         canAttackList.Clear();
         float distSqr = toTarget.sqrMagnitude;
-        
+
         foreach (EnemyAtkData a in atkList)
         {
             if (a == null) continue;
@@ -169,6 +175,9 @@ public class EnemyAI_S : MonoBehaviour
 
             canAttackList.Add(a);
         }
+        //붙어 있을 땐 투사체 대신 근접
+        if (canAttackList.Exists(a => a.atk_Type == AttackType.Melee))
+            canAttackList.RemoveAll(a => a.atk_Type != AttackType.Melee);
     }
 
     void StartWindup(Vector3 toTarget)

@@ -16,7 +16,7 @@ MonoBehaviour:
   enemy_ID: 102
   enemy_Name: "\uAC00\uC2DC\uB369\uAD74"
   max_HP: 200
-  move_Speed: 3
+  move_Speed: 6
   can_Stagger: 1
   stagger_Duration: 0.5
   can_Knockback: 1
