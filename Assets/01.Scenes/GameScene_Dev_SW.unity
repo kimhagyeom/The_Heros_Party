@@ -1205,7 +1205,7 @@ MonoBehaviour:
     Character_Name: "\uC544\uB974\uB9C8"
     maxHealth: 100
     startHealth: 100
-    Move_Speed: 7
+    Move_Speed: 15
     maxStamina: 100
     startStamina: 100
     stamina_Regen: 12.5
@@ -1458,7 +1458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1968692952225400931, guid: dd29030534c624043bacf15e0280c56e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1968692952225400931, guid: dd29030534c624043bacf15e0280c56e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2662,7 +2662,7 @@ Transform:
   m_GameObject: {fileID: 1506927868}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 230, y: 0, z: 230}
+  m_LocalPosition: {x: 230, y: 10, z: 230}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2687,6 +2687,7 @@ MonoBehaviour:
   - hpRatio: 1
     patterns:
     - {fileID: 745653514}
+    entryPhasePattern: {fileID: 0}
   idleTime: 0
   retryDelay: 0.2
   telegraph: {fileID: 117335641}

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Ice Spike Data
   m_EditorClassIdentifier: Assembly-CSharp::IceSpikeData
   patternId: 1000
-  castTime: 2
+  castTime: 1
   cooldown: 3
-  warningTime: 2
+  warningTime: 0.5
   damage: 10
   Spike_Set_Count: 1
   Spike_interval: 0.7

@@ -23,26 +23,37 @@ public class IceSpikePattern : BossPattern
         GameObject lastSpike = null;
         Vector3 lastPos = Vector3.zero;
 
-        for(int set = 0; set < D.Spike_Set_Count; set++)
-        {
+        Vector3 targetPos = ctx.target.position;
+        Vector3 dir = targetPos - transform.position;
+        dir.y = 0f;
+        Vector3 atkDir = dir.normalized;
+
+        Vector3 atkPos = transform.position;
+
+        //for(int set = 0; set < D.Spike_Set_Count; set++) // SetCount 필요 없을듯?
+        //{
             for (int i = 0; i < radii.Length; i++)
             {
                 float r = radii[i];
-                bool isLast = set == D.Spike_Set_Count - 1 && i == radii.Length - 1;
+                // bool isLast = set == D.Spike_Set_Count - 1 && i == radii.Length - 1; //여기도 어차피 작중큰 얼음가시 소환하면 되니까
                 
-                Vector3 targetPos = ctx.target.position;
+                if (i == 0) atkPos += atkDir * radii[i];
+                else atkPos += atkDir * (radii[i] * 2f - radii[i - 1]);
+                    
+
                 var hitbox = new HitboxInfo { shape = HitboxShape.Sector, radius = r, angle = 360f };
                 //ctx.telegraph.Show(hitbox, ctx.target.position);   추후 AttackTelegraph 수정 예정
 
                 yield return new WaitForSeconds(D.warningTime);
-                GameObject spike = Instantiate(iceSpikePrefab , targetPos, Quaternion.identity);
+                GameObject spike = Instantiate(iceSpikePrefab , atkPos, Quaternion.identity);
                 spike.transform.localScale = Vector3.one * (r * 2f); //프리팹 지름 1기준
                 DamageInfo dmg = new DamageInfo { damage = D.damage };
-                aoeAttack.Execute(targetPos, hitbox , dmg, ctx.targetMask);
-                 if (isLast)
+                aoeAttack.Execute(atkPos, hitbox , dmg, ctx.targetMask);
+                Debug.Log("생성 위치 : " + atkPos);
+                if (i == radii.Length - 1)
                 {
                     lastSpike = spike; 
-                    lastPos = targetPos;
+                    lastPos = lastSpike.transform.position;
                     Debug.Log("Last Spike");
                 }
                 else
@@ -51,7 +62,7 @@ public class IceSpikePattern : BossPattern
                     yield return new WaitForSeconds(D.Spike_interval);
                 }
             }
-        }
+        //}
         yield return new WaitForSeconds(spikeLifeTime); // 얼음 가시 생존 시간
 
         if (lastSpike != null) Destroy(lastSpike);
