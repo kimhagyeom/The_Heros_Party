@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class IceSpikePattern : BossPattern
@@ -41,19 +42,19 @@ public class IceSpikePattern : BossPattern
                 else atkPos += atkDir * (radii[i] * 2f - radii[i - 1]);
                     
 
-                var hitbox = new HitboxInfo { shape = HitboxShape.Sector, radius = r, angle = 360f };
-                //ctx.telegraph.Show(hitbox, ctx.target.position);   추후 AttackTelegraph 수정 예정
+                var hitbox = new HitboxInfo { shape = HitboxShape.Sector, atk_Type = AttackType.Aoe,atk_Range = 10f, radius = r, angle = 360f };//atk_Range 수정 필요
+                ctx.telegraph.Show(hitbox, atkPos);   
 
                 yield return new WaitForSeconds(D.warningTime);
                 GameObject spike = Instantiate(iceSpikePrefab , atkPos, Quaternion.identity);
                 spike.transform.localScale = Vector3.one * (r * 2f); //프리팹 지름 1기준
                 DamageInfo dmg = new DamageInfo { damage = D.damage };
                 aoeAttack.Execute(atkPos, hitbox , dmg, ctx.targetMask);
-                Debug.Log("생성 위치 : " + atkPos);
                 if (i == radii.Length - 1)
                 {
                     lastSpike = spike; 
                     lastPos = lastSpike.transform.position;
+                    ctx.telegraph.Hide();
                     Debug.Log("Last Spike");
                 }
                 else
@@ -83,9 +84,11 @@ public class IceSpikePattern : BossPattern
             obstacleMask = 0
         };
         var dmg = new DamageInfo { damage = D.damage };
+        //var hitbox = new HitboxInfo { shape = HitboxShape.Box, atk_Type = AttackType.Projectile , atk_Range = 10f, width = 4f, length = 4f };//atk_Range 수정 필요
 
         for(int i = 0; i < D.Shard_Count; i++)
         {
+            // ctx.telegraph.Show(hitbox, lastPos);
             float angle = step * i;
             Quaternion rot = Quaternion.Euler(0, angle, 0);
         

@@ -4,6 +4,8 @@ using UnityEngine;
 public struct HitboxInfo
 {
     public HitboxShape shape;
+    public AttackType atk_Type;
+    public float atk_Range;
     public float radius, angle;
     public float width, length;
 }
@@ -93,6 +95,34 @@ public class AttackTelegraph : MonoBehaviour
                 break;
             default:
                 Debug.LogWarning($"처리 안 된 판정 모양: {d.hitbox_Shape}");
+                break;
+        }
+    }
+    public void Show(HitboxInfo hitboxInfo ,Vector3 targetPos)
+    {
+        if (hitboxInfo.atk_Type == AttackType.Aoe)
+            transform.position = targetPos + Vector3.up * 0.02f;
+        else
+            transform.localPosition = new Vector3(0f, targetPos.y, 0f);
+
+        // [변경] GetVertices 대신 여기서 바로 모양별로 그림 (UV 계산에 크기가 필요해서)
+        if (hitboxInfo.atk_Type == AttackType.Projectile)
+        {
+            // 투사체 공격은 직선형 판정으로 표시
+            Draw(GetBoxVertices(0.05f, hitboxInfo.atk_Range), Kind.Box, hitboxInfo.atk_Range);
+            return;
+        }
+
+        switch (hitboxInfo.shape)
+        {
+            case HitboxShape.Box:
+                Draw(GetBoxVertices(hitboxInfo.width, hitboxInfo.length), Kind.Box, hitboxInfo.length);
+                break;
+            case HitboxShape.Sector:
+                DrawSector(hitboxInfo.radius, hitboxInfo.angle);
+                break;
+            default:
+                Debug.LogWarning($"처리 안 된 판정 모양: {hitboxInfo.shape}");
                 break;
         }
     }
