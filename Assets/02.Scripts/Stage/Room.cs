@@ -13,7 +13,8 @@ public class SpawnEntry
 public enum RoomType
 {
     Enemies,
-    Interact
+    Interact,
+    Boss
 }
 
 public class Room : MonoBehaviour
@@ -25,6 +26,9 @@ public class Room : MonoBehaviour
 
     [SerializeField] private SpawnEntry[] spawnEntries;
     [SerializeField] private RoomExit roomExit;
+
+    [SerializeField] private BossController boss;
+
 
     public bool isCleared {get; private set;}
     public Vector3 ArrivalPosition => arrivalPoint != null ? arrivalPoint.position : transform.position;
@@ -53,6 +57,14 @@ public class Room : MonoBehaviour
                 SpawnManager.Instance.StartSpawning(spawnEntries, transform, ClearRoom);
                 break;
             case RoomType.Interact : // TODO : RewardChest 후 처리
+                break;
+            //bossroom
+            case RoomType.Boss:
+                if (boss == null)
+                {
+                    Debug.LogWarning("Boss가 비어있음", this); return;
+                }
+                boss.StartBattle();
                 break;
         }
     }

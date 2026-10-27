@@ -19,16 +19,20 @@ public class BossController : MonoBehaviour
 
     BossContext ctx;
     BossPattern current; 
-    int phaseIndex;  
+    int phaseIndex;
 
-    void Start()
+    bool started; //보스 방 입장
+
+    public void StartBattle() // 보스 방 입장 시 Room이 호출
     {
+        if (started) return;
         var player = FindFirstObjectByType<PlayerController>();
-        if (player == null) 
+        if (player == null)
         {
             Debug.LogWarning("BossController : PlayerController를 찾지 못함");
             return;
         }
+        started = true;
         Init(player.transform);
     }
 
