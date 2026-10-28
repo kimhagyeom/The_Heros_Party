@@ -22,7 +22,7 @@ public class EnemyMovement : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         moveSpeed = enemyData.move_Speed;
 
-        agent.speed = enemyData.move_Speed;
+        
         agent.updateRotation = false; // 회전은 LookAt/flip으로 처리
 
         if (spriteVisual == null)
@@ -31,6 +31,11 @@ public class EnemyMovement : MonoBehaviour
             if (sr != null) spriteVisual = sr.transform;
 
         }
+    }
+    void Start()
+    {
+        agent.speed = moveSpeed;
+        agent.acceleration = 999f;
     }
     void Update()
     {

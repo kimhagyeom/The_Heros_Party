@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class Enemy : MonoBehaviour
 {
-    private Health health;
+    public Health health;
     private EnemyAI_S ai;
     private EnemyMovement movement;
     [SerializeField] private EnemyData enemyData;

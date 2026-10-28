@@ -11,8 +11,8 @@ public class PhaseInfo
     public List<BossPattern> patterns; // 이 페이즈에서 쓰는 패턴
     public BossPattern entryPhasePattern;
 }
-public class BossController : MonoBehaviour
-{
+public class BossController : Enemy
+{    
     [SerializeField] List<PhaseInfo> phases;
     [SerializeField] float idleTime;
     [SerializeField] float retryDelay = 0.2f;
@@ -24,6 +24,12 @@ public class BossController : MonoBehaviour
     int phaseIndex;
 
     bool started; //보스 방 입장
+
+    public override void Start()
+    {
+        base.Start();
+        health.OnDamaged += HandleDamaged;
+    }
 
     public void StartBattle() // 보스 방 입장 시 Room이 호출
     {
@@ -87,5 +93,10 @@ public class BossController : MonoBehaviour
             phaseIndex = next;
             pendingPattern = phases[phaseIndex].entryPhasePattern;
         }
+    }
+    void HandleDamaged(DamageInfo info)
+    {
+        OnHpChanged(health.Current / health.Max); 
+        Debug.Log(health.Current / health.Max);
     }
 }

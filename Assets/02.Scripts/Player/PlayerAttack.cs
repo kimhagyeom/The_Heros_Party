@@ -172,6 +172,7 @@ public class PlayerAttack : MonoBehaviour
             if (hit.Contains(enemy)) continue;
 
             Vector3 dirToEnemy = enemy.position - transform.position;
+            dirToEnemy.y = 0f;
             float range = currentWeaponData.atk_Range + GetEnemyRadius(enemy);
             if (dirToEnemy.sqrMagnitude > range * range) continue;
 
