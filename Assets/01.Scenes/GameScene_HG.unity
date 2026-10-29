@@ -163,7 +163,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b17d11af04e3d041908c15bd637098f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeteorPattern
-  data: {fileID: 11400000, guid: be777003296f8c0409b277d2467cdcd3, type: 2}
+  data: {fileID: 11400000, guid: bb43dbde06a3c41d2b3007d57d854768, type: 2}
+  meteorPrefab: {fileID: 60762599081345009, guid: 9e89ee9a2adbb42afa8eb9d4f0b89868, type: 3}
+  spawnHight: {x: 0, y: 10, z: 0}
+  fallSpeed: 0
 --- !u!1001 &69374077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1000,7 +1003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617ff598f1645534eb51fbe43820f847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceSpikePattern
-  data: {fileID: 11400000, guid: 4dc5eafa4867f5946844fc645e5ac82c, type: 2}
+  data: {fileID: 11400000, guid: c4dd94241afef2e4585d13a0c8de8396, type: 2}
   iceSpikePrefab: {fileID: 2691841446480377768, guid: e0fc6226af12e4f99b1bb4fff0e72379, type: 3}
   iceShardPrefab: {fileID: 8621090898542561031, guid: 040f35af0c1704642b74ea1dfb986790, type: 3}
   spikeLifeTime: 1.4
@@ -1205,7 +1208,7 @@ MonoBehaviour:
     Character_Name: "\uC544\uB974\uB9C8"
     maxHealth: 100
     startHealth: 100
-    Move_Speed: 7
+    Move_Speed: 15
     maxStamina: 100
     startStamina: 100
     stamina_Regen: 12.5
@@ -1437,7 +1440,7 @@ MonoBehaviour:
   roomType: 0
   spawnEntries:
   - enemyPrefab: {fileID: 1994828562325376701, guid: 22735d4cd48ede34f9733ce2bcc51a53, type: 3}
-    position: {x: 5, y: 5, z: 0}
+    position: {x: 7, y: 7, z: 0}
     delay: 0
   - enemyPrefab: {fileID: 1994828562325376701, guid: 62e8ca189e7e5c34197723b99dded83d, type: 3}
     position: {x: 0, y: 0, z: 0}
@@ -1458,7 +1461,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1968692952225400931, guid: dd29030534c624043bacf15e0280c56e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1968692952225400931, guid: dd29030534c624043bacf15e0280c56e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1624,6 +1627,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1530279503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1079522253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1079522254}
+  - component: {fileID: 1079522255}
+  m_Layer: 0
+  m_Name: Lighting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1079522254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079522253}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2091917035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1079522255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079522253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cb83705fabaf7d41b8c65463f11d463, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightingPattern
+  data: {fileID: 11400000, guid: b9cda16f623e54046babd52ba4a14565, type: 2}
+  lightingPrefab: {fileID: 60762599081345009, guid: 26922581865a244859945a59d33288bf, type: 3}
+  random_Atk_Radius: 10
+  lighting_duration: 0.2
+  maxPickTries: 10
 --- !u!1001 &1086605427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2646,6 +2698,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1506927869}
   - component: {fileID: 1506927870}
+  - component: {fileID: 1506927872}
+  - component: {fileID: 1506927873}
+  - component: {fileID: 1506927874}
   m_Layer: 8
   m_Name: Boss
   m_TagString: Untagged
@@ -2662,7 +2717,7 @@ Transform:
   m_GameObject: {fileID: 1506927868}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 230, y: 0, z: 230}
+  m_LocalPosition: {x: 230, y: 6, z: 230}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2683,13 +2738,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8428ba04639e748b13bc909e16ae11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
+  health: {fileID: 0}
+  enemyData: {fileID: 11400000, guid: 2a8e4a26b45b24a8b97b8d2d05dc492a, type: 2}
+  damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
+  damageTextOffset: {x: 0, y: 13, z: 0}
   phases:
   - hpRatio: 1
     patterns:
     - {fileID: 745653514}
-  idleTime: 0
+    - {fileID: 1079522255}
+    entryPhasePattern: {fileID: 0}
+  idleTime: 1
   retryDelay: 0.2
   telegraph: {fileID: 117335641}
+--- !u!114 &1506927872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506927868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9c7a50d2f14901ad2be4770cd71c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+--- !u!136 &1506927873
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506927868}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Height: 12.865335
+  m_Direction: 1
+  m_Center: {x: -0.4000001, y: 4, z: 0}
+--- !u!195 &1506927874
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506927868}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 3
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 10.4
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &1521756995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3097,7 +3215,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: a822e7aaf63181c448c6c00fb78d89d5, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1941100882
 Transform:
@@ -3326,6 +3444,7 @@ Transform:
   m_Children:
   - {fileID: 745653513}
   - {fileID: 39959407}
+  - {fileID: 1079522254}
   m_Father: {fileID: 1506927869}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
