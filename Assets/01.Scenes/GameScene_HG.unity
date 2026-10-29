@@ -2237,6 +2237,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 35, y: 0, z: 0}
+--- !u!1 &1190375457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1190375458}
+  - component: {fileID: 1190375459}
+  m_Layer: 0
+  m_Name: MagicMissile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1190375458
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190375457}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2091917035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1190375459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190375457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 808c24c82dce79a49b412ca88f1d80b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MagicMissilePattern
+  data: {fileID: 11400000, guid: aebabefa82c3e0e49a607878ed15cce8, type: 2}
+  missilePrefab: {fileID: 7648211592940456836, guid: 68519ff5823954c38a471a07276072f4, type: 3}
+  sideOffset: 4
+  infection: 0
+  telegraphWidth: 0.3
+  spawnHeight: 1
 --- !u!1 &1244742590
 GameObject:
   m_ObjectHideFlags: 0
@@ -2741,12 +2791,11 @@ MonoBehaviour:
   health: {fileID: 0}
   enemyData: {fileID: 11400000, guid: 2a8e4a26b45b24a8b97b8d2d05dc492a, type: 2}
   damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
-  damageTextOffset: {x: 0, y: 13, z: 0}
+  damageTextOffset: {x: 0, y: 8, z: 0}
   phases:
   - hpRatio: 1
     patterns:
-    - {fileID: 745653514}
-    - {fileID: 1079522255}
+    - {fileID: 1190375459}
     entryPhasePattern: {fileID: 0}
   idleTime: 1
   retryDelay: 0.2
@@ -3445,6 +3494,7 @@ Transform:
   - {fileID: 745653513}
   - {fileID: 39959407}
   - {fileID: 1079522254}
+  - {fileID: 1190375458}
   m_Father: {fileID: 1506927869}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
