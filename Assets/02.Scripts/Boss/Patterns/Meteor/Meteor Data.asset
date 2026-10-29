@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Meteor Data
   m_EditorClassIdentifier: Assembly-CSharp::MeteorData
   patternId: 0
-  castTime: 0
-  cooldown: 0
-  warningTime: 0
+  castTime: 3
+  cooldown: 2
+  warningTime: 3
   damage: 30
   meteorCount: 1
-  impactRadius: 12
+  impactRadius: 4
   Burn_Ground_Duration: 0
