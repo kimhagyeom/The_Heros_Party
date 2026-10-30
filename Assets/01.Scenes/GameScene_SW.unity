@@ -165,8 +165,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeteorPattern
   data: {fileID: 11400000, guid: bb43dbde06a3c41d2b3007d57d854768, type: 2}
   meteorPrefab: {fileID: 60762599081345009, guid: 9e89ee9a2adbb42afa8eb9d4f0b89868, type: 3}
-  spawnHight: {x: 0, y: 10, z: 0}
-  fallSpeed: 0
+  spawnHight: {x: 0, y: 12, z: 0}
+  fallSpeed: 4
 --- !u!1001 &69374077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2409,6 +2409,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3353575510826090713, guid: 7de0be04e288049c5bd7b97606e95e60, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 7233745093656673459, guid: 7de0be04e288049c5bd7b97606e95e60, type: 3}
       propertyPath: m_Name
       value: Telegraph
@@ -2735,15 +2739,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8428ba04639e748b13bc909e16ae11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
-  health: {fileID: 0}
+  health: {fileID: 1506927872}
   enemyData: {fileID: 11400000, guid: 2a8e4a26b45b24a8b97b8d2d05dc492a, type: 2}
   damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
   damageTextOffset: {x: 0, y: 2, z: 0}
   phases:
   - hpRatio: 1
     patterns:
-    - {fileID: 745653514}
-    - {fileID: 1079522255}
+    - {fileID: 39959408}
     entryPhasePattern: {fileID: 0}
   idleTime: 1
   retryDelay: 0.2
@@ -2802,7 +2805,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: 5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!1001 &1521756995

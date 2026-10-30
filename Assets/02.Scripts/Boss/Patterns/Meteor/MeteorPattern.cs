@@ -13,19 +13,13 @@ public class MeteorPattern : BossPattern
     MeteorData D => (MeteorData)data;
     protected override IEnumerator Execute(BossContext ctx)
     {
-        Vector3 targetPos = ctx.target.position + spawnHight;
-        GameObject meteor = Instantiate(meteorPrefab, targetPos, Quaternion.identity);
+        Vector3 targetPos = ctx.target.position;
+        Vector3 spawnPos = targetPos + spawnHight;
+        GameObject meteor = Instantiate(meteorPrefab, spawnPos, Quaternion.identity);
 
-        float groundY = targetPos.y; 
-
-        while(meteor.transform.position.y > targetPos.y)
-        {
-            meteor.transform.position -= new Vector3(0,1,0) * Time.deltaTime * fallSpeed;
-            yield return null;
-        }
-        targetPos.y = groundY; 
-        meteor.transform.position = targetPos;
-
+        float groundY = 0f; 
+        float elapsed = 0f;
+        
         HitboxInfo hitboxInfo = new HitboxInfo
         {
              shape = HitboxShape.Sector, 
@@ -34,10 +28,26 @@ public class MeteorPattern : BossPattern
              radius = D.impactRadius, 
              angle = 360f 
         };
+        ctx.telegraph.Show(hitboxInfo, targetPos);
+
+        while(elapsed < D.castTime)
+        {
+            elapsed += Time.deltaTime;
+            meteor.transform.position -= new Vector3(0,1,0) * Time.deltaTime * fallSpeed;
+            groundY = meteor.transform.position.y;
+            ctx.telegraph.SetProgress(elapsed/D.castTime);
+            yield return null;
+        }
+        spawnPos.y = groundY; 
+        meteor.transform.position = spawnPos;
+
+        
 
         DamageInfo dmg = new DamageInfo { damage = D.damage };
-        yield return new WaitForSeconds(D.warningTime);
-        aoeAttack.Execute(targetPos,hitboxInfo, dmg ,ctx.targetMask);
+        ctx.telegraph.Hide();
+        //yield return new WaitForSeconds(D.castTime);
+        Debug.Log(spawnPos);
+        aoeAttack.Execute(spawnPos,hitboxInfo, dmg ,ctx.targetMask);
         yield return null;
     }
 }
