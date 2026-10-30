@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Boss
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyType: 2
-  enemy_ID: 0
-  enemy_Name: 
-  max_HP: 2000
+  enemy_ID: 1001
+  enemy_Name: "\uB9AC\uC5D8"
+  max_HP: 2500
   move_Speed: 10
   can_Stagger: 0
   stagger_Duration: 0

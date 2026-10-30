@@ -24,6 +24,7 @@ public class BossController : Enemy
     int phaseIndex;
 
     bool started; //보스 방 입장
+    public bool IsInBattle => started && !IsDead;
 
     public override void Start()
     {
