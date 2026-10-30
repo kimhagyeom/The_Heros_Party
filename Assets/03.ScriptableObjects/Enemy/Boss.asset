@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyType: 2
   enemy_ID: 1001
   enemy_Name: "\uB9AC\uC5D8"
-  max_HP: 2500
+  max_HP: 1000
   move_Speed: 10
   can_Stagger: 0
   stagger_Duration: 0

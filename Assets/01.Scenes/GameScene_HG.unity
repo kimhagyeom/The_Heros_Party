@@ -166,7 +166,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: bb43dbde06a3c41d2b3007d57d854768, type: 2}
   meteorPrefab: {fileID: 60762599081345009, guid: 9e89ee9a2adbb42afa8eb9d4f0b89868, type: 3}
   spawnHight: {x: 0, y: 10, z: 0}
-  fallSpeed: 0
+  fallSpeed: 3
 --- !u!1001 &69374077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2871,8 +2871,16 @@ MonoBehaviour:
   phases:
   - hpRatio: 1
     patterns:
+    - {fileID: 745653514}
     - {fileID: 1190375459}
+    - {fileID: 1079522255}
     entryPhasePattern: {fileID: 0}
+  - hpRatio: 0.4
+    patterns:
+    - {fileID: 1079522255}
+    - {fileID: 1190375459}
+    - {fileID: 745653514}
+    entryPhasePattern: {fileID: 39959408}
   idleTime: 1
   retryDelay: 0.2
   telegraph: {fileID: 117335641}

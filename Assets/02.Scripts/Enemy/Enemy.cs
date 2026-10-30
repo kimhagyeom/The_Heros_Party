@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
         DamageText dt = Instantiate(damageTextPrefab, transform.position + damageTextOffset, Quaternion.identity);
         dt.Setup(damageInfo.damage);
     }
-    public void OnHit(DamageInfo info)
+    public virtual void OnHit(DamageInfo info) //보스가 이 함수를 덮어쓰기
     {
         //if(hitFlash != null) hitFlash.PlayTint();
         if (ai != null && ai.IsSuperArmor) return;
