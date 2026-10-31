@@ -22,6 +22,7 @@ public class BossController : Enemy
     BossContext ctx;
     BossPattern current; 
     BossPattern pendingPattern;
+    public void QueuePattern(BossPattern pattern) => pendingPattern = pattern;
     int phaseIndex;
 
     BossState state = BossState.Idle;
@@ -59,7 +60,9 @@ public class BossController : Enemy
         {                                        
             target = target,
             targetMask = 1 << target.gameObject.layer, // 공격 안맞으면 이 부분 확인
-            telegraph = telegraph
+            telegraph = telegraph,
+            bossHealth = health,
+            queuePattern = QueuePattern,
         };
         phaseIndex = 0;
         PickNext();

@@ -1091,6 +1091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9c7a50d2f14901ad2be4770cd71c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
+  shieldHP: 0
 --- !u!65 &756309394
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2424,6 +2425,52 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7de0be04e288049c5bd7b97606e95e60, type: 3}
+--- !u!1 &1328635855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1328635856}
+  - component: {fileID: 1328635857}
+  m_Layer: 0
+  m_Name: Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1328635856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328635855}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2091917035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1328635857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328635855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac6b546e2a64df41bc7aa58bf77496f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShieldPattern
+  data: {fileID: 11400000, guid: 2522a8da61836814f975dfffa4836365, type: 2}
+  failPattern: {fileID: 39959408}
 --- !u!1 &1374857829
 GameObject:
   m_ObjectHideFlags: 0
@@ -2752,8 +2799,8 @@ MonoBehaviour:
     entryPhasePattern: {fileID: 0}
   - hpRatio: 0.9
     patterns:
-    - {fileID: 39959408}
-    entryPhasePattern: {fileID: 0}
+    - {fileID: 1567742291}
+    entryPhasePattern: {fileID: 1328635857}
   idleTime: 1
   retryDelay: 0.2
   telegraph: {fileID: 117335641}
@@ -2769,6 +2816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9c7a50d2f14901ad2be4770cd71c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
+  shieldHP: 0
 --- !u!136 &1506927873
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3502,6 +3550,7 @@ Transform:
   - {fileID: 39959407}
   - {fileID: 1079522254}
   - {fileID: 1567742290}
+  - {fileID: 1328635856}
   m_Father: {fileID: 1506927869}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807

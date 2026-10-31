@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // 플레이어/적 공용 체력
@@ -6,6 +7,7 @@ public class Health : MonoBehaviour, IDamageable
 {
     private float maxHealth;
     private float currentHealth;
+    
     private bool isDead = false;
     private float invincibleUntil = 0f;
 
@@ -13,6 +15,12 @@ public class Health : MonoBehaviour, IDamageable
     public float Current => currentHealth;
     public bool IsDead => isDead;
     public bool IsInvincible => Time.time < invincibleUntil;
+    [Header("실드")]
+    public float shieldHP;
+    private float damageMultiplier = 1f;
+    public bool IsShielded => shieldHP > 0;
+    public void SetDamageMultiplier(float m) => damageMultiplier = m;
+    //Action
 
     public event Action<DamageInfo> OnDamaged; // 받은 데미지량
     public event Action OnDied;
@@ -41,7 +49,32 @@ public class Health : MonoBehaviour, IDamageable
         if (IsInvincible) Debug.Log("무적 , 데미지무시");
         if (isDead || IsInvincible) return;
 
-        currentHealth -= damageInfo.damage;
+
+        damageInfo.damage *= damageMultiplier;
+        float damage = damageInfo.damage;
+
+        // 보호막이 있으면 보호막부터
+        if (shieldHP > 0)
+        {
+            shieldHP -= damage;
+            if (shieldHP > 0)
+            {
+                Debug.Log($"보호막 피격 -{damage} → 보호막 {shieldHP}");
+                return;
+            }                // 아직 안 깨짐 → 체력은 그대로
+
+            // 깨짐: 넘친 피해만 체력으로 (변경: < 0 → <= 0, 정확히 0일 때도 깨짐 처리)
+            float overflow = -shieldHP;
+            shieldHP = 0f;
+            Debug.Log($"보호막 깨짐! 넘친 피해 {overflow}");
+
+            if (overflow <= 0f) return;               // 딱 맞게 깨졌으면 체력 피해 없음
+            damage = overflow;
+            damageInfo.damage = overflow;
+        }
+
+        // 체력 피해 (변경: 넘친 피해도 여기로 와서 OnDamaged가 불림)
+        currentHealth -= damage;
         OnDamaged?.Invoke(damageInfo);
 
         if (currentHealth <= 0)
@@ -50,5 +83,13 @@ public class Health : MonoBehaviour, IDamageable
             isDead = true;
             OnDied?.Invoke();
         }
+    }
+    public void SetShield(float amount)
+    {
+        shieldHP = amount;
+    }
+    public void DestroyShield()
+    {
+        shieldHP = 0f;
     }
 }
