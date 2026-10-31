@@ -23,4 +23,4 @@ MonoBehaviour:
   random_Strike_Count: 3
   atk_Interval: 0
   atk_Radius: 3
-  Burn_Ground_Duration: 0
+  Burn_Ground_Duration: 10

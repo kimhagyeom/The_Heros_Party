@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class LightingPattern : BossPattern
 {
     [SerializeField] private GameObject lightingPrefab;
+    [SerializeField] private BurnGround burnGroundPrefab;
     readonly private AoeAttack aoeAttack = new AoeAttack();
     LightingData D => (LightingData)data;
 
@@ -65,5 +66,14 @@ public class LightingPattern : BossPattern
         Destroy(lighting, lighting_duration);
         DamageInfo dmg = new DamageInfo { damage = D.damage };
         aoeAttack.Execute(targetPos,hitboxInfo, dmg ,ctx.targetMask);
+        BurnGroundSettings bgSettings = new BurnGroundSettings
+        {
+            radius = D.atk_Radius * 2f,
+            lifeTime = D.Burn_Ground_Duration,
+            damage = D.damage,
+            targetMask = ctx.targetMask
+        };
+        BurnGround burnGround = Instantiate(burnGroundPrefab, targetPos, Quaternion.identity);
+        burnGround.Init(bgSettings);
     }
 }

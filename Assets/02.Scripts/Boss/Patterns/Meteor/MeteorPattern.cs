@@ -6,6 +6,7 @@ using UnityEngine;
 public class MeteorPattern : BossPattern
 {
     [SerializeField] private GameObject meteorPrefab;
+    [SerializeField] private BurnGround burnGroundPrefab;
     [SerializeField] private Vector3 spawnHight;
     [SerializeField] private float fallSpeed;
     readonly private AoeAttack aoeAttack = new AoeAttack();
@@ -46,8 +47,20 @@ public class MeteorPattern : BossPattern
         DamageInfo dmg = new DamageInfo { damage = D.damage };
         ctx.telegraph.Hide();
         //yield return new WaitForSeconds(D.castTime);
-        Debug.Log(spawnPos);
+        //Debug.Log(spawnPos);
         aoeAttack.Execute(spawnPos,hitboxInfo, dmg ,ctx.targetMask);
+
+        Destroy(meteor);
+
+        BurnGroundSettings bgSettings = new BurnGroundSettings
+        {
+            radius = D.impactRadius * 2f,
+            lifeTime = D.Burn_Ground_Duration,
+            damage = D.damage,
+            targetMask = ctx.targetMask
+        };
+        BurnGround burnGround = Instantiate(burnGroundPrefab, targetPos, Quaternion.identity);
+        burnGround.Init(bgSettings);
         yield return null;
     }
 }

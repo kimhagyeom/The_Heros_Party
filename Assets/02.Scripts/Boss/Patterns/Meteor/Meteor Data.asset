@@ -19,4 +19,4 @@ MonoBehaviour:
   damage: 30
   meteorCount: 1
   impactRadius: 4
-  Burn_Ground_Duration: 0
+  Burn_Ground_Duration: 10
