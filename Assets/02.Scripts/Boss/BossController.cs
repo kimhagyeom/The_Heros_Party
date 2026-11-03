@@ -18,6 +18,16 @@ public class BossController : Enemy
     [SerializeField] float idleTime;
     [SerializeField] float retryDelay = 0.2f;
     [SerializeField] private AttackTelegraph telegraph;
+    [SerializeField] private ShieldPattern shieldPattern;
+    int shieldTriggerIndex; //발동한 보호막 트리거 수
+    float pendingStunDuration; //패턴 종료 휴 기절
+    float pendingStunMultiplier = 1f;
+
+    public void RequestStun(float duration, float multiplier)
+    {
+        pendingStunDuration = duration;
+        pendingStunMultiplier = multiplier;
+    }
 
     BossContext ctx;
     BossPattern current; 
@@ -63,8 +73,10 @@ public class BossController : Enemy
             telegraph = telegraph,
             bossHealth = health,
             queuePattern = QueuePattern,
+            requestStun = RequestStun,
         };
         phaseIndex = 0;
+        shieldTriggerIndex = 0;
         PickNext();
     }
     private void PickNext()
@@ -101,6 +113,14 @@ public class BossController : Enemy
     private void OnPatternEnd() // current 비우고 PickNext
     {
         current = null;
+        if(pendingStunDuration>0f)
+        {
+            float d = pendingStunDuration, m = pendingStunMultiplier;
+            pendingStunDuration = 0f;
+            pendingStunMultiplier = 1f;
+            Stun(d,m);
+            return;
+        }
         state = BossState.Idle;
         waitRoutine = StartCoroutine(WaitThenPick(idleTime));
     }
@@ -116,28 +136,51 @@ public class BossController : Enemy
     public void OnHpChanged(float ratio) // 추후 Hp 처리에서 사용 예정
     {
         if (!started || state == BossState.Dead) return;
+        bool interrupt = false;
+
         int next = phaseIndex + 1;
         if (next < phases.Count && ratio <= phases[next].hpRatio)
         {
             phaseIndex = next;
-            pendingPattern = phases[phaseIndex].entryPhasePattern;
-            Debug.Log($"[Boss] {phaseIndex + 1}페이즈 진입 (HP {ratio:P0}), 진입 패턴: {(pendingPattern != null ? pendingPattern.name : "없음")}");
-            if (state == BossState.Stunned) return; // 기절 끝나면 pendingPattern부터 실행됨
-            InterruptCurrent();
-            state = BossState.Idle;
-            PickNext();
+            if (phases[phaseIndex].entryPhasePattern != null)
+                pendingPattern = phases[phaseIndex].entryPhasePattern;
+            Debug.Log($"[Boss] {phaseIndex + 1}페이즈 진입 (HP {ratio:P0})");
+            interrupt = true;
         }
+        // 보호막이 켜져 있는 동안은 검사하지 않음 → 다음 피격 때 다시 확인
+        if (shieldPattern != null && !shieldPattern.IsRunning)
+        {
+            float[] triggers = shieldPattern.HpTriggers;
+            bool fired = false;
+            while (shieldTriggerIndex < triggers.Length && ratio <= triggers[shieldTriggerIndex])
+            {
+                shieldTriggerIndex++; // 한 번에 여러 개 넘어도 보호막은 1번만
+                fired = true;
+            }
+            if (fired)
+            {
+                pendingPattern = shieldPattern;
+                Debug.Log($"[Boss] 보호막 트리거 {shieldTriggerIndex} (HP {ratio:P0})");
+                interrupt = true;
+            }
+        }
+        if (!interrupt) return;
+        if (state == BossState.Stunned) return; // 기절 끝나면 pendingPattern부터 실행됨
+        InterruptCurrent();
+        state = BossState.Idle;
+        PickNext();
     }
     void HandleDamaged(DamageInfo info)
     {
         OnHpChanged(health.Current / health.Max); 
         //Debug.Log(health.Current / health.Max);
     }
-    public void Stun(float duration) // 보호막 파괴 성공 시 사용
+    public void Stun(float duration, float damageMultiplier = 1f) // 보호막 파괴 성공 시 사용
     {
         if (state == BossState.Dead) return;
         InterruptCurrent();
         if (stunRoutine != null) StopCoroutine(stunRoutine);
+        health.SetDamageMultiplier(damageMultiplier);
         stunRoutine = StartCoroutine(StunRoutine(duration));
     }
     IEnumerator StunRoutine(float duration)
@@ -145,6 +188,7 @@ public class BossController : Enemy
         state = BossState.Stunned;
         yield return new WaitForSeconds(duration);
         stunRoutine = null;
+        health.SetDamageMultiplier(1f);
         state = BossState.Idle;
         PickNext();
     }
@@ -153,6 +197,7 @@ public class BossController : Enemy
     {
         InterruptCurrent();
         if (stunRoutine != null) StopCoroutine(stunRoutine);
+        health.SetDamageMultiplier(1f);
         state = BossState.Dead;
     }
 

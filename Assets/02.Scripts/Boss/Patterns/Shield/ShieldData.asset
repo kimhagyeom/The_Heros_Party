@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7121e2282090fa40b105e838188384d, type: 3}
   m_Name: ShieldData
   m_EditorClassIdentifier: Assembly-CSharp::ShieldData
-  patternId: 0
+  patternId: 1005
   castTime: 0
   cooldown: 0
   warningTime: 0
@@ -21,7 +21,7 @@ MonoBehaviour:
   trigger_HP2: 0.2
   activation_Count: 100
   shield_Duration: 15
-  End_On_Break: 0
-  Break_Stun_Duration: 10
+  End_On_Break: 1
+  Break_Stun_Duration: 3
   Vulnerable_Multiplier: 2
-  Fail_Invincible_Duration: 10
+  Fail_Invincible_Duration: 5

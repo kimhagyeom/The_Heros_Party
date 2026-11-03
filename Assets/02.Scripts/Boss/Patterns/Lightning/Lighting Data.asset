@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5fcc9ed2d2f48d4399750785ef4bdd2, type: 3}
   m_Name: Lighting Data
   m_EditorClassIdentifier: Assembly-CSharp::LightingData
-  patternId: 0
+  patternId: 1003
   castTime: 1
   cooldown: 2
   warningTime: 0.4
-  damage: 14
-  lighting_Count: 1
+  damage: 10
+  lighting_Count: 5
   set_Count: 1
   target_Strike_Count: 1
-  random_Strike_Count: 3
-  atk_Interval: 0
+  random_Strike_Count: 5
+  atk_Interval: 0.2
   atk_Radius: 3
   Burn_Ground_Duration: 10

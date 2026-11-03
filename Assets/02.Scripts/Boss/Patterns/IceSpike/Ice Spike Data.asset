@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16363f6149ed11e4c81802ebaf5713f5, type: 3}
   m_Name: Ice Spike Data
   m_EditorClassIdentifier: Assembly-CSharp::IceSpikeData
-  patternId: 1000
+  patternId: 1001
   castTime: 1
   cooldown: 3
   warningTime: 0.5
-  damage: 10
-  Spike_Set_Count: 1
-  Spike_interval: 0.7
+  damage: 15
+  Spike_Set_Count: 3
+  Spike_interval: 0.3
   S_Spike_Radius: 2
   M_Spike_Radius: 3
   L_Spike_Radius: 5

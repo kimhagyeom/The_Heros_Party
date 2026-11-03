@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de63ef27dbe9444ba85385da865e828, type: 3}
   m_Name: Meteor Data
   m_EditorClassIdentifier: Assembly-CSharp::MeteorData
-  patternId: 0
+  patternId: 1007
   castTime: 3
   cooldown: 2
   warningTime: 3

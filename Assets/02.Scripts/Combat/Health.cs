@@ -46,7 +46,7 @@ public class Health : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageInfo damageInfo)
     {
-        if (IsInvincible) Debug.Log("무적 , 데미지무시");
+        if (IsInvincible) Debug.Log($"[{name}] 무적, 데미지 무시");
         if (isDead || IsInvincible) return;
 
 
