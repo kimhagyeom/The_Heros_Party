@@ -1,41 +1,41 @@
-using UnityEngine;
-using System.Collections;
-using Unity.Mathematics;
-using System.Linq;
-using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine;
 
 public class WallPattern : BossPattern
 {
-    [SerializeField] private float lifeTime;
     [SerializeField] private Wall wallPrefab;
-    [SerializeField] private float wall_Count;
-    [SerializeField] private int gap_Count;
+    [SerializeField] private int gap_Count = 2; //팔각형 중 2면만 뚫림 (랜덤)
 
     WallData D => (WallData)data;
-    private float[] angles = {0,45,90,135,180,225,270,315,360};
+    private readonly float[] angles = { 0, 45, 90, 135, 180, 225, 270, 315 };
+
     protected override IEnumerator Execute(BossContext ctx)
     {
-        for(int i = 0; i < wall_Count; i++)
+        for (int i = 0; i < D.Wall_Count; i++)
         {
-            Spawn_Wall();
-            yield return new WaitForSeconds(D.cooldown);
+            SpawnWall();
+            if (i < D.Wall_Count - 1)
+                yield return new WaitForSeconds(D.Wall_Interval);
         }
+        // 마지막 벽이 사라질 때까지 대기
+        yield return new WaitForSeconds(D.Wall_Move_Speed > 0f ? D.Wall_Move_Distance / D.Wall_Move_Speed : 0f);
     }
-    private void Spawn_Wall()
+
+    private void SpawnWall()
     {
-        HashSet<int> gaps = new HashSet<int>();    
-        for(int j = 0; j < gap_Count; j++)
-                gaps.Add(UnityEngine.Random.Range(0, 8));
-        
-        for(int i = 0; i < angles.Length; i++)
+        // 서로 다른 면이 gap_Count개 될 때까지 뽑기
+        var gaps = new HashSet<int>();
+        while (gaps.Count < Mathf.Min(gap_Count, angles.Length))
+            gaps.Add(Random.Range(0, angles.Length));
+
+        for (int i = 0; i < angles.Length; i++)
         {
             if (gaps.Contains(i)) continue;
 
-            Quaternion rot = Quaternion.Euler(0, angles[i], 0);
-            Wall wall = Instantiate(wallPrefab, transform.position, rot);
-            wall.Init(D.push_Speed, D.push_Distance, lifeTime);
+            Wall wall = Instantiate(wallPrefab, transform.position, Quaternion.Euler(0, angles[i], 0));
+            wall.Init(D.Wall_Move_Speed, D.Wall_Move_Distance);
+            Track(wall.gameObject); // 패턴이 끊기면 같이 삭제
         }
     }
 }

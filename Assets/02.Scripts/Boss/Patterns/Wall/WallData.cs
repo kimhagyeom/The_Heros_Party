@@ -3,7 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Boss/Patterns/WallData")]
 public class WallData : BossPatternData
 {
-    public float push_Distance;
-    public float push_Speed;
-    public float stun_Duration;
+    public int Wall_Count;
+    public float Wall_Move_Speed;
+    public float Wall_Move_Distance;
+    public float Wall_Interval;
 }

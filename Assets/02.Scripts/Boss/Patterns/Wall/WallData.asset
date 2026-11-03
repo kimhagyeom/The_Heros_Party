@@ -17,6 +17,7 @@ MonoBehaviour:
   cooldown: 4
   warningTime: 4
   damage: 0
-  push_Distance: 10
-  push_Speed: 4
-  stun_Duration: 0
+  Wall_Count: 5
+  Wall_Move_Speed: 4
+  Wall_Move_Distance: 15
+  Wall_Interval: 1.5

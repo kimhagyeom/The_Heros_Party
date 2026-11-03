@@ -87,6 +87,7 @@ public class BossController : Enemy
         {
             current = pendingPattern;
             pendingPattern = null;
+            Debug.Log($"[Boss] 예약 패턴 실행: {current.name} ({phaseIndex + 1}페이즈)");
             state = BossState.Pattern;
             current.Run(ctx, OnPatternEnd);
             return;

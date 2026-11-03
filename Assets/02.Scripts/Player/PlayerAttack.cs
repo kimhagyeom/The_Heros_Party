@@ -87,7 +87,8 @@ public class PlayerAttack : MonoBehaviour
     }
     void TryAttack()
     {
-        if (playerController.IsCasting || playerController.IsDashing) return; // 스킬 및 대시 사용 중에는 기본 공격 불가
+        if (playerController.IsCasting || playerController.IsDashing || playerController.IsStunned) return; // 스킬 및 대시 사용 중에는 기본 공격 불가 +기절 중 공격 막기
+
 
         // 스윙 버그 수정
         if (isAtk)

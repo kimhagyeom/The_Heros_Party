@@ -32,14 +32,16 @@ public class PlayerController : MonoBehaviour
     private Coroutine regenRoutine;
     private Coroutine knockbackRoutine;
 
+    float stunUntil;
+
     // 플레이어 행동 상태 / 공격이나 스킬을 시작할 수 있는지 판단할 때 IsBusy 하나만 보면 되도록 모아둠/
     // 새 행동(스킬 등)이 생기면 IsBusy에 추가!!
     public bool IsKnockback { get; private set; }
     public bool IsDashing => isDash;
     public bool IsAttacking => playerAttack != null && playerAttack.IsAttacking;
     public bool IsCasting => skillController != null && skillController.IsCasting;
-    public bool IsBusy => IsKnockback || IsDashing || IsAttacking || IsCasting;
-
+    public bool IsStunned => Time.time < stunUntil;
+    public bool IsBusy => IsKnockback || IsDashing || IsAttacking || IsCasting || IsStunned;
 
     void Awake()
     {
@@ -87,7 +89,7 @@ public class PlayerController : MonoBehaviour
             lastMoveDir = moveDirection.normalized;
 
         // 넉백 중, 스킬 사용 중에는 입력 이동 무시
-        bool canMove = !IsKnockback && !IsCasting;
+        bool canMove = !IsKnockback && !IsCasting && !IsStunned;
         if (canMove)
         {
             //기본 공격 중(attack)에는 거의 제자리 속도
@@ -101,7 +103,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // 스킬 사용 중에는 시작할 때 방향 유지 (마우스를 돌려도 안 바뀜)
-        if (!IsCasting)
+        if (!IsCasting && !IsStunned)
             HandleFacing();
     }
 
@@ -168,7 +170,7 @@ public class PlayerController : MonoBehaviour
     private void HandleDodge()
     {
         // 스킬 사용 중에는 대시 불가 (스킬 도중 위치가 바뀌지 않도록)
-        if(isDash || IsCasting || stats.currentStamina < stats.dash_Stamina_Cost) return;
+        if(isDash || IsCasting || IsStunned || stats.currentStamina < stats.dash_Stamina_Cost) return;
 
         stats.currentStamina -= stats.dash_Stamina_Cost;
         stats.currentStamina = Mathf.Clamp(stats.currentStamina, 0, stats.maxStamina);
@@ -221,33 +223,44 @@ public class PlayerController : MonoBehaviour
     }
 
     // Player가 호출: 방향으로 거리만큼 짧은 시간 동안 밀림
-    public void Knockback(Vector3 dir, float distance)
+    public void Knockback(Vector3 dir, float distance) => Knockback(dir, distance, distance / knockbackDuration);
+
+    // 속도 지정 넉백 (보스 밀쳐내기)
+    public void Knockback(Vector3 dir, float distance, float speed)
     {
+        if (speed <= 0f) return;
         if (knockbackRoutine != null)
             StopCoroutine(knockbackRoutine);
 
-        knockbackRoutine = StartCoroutine(KnockbackCoroutine(dir, distance));
+        knockbackRoutine = StartCoroutine(KnockbackCoroutine(dir, distance / speed, speed));
     }
 
-    IEnumerator KnockbackCoroutine(Vector3 dir, float distance)
+    IEnumerator KnockbackCoroutine(Vector3 dir, float duration, float speed)
     {
         IsKnockback = true;
 
         dir.y = 0f;
         dir.Normalize();
 
-        float speed = distance / knockbackDuration;
         float elapsed = 0f;
-
-        while (elapsed < knockbackDuration)
+        while (elapsed < duration)
         {
             controller.Move(dir * speed * Time.deltaTime);
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         IsKnockback = false;
         knockbackRoutine = null;
+    }
+    // 기절
+    public void Stun(float duration)
+    {
+        stunUntil = Mathf.Max(stunUntil, Time.time + duration);
+    }
+    // 흙벽처럼 외부에서 밀 때 사용
+    public void Push(Vector3 delta)
+    {
+        controller.Move(delta);
     }
     public void ResetState() //리셋 시 상태 처음으로
     {
@@ -257,6 +270,7 @@ public class PlayerController : MonoBehaviour
 
         isDash = false;
         IsKnockback = false;
+        stunUntil = 0f;
         moveInput = Vector2.zero;
 
         stats.Init();
