@@ -2990,6 +2990,7 @@ Transform:
   m_Children:
   - {fileID: 907124997}
   - {fileID: 2091917035}
+  - {fileID: 1922800656}
   - {fileID: 117335642}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3018,14 +3019,14 @@ MonoBehaviour:
     entryPhasePattern: {fileID: 0}
   - hpRatio: 0.4
     patterns:
-    - {fileID: 188052156}
-    - {fileID: 508076967}
     - {fileID: 745653514}
-    entryPhasePattern: {fileID: 0}
+    - {fileID: 1079522255}
+    - {fileID: 1190375459}
+    entryPhasePattern: {fileID: 1922800657}
   idleTime: 1
   retryDelay: 0.2
   telegraph: {fileID: 117335641}
-  shieldPattern: {fileID: 243894806}
+  gimmickPattern: {fileID: 1922800657}
 --- !u!114 &1506927872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3437,6 +3438,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1521756999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1922800655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1922800656}
+  - component: {fileID: 1922800657}
+  m_Layer: 8
+  m_Name: PhaseGimmick
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1922800656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922800655}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1506927869}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1922800657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922800655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1cad0eb59544a141aad58fc36127bc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhaseGimmickPattern
+  data: {fileID: 0}
+  push: {fileID: 188052156}
+  shield: {fileID: 243894806}
+  wall: {fileID: 508076967}
+  repeatFullOnSecond: 1
 --- !u!1 &1941100879
 GameObject:
   m_ObjectHideFlags: 0

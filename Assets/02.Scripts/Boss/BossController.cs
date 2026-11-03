@@ -18,7 +18,7 @@ public class BossController : Enemy
     [SerializeField] float idleTime;
     [SerializeField] float retryDelay = 0.2f;
     [SerializeField] private AttackTelegraph telegraph;
-    [SerializeField] private ShieldPattern shieldPattern;
+    [SerializeField] private PhaseGimmickPattern gimmickPattern;
     int shieldTriggerIndex; //발동한 보호막 트리거 수
     float pendingStunDuration; //패턴 종료 휴 기절
     float pendingStunMultiplier = 1f;
@@ -74,6 +74,7 @@ public class BossController : Enemy
             bossHealth = health,
             queuePattern = QueuePattern,
             requestStun = RequestStun,
+            //boss = transform,
         };
         phaseIndex = 0;
         shieldTriggerIndex = 0;
@@ -148,10 +149,10 @@ public class BossController : Enemy
             Debug.Log($"[Boss] {phaseIndex + 1}페이즈 진입 (HP {ratio:P0})");
             interrupt = true;
         }
-        // 보호막이 켜져 있는 동안은 검사하지 않음 → 다음 피격 때 다시 확인
-        if (shieldPattern != null && !shieldPattern.IsRunning)
+        // 기믹이 진행 중일 때는 검사하지 않음 → 다음 피격 때 다시 확인
+        if (gimmickPattern != null && !gimmickPattern.IsRunning)
         {
-            float[] triggers = shieldPattern.HpTriggers;
+            float[] triggers = gimmickPattern.HpTriggers;
             bool fired = false;
             while (shieldTriggerIndex < triggers.Length && ratio <= triggers[shieldTriggerIndex])
             {
@@ -160,8 +161,9 @@ public class BossController : Enemy
             }
             if (fired)
             {
-                pendingPattern = shieldPattern;
-                Debug.Log($"[Boss] 보호막 트리거 {shieldTriggerIndex} (HP {ratio:P0})");
+                gimmickPattern.TriggerCount = shieldTriggerIndex;
+                pendingPattern = gimmickPattern;
+                Debug.Log($"[Boss] 보호막 기믹 트리거 {shieldTriggerIndex} (HP {ratio:P0})");
                 interrupt = true;
             }
         }
