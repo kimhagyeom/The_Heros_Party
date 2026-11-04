@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;    
 using Random = UnityEngine.Random;
 
 [Serializable]
@@ -11,7 +12,7 @@ public class PhaseInfo
     public List<BossPattern> patterns; // 이 페이즈에서 쓰는 패턴
     public BossPattern entryPhasePattern;
 }
-public enum BossState { Idle, Pattern, Stunned, Dead }
+public enum BossState { Idle, Chase , Pattern, Stunned, Dead }
 public class BossController : Enemy
 {    
     [SerializeField] List<PhaseInfo> phases;
@@ -32,6 +33,10 @@ public class BossController : Enemy
     BossContext ctx;
     BossPattern current; 
     BossPattern pendingPattern;
+    
+    private Animator animator;
+    EnemyMovement movement;
+    NavMeshAgent agent;
     public void QueuePattern(BossPattern pattern) => pendingPattern = pattern;
     int phaseIndex;
 
@@ -44,11 +49,24 @@ public class BossController : Enemy
     bool started; //보스 방 입장
     public bool IsInBattle => started && !IsDead;
 
+    void Update()
+    {
+        switch (state)
+        {
+            case BossState.Chase:
+                UpdateChase();
+                break;
+        }
+    }
+
     public override void Start()
     {
         base.Start();
+        movement = GetComponent<EnemyMovement>();
+        agent = GetComponent<NavMeshAgent>();
         health.OnDamaged += HandleDamaged;
         health.OnDied += HandleDied;
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void StartBattle() // 보스 방 입장 시 Room이 호출
@@ -86,11 +104,10 @@ public class BossController : Enemy
 
         if (pendingPattern != null)
         {
-            current = pendingPattern;
+            BossPattern next = pendingPattern;
             pendingPattern = null;
-            Debug.Log($"[Boss] 예약 패턴 실행: {current.name} ({phaseIndex + 1}페이즈)");
-            state = BossState.Pattern;
-            current.Run(ctx, OnPatternEnd);
+            Debug.Log($"[Boss] 예약 패턴 실행: {next.name} ({phaseIndex + 1}페이즈)");
+            StartPattern(next);                          // [변경]
             return;
         }
         List<BossPattern> candidates = phases[phaseIndex].patterns.FindAll(p=> p != null && p.CanUse());
@@ -99,10 +116,17 @@ public class BossController : Enemy
             waitRoutine = StartCoroutine(WaitThenPick(retryDelay));
             return;
         }
-        current = candidates[Random.Range(0, candidates.Count)];
+        BossPattern picked = candidates[Random.Range(0, candidates.Count)];
 
-        Debug.Log($"[Boss] 패턴 실행: {current.name} ({phaseIndex + 1}페이즈)");
+        Debug.Log($"[Boss] 패턴 실행: {picked.name} ({phaseIndex + 1}페이즈)");
 
+        StartPattern(picked);   
+    }
+
+    void StartPattern(BossPattern pattern)
+    {
+        StopMoving();
+        current = pattern;
         state = BossState.Pattern;
         current.Run(ctx, OnPatternEnd);
     }
@@ -123,7 +147,8 @@ public class BossController : Enemy
             Stun(d,m);
             return;
         }
-        state = BossState.Idle;
+        state = BossState.Chase;   // 쉬는 동안 추적
+        ResumeMoving();
         waitRoutine = StartCoroutine(WaitThenPick(idleTime));
     }
 
@@ -177,6 +202,31 @@ public class BossController : Enemy
     {
         OnHpChanged(health.Current / health.Max); 
         //Debug.Log(health.Current / health.Max);
+    }
+    Vector3 FlatDirTo(Vector3 pos)
+    {
+        Vector3 dir = pos - transform.position;
+        dir.y = 0f;
+        return dir;
+    }
+    void UpdateChase()
+    {
+        if (ctx.target == null) return;
+        Vector3 dir = FlatDirTo(ctx.target.position);
+        movement.LookAt(dir);
+        movement.MoveTo(ctx.target.position);
+    }
+    void StopMoving()
+    {
+        if (agent == null || !agent.isOnNavMesh) return;
+        agent.isStopped = true;
+        agent.ResetPath();
+        agent.velocity = Vector3.zero;
+    }
+    void ResumeMoving()
+    {
+        if (agent == null || !agent.isOnNavMesh) return;
+        agent.isStopped = false;
     }
     public void Stun(float duration, float damageMultiplier = 1f) // 보호막 파괴 성공 시 사용
     {

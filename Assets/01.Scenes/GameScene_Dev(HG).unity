@@ -164,9 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallPatern
   data: {fileID: 11400000, guid: 589068037079e466e8dac32f22a0c8d7, type: 2}
-  lifeTime: 10
   wallPrefab: {fileID: 4018805648722904063, guid: 3ce47b692ea9c45bbaf80f53917b8a38, type: 3}
-  wall_Count: 0
   gap_Count: 1
 --- !u!1 &39959406
 GameObject:
@@ -1713,6 +1711,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 734904326}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1035420290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1035420291}
+  - component: {fileID: 1035420292}
+  m_Layer: 0
+  m_Name: Teleport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1035420291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035420290}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2091917035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1035420292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035420290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae3b4de29fe48d242892aceed859900e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeleportPattern
+  data: {fileID: 11400000, guid: 189b7c82f4dd97d4c98f20faa0f9e271, type: 2}
+  triggerDistance: 8
+  minDistance: 3
+  maxDistance: 5
+  maxPickTries: 10
+  bossModel: {fileID: 1506927868}
+  vanishTime: 0.3
+  appearDelay: 0.4
 --- !u!1 &1064642839
 GameObject:
   m_ObjectHideFlags: 0
@@ -2779,9 +2829,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallPatern
   data: {fileID: 11400000, guid: 589068037079e466e8dac32f22a0c8d7, type: 2}
-  lifeTime: 10
   wallPrefab: {fileID: 4018805648722904063, guid: 3ce47b692ea9c45bbaf80f53917b8a38, type: 3}
-  wall_Count: 5
   gap_Count: 2
 --- !u!1 &1414969307
 GameObject:
@@ -2974,6 +3022,7 @@ GameObject:
   - component: {fileID: 1506927872}
   - component: {fileID: 1506927873}
   - component: {fileID: 1506927874}
+  - component: {fileID: 1506927875}
   m_Layer: 8
   m_Name: Boss
   m_TagString: Untagged
@@ -3018,8 +3067,8 @@ MonoBehaviour:
   phases:
   - hpRatio: 1
     patterns:
-    - {fileID: 13656055}
-    - {fileID: 1190375459}
+    - {fileID: 1035420292}
+    - {fileID: 745653514}
     entryPhasePattern: {fileID: 0}
   - hpRatio: 0.9
     patterns:
@@ -3030,6 +3079,7 @@ MonoBehaviour:
   idleTime: 1
   retryDelay: 0.2
   telegraph: {fileID: 117335641}
+  gimmickPattern: {fileID: 0}
 --- !u!114 &1506927872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3088,6 +3138,21 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1506927875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506927868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cbd32e319974421f9be081c3bca98fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+  knockbackDuration: 0.2
+  enemySqr: 0
+  spriteVisual: {fileID: 0}
 --- !u!1001 &1521756995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3740,6 +3805,7 @@ Transform:
   - {fileID: 1190375458}
   - {fileID: 1402770945}
   - {fileID: 13656054}
+  - {fileID: 1035420291}
   m_Father: {fileID: 1506927869}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2102812434
