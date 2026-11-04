@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private PlayerAttack playerAttack; // 공격 중 여부 확인용
     private PlayerSkillController skillController; // 스킬 사용 중 여부 확인용
     private bool isDash = false;
+    private bool isBack = false;
     public float facingSign;
     private Vector3 lastMoveDir;
 
@@ -87,6 +88,18 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
         if (moveDirection.sqrMagnitude > 0.0001f)
             lastMoveDir = moveDirection.normalized;
+
+        // 앞, 뒤 구분
+        if(lastMoveDir.x < 0f && facingSign > 0f) 
+        {
+            isBack = true;
+            animator.SetBool(AnimHash.IsBack, isBack);
+        }
+        else
+        {
+            isBack = false;
+            animator.SetBool(AnimHash.IsBack, isBack);
+        }
 
         // 넉백 중, 스킬 사용 중에는 입력 이동 무시
         bool canMove = !IsKnockback && !IsCasting && !IsStunned;
@@ -175,6 +188,7 @@ public class PlayerController : MonoBehaviour
         stats.currentStamina -= stats.dash_Stamina_Cost;
         stats.currentStamina = Mathf.Clamp(stats.currentStamina, 0, stats.maxStamina);
 
+        animator.SetTrigger(AnimHash.Dash);
         StartCoroutine(DashRoutine());
 
         if(regenRoutine != null) StopCoroutine(regenRoutine);
