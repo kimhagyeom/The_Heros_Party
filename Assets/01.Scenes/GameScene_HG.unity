@@ -3039,7 +3039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9c7a50d2f14901ad2be4770cd71c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  shieldHP: 0
+  shieldHP: 100
 --- !u!136 &1506927873
 CapsuleCollider:
   m_ObjectHideFlags: 0
