@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public Health health;
     private EnemyAI_S ai;
-    private EnemyMovement movement;
+    protected EnemyMovement movement;
     [SerializeField] private EnemyData enemyData;
     //[SerializeField] private HitFlash hitFlash;
     [SerializeField] private DamageText damageTextPrefab;

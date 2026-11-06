@@ -35,7 +35,7 @@ public class BossController : Enemy
     BossPattern pendingPattern;
     
     private Animator animator;
-    EnemyMovement movement;
+    //EnemyMovement movement;
     NavMeshAgent agent;
     public void QueuePattern(BossPattern pattern) => pendingPattern = pattern;
     int phaseIndex;
@@ -62,7 +62,7 @@ public class BossController : Enemy
     public override void Start()
     {
         base.Start();
-        movement = GetComponent<EnemyMovement>();
+       // movement = GetComponent<EnemyMovement>();
         agent = GetComponent<NavMeshAgent>();
         health.OnDamaged += HandleDamaged;
         health.OnDied += HandleDied;
