@@ -25,6 +25,8 @@ public class Health : MonoBehaviour, IDamageable
     public event Action<DamageInfo> OnDamaged; // 받은 데미지량
     public event Action OnDied;
 
+    public float ShieldMax { get; private set; }
+
     public void Init(float max, float start)
     {
         maxHealth = max;
@@ -87,6 +89,7 @@ public class Health : MonoBehaviour, IDamageable
     public void SetShield(float amount)
     {
         shieldHP = amount;
+        ShieldMax = amount;
     }
     public void DestroyShield()
     {
