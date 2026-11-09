@@ -7,6 +7,8 @@ public class PhaseGimmickPattern : BossPattern
     [SerializeField] private PushPattern push;
     [SerializeField] private ShieldPattern shield;
     [SerializeField] private WallPattern wall;
+    [SerializeField] private TeleportPattern teleport;
+    [SerializeField] private Transform centerPos;
     [SerializeField] private bool repeatFullOnSecond = true; // 2차 트리거에서도 밀쳐내기~이동까지 할지
     [SerializeField] private InfectionFog fog;
 
@@ -18,6 +20,11 @@ public class PhaseGimmickPattern : BossPattern
         bool full = TriggerCount <= 1 || repeatFullOnSecond;
         if (full)
         {
+            if(teleport != null && centerPos != null)
+            {
+                teleport.OverrideDestiantion = centerPos.position;
+                yield return RunAndWait(teleport,ctx);
+            }
             //밀쳐내기
             yield return RunAndWait(push, ctx);
 
@@ -47,6 +54,7 @@ public class PhaseGimmickPattern : BossPattern
         if (push != null) push.Stop();
         if (shield != null) shield.Stop();
         if (wall != null) wall.Stop();
+        if (teleport != null) teleport.Stop();
     }
     void OnDestroy()
     {

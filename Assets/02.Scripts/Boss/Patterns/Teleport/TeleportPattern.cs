@@ -11,6 +11,7 @@ public class TeleportPattern : BossPattern
     [SerializeField] private float minDistance = 3f;         // 플레이어로부터 최소 거리 (바로 옆 방지)
     [SerializeField] private float maxDistance = 5f;         // 플레이어로부터 최대 거리
     [SerializeField] private int maxPickTries = 10;
+    public Vector3 ? OverrideDestiantion {get; set;}
 
     [Header("연출")]
     [SerializeField] private GameObject bossModel;           // 보스의 보이는 부분 (비워두면 숨기기 생략)
@@ -43,23 +44,32 @@ public class TeleportPattern : BossPattern
 
     protected override IEnumerator Execute(BossContext ctx)
     {
-        // 1. 기준점: 플레이어 위치를 바닥(NavMesh)에 붙임
-        Vector3 basePos = ctx.target.position;
-        if (NavMesh.SamplePosition(basePos, out NavMeshHit baseHit, 5f, NavMesh.AllAreas))
-            basePos = baseHit.position;
-
-        // 2. 플레이어 주변 고리(min ~ max) 안에서 맵 안 위치 찾기
         Vector3 teleportPos = bossRoot.position;   // 끝까지 못 찾으면 제자리
-        for (int t = 0; t < maxPickTries; t++)
-        {
-            Vector2 dir = Random.insideUnitCircle.normalized;
-            float dist = Random.Range(minDistance, maxDistance);
-            Vector3 candidate = basePos + new Vector3(dir.x, 0f, dir.y) * dist;
 
-            if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        if (OverrideDestiantion.HasValue)
+        {
+            teleportPos = OverrideDestiantion.Value;
+            OverrideDestiantion = null;
+        }
+        else
+        {
+            // 1. 기준점
+            Vector3 basePos = ctx.target.position;
+            if (NavMesh.SamplePosition(basePos, out NavMeshHit baseHit, 5f, NavMesh.AllAreas))
+                basePos = baseHit.position;
+
+            // 2. 플레이어 주변 고리에서 고르기
+            for (int t = 0; t < maxPickTries; t++)
             {
-                teleportPos = hit.position;
-                break;
+                Vector2 dir = Random.insideUnitCircle.normalized;
+                float dist = Random.Range(minDistance, maxDistance);
+                Vector3 candidate = basePos + new Vector3(dir.x, 0f, dir.y) * dist;
+
+                if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+                {
+                    teleportPos = hit.position;
+                    break;
+                }
             }
         }
         Debug.Log($"[Teleport] {bossRoot.position} → {teleportPos}");

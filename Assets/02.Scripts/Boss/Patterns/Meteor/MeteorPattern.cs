@@ -9,6 +9,7 @@ public class MeteorPattern : BossPattern
     [SerializeField] private BurnGround burnGroundPrefab;
     [SerializeField] private Vector3 spawnHight;
     [SerializeField] private float fallSpeed;
+    [SerializeField] private float burnground_Damage;
     readonly private AoeAttack aoeAttack = new AoeAttack();
 
     MeteorData D => (MeteorData)data;
@@ -56,7 +57,7 @@ public class MeteorPattern : BossPattern
         {
             radius = D.impactRadius * 2f,
             lifeTime = D.Burn_Ground_Duration,
-            damage = D.damage,
+            damage = burnground_Damage,
             targetMask = ctx.targetMask
         };
         BurnGround burnGround = Instantiate(burnGroundPrefab, targetPos, Quaternion.identity);

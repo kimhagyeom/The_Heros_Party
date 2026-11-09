@@ -13,6 +13,7 @@ public class LightingPattern : BossPattern
     [Header("시트에 없는 값 (임시, 기획 확인)")]
     [SerializeField] private float random_Atk_Radius = 10f;
     [SerializeField] private float lighting_duration = 0.2f;
+    [SerializeField] private float burnground_Damage;
     [SerializeField] private int maxPickTries = 10; 
 
     protected override IEnumerator Execute(BossContext ctx)
@@ -70,7 +71,7 @@ public class LightingPattern : BossPattern
         {
             radius = D.atk_Radius * 2f,
             lifeTime = D.Burn_Ground_Duration,
-            damage = D.damage,
+            damage = burnground_Damage,
             targetMask = ctx.targetMask
         };
         BurnGround burnGround = Instantiate(burnGroundPrefab, targetPos, Quaternion.identity);
