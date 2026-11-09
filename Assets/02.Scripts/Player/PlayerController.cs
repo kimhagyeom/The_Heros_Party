@@ -95,6 +95,11 @@ public class PlayerController : MonoBehaviour
             isBack = true;
             animator.SetBool(AnimHash.IsBack, isBack);
         }
+        else if(lastMoveDir.x > 0f && facingSign < 0f) 
+        {
+            isBack = true;
+            animator.SetBool(AnimHash.IsBack, isBack);
+        }
         else
         {
             isBack = false;
