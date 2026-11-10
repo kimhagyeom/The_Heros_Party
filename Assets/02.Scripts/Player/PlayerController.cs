@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float knockbackDuration = 0.2f;
     [SerializeField] private float attackMoveSpeedRate = 0.1f; //기본 공격 중 이동 속도
+    [SerializeField] private Transform dashEffectPos;
+    [SerializeField] private GameObject dashEffectPrefab;
+
     private PlayerInputActions inputActions; // 실제 값을 저장하는 필드 (소문자, private)
 
     public PlayerInputActions InputActions => inputActions;
@@ -194,6 +197,8 @@ public class PlayerController : MonoBehaviour
         stats.currentStamina = Mathf.Clamp(stats.currentStamina, 0, stats.maxStamina);
 
         animator.SetTrigger(AnimHash.Dash);
+        // 대시 이펙트
+        Instantiate(dashEffectPrefab, dashEffectPos.position, Quaternion.identity);
         StartCoroutine(DashRoutine());
 
         if(regenRoutine != null) StopCoroutine(regenRoutine);

@@ -17,7 +17,7 @@ MonoBehaviour:
   cooldown: 8
   warningTime: 0.5
   damage: 15
-  atk_Range: 10
+  atk_Range: 20
   Spike_Set_Count: 3
   Spike_interval: 0.3
   S_Spike_Radius: 2

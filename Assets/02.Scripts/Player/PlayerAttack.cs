@@ -15,6 +15,8 @@ public class PlayerAttack : MonoBehaviour
     private int comboIndex = 0;
     [SerializeField] private float comboResetTime = 0.5f;   // 스윙이 끝난 뒤 이 시간 안에 눌러야 다음 타로 이어짐
     [SerializeField] private float comboFinishDelay = 0.2f; // 마지막 타 후딜 (0이면 없음)
+    [SerializeField] private Transform attackEffectPos; // 공격 이펙트 위치
+    [SerializeField] private GameObject attackEffectPrefab; // 공격 이펙트 프리팹
     private float lastSwingEndTime = -999f;                 // 마지막 스윙이 끝난 시각
     private bool attackBuffered = false;                    // 스윙 중에 눌린 공격 입력
 
@@ -223,6 +225,8 @@ public class PlayerAttack : MonoBehaviour
     {
         if (animator == null) return;
         int stateHash = Animator.StringToHash($"Player_Attack{step + 1}");
+        // 공격 이펙트
+        Instantiate(attackEffectPrefab, attackEffectPos.position, Quaternion.identity);
         if (animator.HasState(0, stateHash))
             animator.Play(stateHash, 0, 0f);
     }
