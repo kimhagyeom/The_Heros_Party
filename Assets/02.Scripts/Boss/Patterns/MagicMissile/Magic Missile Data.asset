@@ -17,6 +17,7 @@ MonoBehaviour:
   cooldown: 0
   warningTime: 0.8
   damage: 10
+  atk_Range: 15
   Missile_Count: 3
   Missile_Speed: 12
   Missile_Interval: 0.08

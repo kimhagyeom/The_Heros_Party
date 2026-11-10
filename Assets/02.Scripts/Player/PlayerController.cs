@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour
         Vector2 mousePos = mouse.position.ReadValue();
         Ray ray = mainCamera.ScreenPointToRay(mousePos);
 
-        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        Plane groundPlane = new Plane(Vector3.up, transform.position);
         if (!groundPlane.Raycast(ray, out float distance)) return false;
 
         mouseWorldPos = ray.GetPoint(distance);
@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
 
     public void FaceDirection(Vector3 direction)
     {
-        direction.y = 0f;
+        //direction.y = 0f;
         if(direction.sqrMagnitude <= 0.0001f) return;
 
         transform.forward = direction.normalized;

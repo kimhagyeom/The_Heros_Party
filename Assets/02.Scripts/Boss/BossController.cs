@@ -20,6 +20,8 @@ public class BossController : Enemy
     [SerializeField] float retryDelay = 0.2f;
     [SerializeField] private AttackTelegraph telegraph;
     [SerializeField] private PhaseGimmickPattern gimmickPattern;
+    // 시아 범위
+    [SerializeField] float visualRange;
     int shieldTriggerIndex; //발동한 보호막 트리거 수
     float pendingStunDuration; //패턴 종료 휴 기절
     float pendingStunMultiplier = 1f;
@@ -30,7 +32,7 @@ public class BossController : Enemy
         pendingStunMultiplier = multiplier;
     }
 
-    BossContext ctx;
+    public BossContext ctx;
     BossPattern current; 
     BossPattern pendingPattern;
     
@@ -110,9 +112,12 @@ public class BossController : Enemy
             StartPattern(next);                          // [변경]
             return;
         }
-        List<BossPattern> candidates = phases[phaseIndex].patterns.FindAll(p=> p != null && p.CanUse());
+        List<BossPattern> candidates = phases[phaseIndex].patterns.FindAll(p=> p != null && p.CanUse() && p.InRange(transform.position, ctx.target.position));
+
         if(candidates.Count == 0) 
         {
+            state = BossState.Chase; // 쿨타임 중에는 추적
+            ResumeMoving();
             waitRoutine = StartCoroutine(WaitThenPick(retryDelay));
             return;
         }
@@ -139,7 +144,7 @@ public class BossController : Enemy
     private void OnPatternEnd() // current 비우고 PickNext
     {
         current = null;
-        if(pendingStunDuration>0f)
+        if(pendingStunDuration > 0f)
         {
             float d = pendingStunDuration, m = pendingStunMultiplier;
             pendingStunDuration = 0f;
@@ -255,4 +260,10 @@ public class BossController : Enemy
     }
 
     public override void OnHit(DamageInfo info) { } // 보스는 경직,넉백 없음
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, visualRange);
+    }
 }

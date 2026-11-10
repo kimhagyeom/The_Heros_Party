@@ -3329,7 +3329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8428ba04639e748b13bc909e16ae11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
-  health: {fileID: 0}
+  health: {fileID: 1506927872}
   enemyData: {fileID: 11400000, guid: 2a8e4a26b45b24a8b97b8d2d05dc492a, type: 2}
   damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
   damageTextOffset: {x: 0, y: 8, z: 0}
@@ -3339,6 +3339,7 @@ MonoBehaviour:
     - {fileID: 745653514}
     - {fileID: 1190375459}
     - {fileID: 1079522255}
+    - {fileID: 860130273}
     entryPhasePattern: {fileID: 0}
   - hpRatio: 0.4
     patterns:
@@ -3350,6 +3351,7 @@ MonoBehaviour:
   retryDelay: 0.2
   telegraph: {fileID: 117335641}
   gimmickPattern: {fileID: 1922800657}
+  visualRange: 10
 --- !u!114 &1506927872
 MonoBehaviour:
   m_ObjectHideFlags: 0

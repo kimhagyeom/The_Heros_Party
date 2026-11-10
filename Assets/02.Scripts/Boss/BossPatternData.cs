@@ -8,6 +8,7 @@ public class BossPatternData : ScriptableObject
     public float cooldown;
     public float warningTime;
     public int damage;
+    public float atk_Range;
 }
 
 

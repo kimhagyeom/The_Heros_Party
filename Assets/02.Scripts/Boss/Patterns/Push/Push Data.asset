@@ -17,6 +17,7 @@ MonoBehaviour:
   cooldown: 0
   warningTime: 0.5
   damage: 0
+  atk_Range: 15
   Push_Distance: 10
   Push_Speed: 20
   Stun_Duration: 0

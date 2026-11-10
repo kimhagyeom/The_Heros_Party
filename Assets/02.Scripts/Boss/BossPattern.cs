@@ -19,7 +19,20 @@ public abstract class BossPattern : MonoBehaviour
     {
         if (IsRunning || data == null) return false;
         return Time.time >= lastEndTime + data.cooldown;
-    }   
+    }
+    
+    public float GetAtkRange()
+    {
+        if (data == null) return 0f;
+        return data.atk_Range;
+    }
+    public virtual bool InRange(Vector3 bossPos, Vector3 targetPos)
+    {
+        if (data == null || data.atk_Range <= 0f) return true;   // 0이면 어디서든
+        Vector3 diff = targetPos - bossPos;
+        diff.y = 0f;
+        return diff.magnitude <= data.atk_Range;
+    }
     public void Run(BossContext ctx ,Action onEnd) // 시작
     {
         if(IsRunning) return;
