@@ -1,0 +1,93 @@
+using System.Collections;
+using UnityEditor.Rendering;
+using UnityEngine;
+
+public class IceSpikePattern_2 : BossPattern
+{
+    [SerializeField] private GameObject iceSpikePrefab;
+    [SerializeField] private Projectile iceShardPrefab;
+    readonly AoeAttack aoeAttack = new AoeAttack();
+    readonly ProjectileAttack projectileAttack = new ProjectileAttack();
+    
+    IceSpikeData D => (IceSpikeData)data;
+
+    [Header("시트에 없는 값 (임시, 기획 확인)")]
+    [SerializeField] private float spikeLifeTime = 1.4f;
+    [SerializeField] private float shardLifeTime = 10f;
+     [SerializeField] float shardRadius = 0.3f; // 파편 감지 범위
+    [SerializeField] bool shardPierce = false; //파편 관통 여부
+
+
+    protected override IEnumerator Execute(BossContext ctx)
+    {
+        float[] radii = {D.S_Spike_Radius, D.L_Spike_Radius};
+        GameObject lastSpike = null;
+        Vector3 lastPos = Vector3.zero;
+
+        Vector3 targetPos = ctx.target.position;
+        Vector3 dir = targetPos - transform.position;
+        dir.y = 0f;
+        Vector3 atkDir = dir.normalized;
+        //for(int set = 0; set < D.Spike_Set_Count; set++) // SetCount 필요 없을듯?
+        //{
+            for (int i = 0; i < radii.Length; i++)
+            {
+                float r = radii[i];
+                // bool isLast = set == D.Spike_Set_Count - 1 && i == radii.Length - 1; //여기도 어차피 작중큰 얼음가시 소환하면 되니까
+                    
+                var hitbox = new HitboxInfo { shape = HitboxShape.Sector, atk_Type = AttackType.Aoe,atk_Range = 10f, radius = r, angle = 360f };//atk_Range 수정 필요
+                ctx.telegraph.Show(hitbox, targetPos);   
+
+                yield return new WaitForSeconds(D.warningTime);
+                GameObject spike = Instantiate(iceSpikePrefab , targetPos, Quaternion.identity);
+
+                spike.transform.localScale = Vector3.one * (r * 2f); //프리팹 지름 1기준
+                
+                DamageInfo dmg = new DamageInfo { damage = D.damage };
+                aoeAttack.Execute(targetPos, hitbox , dmg, ctx.targetMask);
+                if (i == radii.Length - 1)
+                {
+                    lastSpike = spike; 
+                    lastPos = lastSpike.transform.position;
+                    ctx.telegraph.Hide();
+                    Debug.Log("Last Spike");
+                }
+                else
+                {
+                    Destroy(spike, spikeLifeTime);
+                    yield return new WaitForSeconds(D.Spike_interval);
+                }
+            }
+        //}
+        yield return new WaitForSeconds(spikeLifeTime); // 얼음 가시 생존 시간
+
+        if (lastSpike != null) Destroy(lastSpike);
+        SpawnShard(lastPos, ctx);
+    }
+    private void SpawnShard(Vector3 lastPos , BossContext ctx)
+    {
+        Debug.Log("SpawnShard");
+        float step = 360f / D.Shard_Count;
+
+        var settings = new ProjectileSettings
+        {
+            speed = D.Shard_Speed,
+            lifeTime = shardLifeTime,
+            radius = shardRadius,
+            pierce = shardPierce,
+            targetMask = ctx.targetMask,
+            obstacleMask = 0
+        };
+        var dmg = new DamageInfo { damage = D.damage };
+        //var hitbox = new HitboxInfo { shape = HitboxShape.Box, atk_Type = AttackType.Projectile , atk_Range = 10f, width = 4f, length = 4f };//atk_Range 수정 필요
+
+        for(int i = 0; i < D.Shard_Count; i++)
+        {
+            // ctx.telegraph.Show(hitbox, lastPos);
+            float angle = step * i;
+            Quaternion rot = Quaternion.Euler(0, angle, 0);
+        
+            Projectile p = projectileAttack.Shoot(iceShardPrefab, lastPos, rot, settings, dmg); 
+        }
+    }
+}
