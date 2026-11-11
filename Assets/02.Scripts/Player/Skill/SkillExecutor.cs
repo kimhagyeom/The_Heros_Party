@@ -111,7 +111,7 @@ public class SkillExecutor : MonoBehaviour
     {
         Transform owner = player.transform;
         Vector3 toTarget = target.transform.position - owner.position;
-        toTarget.y = 0f;
+        //toTarget.y = 0f;
         Vector3 dir = toTarget.sqrMagnitude > 0.0001f ? toTarget.normalized : owner.forward;
         player.FaceDirection(dir);
 

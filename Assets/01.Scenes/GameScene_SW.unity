@@ -3344,7 +3344,7 @@ MonoBehaviour:
     - {fileID: 212527754}
     - {fileID: 860130273}
     entryPhasePattern: {fileID: 0}
-  - hpRatio: 0.4
+  - hpRatio: 0.9
     patterns:
     - {fileID: 745653514}
     - {fileID: 1079522255}

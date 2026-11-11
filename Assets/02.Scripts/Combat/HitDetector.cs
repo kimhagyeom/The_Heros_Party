@@ -29,7 +29,7 @@ public class HitDetector
         foreach (Collider hit in hits)
         {
             Vector3 dir = hit.transform.position - owner.position;
-            dir.y = 0f;
+            //dir.y = 0f;
 
             if(Vector3.Angle(owner.forward , dir) > angle / 2f)
                 continue;
@@ -63,7 +63,7 @@ public class HitDetector
         foreach (Collider hit in hits)
         {
             Vector3 dir = hit.transform.position - center;
-            dir.y = 0f;
+            //dir.y = 0f;
 
             if(Vector3.Angle(Vector3.forward , dir) > angle / 2f)
                 continue;
