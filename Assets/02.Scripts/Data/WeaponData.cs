@@ -16,6 +16,7 @@ public class WeaponData : ScriptableObject
     {
         public float damageRate;
         public float duration;
+        public GameObject swingEffect; //attack ¿Ã∆Â∆Æ
     }
     public int weapon_ID;
     public string weapon_Name;

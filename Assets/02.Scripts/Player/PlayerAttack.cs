@@ -226,9 +226,18 @@ public class PlayerAttack : MonoBehaviour
         if (animator == null) return;
         int stateHash = Animator.StringToHash($"Player_Attack{step + 1}");
         // 공격 이펙트
-        Instantiate(attackEffectPrefab, attackEffectPos.position, Quaternion.identity);
+        SpawnSwingEffect(step);
         if (animator.HasState(0, stateHash))
             animator.Play(stateHash, 0, 0f);
+    }
+    void SpawnSwingEffect(int step)
+    {
+        GameObject prefab = currentWeaponData.combo_Step[step].swingEffect;
+        if (prefab == null || attackEffectPos == null) return;
+        GameObject fx = Instantiate(prefab, attackEffectPos.position, prefab.transform.rotation);
+        //좌우 뒤집기
+        if (playerController.facingSign < 0f && fx.TryGetComponent(out ParticleSystemRenderer r))
+            r.flip = new Vector3(1f, 0f, 0f);
     }
 
     // void OnDrawGizmos()
