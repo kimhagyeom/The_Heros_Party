@@ -1,5 +1,4 @@
 using System;
-using Thry.ThryEditor.Drawers;
 using UnityEngine;
 
 [System.Serializable]
