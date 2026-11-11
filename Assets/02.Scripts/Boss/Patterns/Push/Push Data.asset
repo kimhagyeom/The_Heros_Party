@@ -20,4 +20,4 @@ MonoBehaviour:
   atk_Range: 15
   Push_Distance: 10
   Push_Speed: 20
-  Stun_Duration: 2
+  Stun_Duration: 5
