@@ -3339,10 +3339,10 @@ MonoBehaviour:
   phases:
   - hpRatio: 1
     patterns:
+    - {fileID: 745653514}
     - {fileID: 212527754}
-    - {fileID: 212527754}
-    - {fileID: 212527754}
-    - {fileID: 860130273}
+    - {fileID: 1079522255}
+    - {fileID: 1190375459}
     entryPhasePattern: {fileID: 0}
   - hpRatio: 0.4
     patterns:
