@@ -20,10 +20,13 @@ MonoBehaviour:
   combo_Step:
   - damageRate: 1.5
     duration: 0.3
+    swingEffect: {fileID: 8617922408459803972, guid: 588cb817adad025449102775746d3765, type: 3}
   - damageRate: 1.5
     duration: 0.3
+    swingEffect: {fileID: 8617922408459803972, guid: 0aa35e54ed01fda44a94856413bdeada, type: 3}
   - damageRate: 2.5
     duration: 0.4
+    swingEffect: {fileID: 8617922408459803972, guid: 68495420931719641a02de4f10c9435c, type: 3}
   atk_Range: 3.5
   atk_Type: 0
   hitbox_Shape: 0
