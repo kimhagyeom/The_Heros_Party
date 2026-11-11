@@ -236,8 +236,17 @@ public class PlayerAttack : MonoBehaviour
         if (prefab == null || attackEffectPos == null) return;
         GameObject fx = Instantiate(prefab, attackEffectPos.position, prefab.transform.rotation);
         //좌우 뒤집기
-        if (playerController.facingSign < 0f && fx.TryGetComponent(out ParticleSystemRenderer r))
-            r.flip = new Vector3(1f, 0f, 0f);
+        if (playerController.facingSign < 0f)
+        {
+            if (fx.TryGetComponent(out ParticleSystemRenderer r))
+                r.flip = new Vector3(1f, 0f, 0f);
+            // 회전 방향도 반대로
+            if (fx.TryGetComponent(out ParticleSystem ps))
+            {
+                var main = ps.main;
+                main.startRotation = -main.startRotation.constant;
+            }
+        }
     }
 
     // void OnDrawGizmos()

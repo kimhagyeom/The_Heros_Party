@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Thry.ThryEditor.AnimationParser;
 
 public enum SkillPhase { None, Windup, Active, Recovery } // 선딜 / 판정 / 후딜
 
