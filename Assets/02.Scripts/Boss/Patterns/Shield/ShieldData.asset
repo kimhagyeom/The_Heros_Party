@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7121e2282090fa40b105e838188384d, type: 3}
   m_Name: ShieldData
   m_EditorClassIdentifier: Assembly-CSharp::ShieldData
-  patternId: 1005
+  patternId: 1006
   castTime: 0
   cooldown: 0
   warningTime: 0
   damage: 0
+  atk_Range: 0
   trigger_HP1: 0.4
   trigger_HP2: 0.2
   activation_Count: 100

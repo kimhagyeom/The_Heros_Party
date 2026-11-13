@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af68f36bca14f97459738c4ee0f73f44, type: 3}
   m_Name: Magic Missile Data
   m_EditorClassIdentifier: Assembly-CSharp::MagicMissileData
-  patternId: 1002
+  patternId: 1003
   castTime: 0
   cooldown: 0
   warningTime: 0.8

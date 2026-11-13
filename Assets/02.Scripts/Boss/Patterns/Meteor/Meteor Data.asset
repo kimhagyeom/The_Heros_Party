@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de63ef27dbe9444ba85385da865e828, type: 3}
   m_Name: Meteor Data
   m_EditorClassIdentifier: Assembly-CSharp::MeteorData
-  patternId: 1007
+  patternId: 1008
   castTime: 3
   cooldown: 2
   warningTime: 3
   damage: 30
+  atk_Range: 0
   meteorCount: 1
   impactRadius: 4
   Burn_Ground_Duration: 10

@@ -20,18 +20,19 @@ public class PhaseGimmickPattern : BossPattern
         bool full = TriggerCount <= 1 || repeatFullOnSecond;
         if (full)
         {
-            if(teleport != null && centerPos != null)
-            {
-                teleport.OverrideDestiantion = centerPos.position;
-                yield return RunAndWait(teleport,ctx);
-            }
+            
             //밀쳐내기
             yield return RunAndWait(push, ctx);
 
             //감염 안개
             if (fog != null) fog.Begin(ctx.target);
 
-            //중앙 이동 (추가)
+            //중앙 이동
+            if (teleport != null && centerPos != null)
+            {
+                teleport.OverrideDestiantion = centerPos.position;
+                yield return RunAndWait(teleport, ctx);
+            }
         }
 
         //보호막,흙벽 동시 진행

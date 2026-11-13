@@ -4,6 +4,7 @@ using UnityEngine;
 public class PushPattern : BossPattern
 {
     PushData D => (PushData)data;
+    [SerializeField] private Transform pushCenter;
 
     protected override IEnumerator Execute(BossContext ctx)
     {
@@ -11,8 +12,12 @@ public class PushPattern : BossPattern
 
         yield return new WaitForSeconds(D.warningTime);
 
-        // 보스 → 플레이어 방향 = 가장 가까운 외곽 쪽
-        Vector3 dir = ctx.target.position - transform.position;
+        // 보스(기준점) → 플레이어 방향 = 가장 가까운 외곽 쪽
+        // 기준점이 있으면 기준점, 없으면 보스 위치
+        Vector3 center = transform.position;
+        if (pushCenter != null) center = pushCenter.position;
+
+        Vector3 dir = ctx.target.position - center;
         dir.y = 0f;
         if (dir.sqrMagnitude < 0.0001f) dir = transform.forward;
 
