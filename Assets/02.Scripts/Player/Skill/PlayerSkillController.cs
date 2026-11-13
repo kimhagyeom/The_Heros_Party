@@ -29,7 +29,7 @@ public class PlayerSkillController : MonoBehaviour
 {
     public const int SlotCount = 4;
 
-    [SerializeField] private SkillData[] slotSkills = new SkillData[SlotCount];
+    [SerializeField] public SkillData[] slotSkills = new SkillData[SlotCount];
 
     [Header("판정 범위 표시")]
     [SerializeField] private AttackTelegraph telegraph;
