@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b60ea8fbf06714fb47870df6f762f5, type: 3}
   m_Name: Push Data
   m_EditorClassIdentifier: Assembly-CSharp::PushData
-  patternId: 1004
+  patternId: 1005
   castTime: 0
   cooldown: 0
   warningTime: 0.5

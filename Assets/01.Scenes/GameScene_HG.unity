@@ -402,11 +402,11 @@ Transform:
   m_GameObject: {fileID: 182269651}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 220, y: 8, z: 200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2091917035}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &187436186
 GameObject:
@@ -532,6 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PushPattern
   data: {fileID: 11400000, guid: c0fb627969e8fef49a3403a4be7c1c56, type: 2}
+  pushCenter: {fileID: 176700969}
 --- !u!1 &212527752
 GameObject:
   m_ObjectHideFlags: 0
@@ -3347,6 +3348,7 @@ MonoBehaviour:
   - hpRatio: 0.4
     patterns:
     - {fileID: 745653514}
+    - {fileID: 212527754}
     - {fileID: 1079522255}
     - {fileID: 1190375459}
     entryPhasePattern: {fileID: 1922800657}
@@ -4135,7 +4137,6 @@ Transform:
   - {fileID: 188052155}
   - {fileID: 508076966}
   - {fileID: 860130272}
-  - {fileID: 182269655}
   m_Father: {fileID: 1506927869}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2102812434
@@ -4333,3 +4334,4 @@ SceneRoots:
   - {fileID: 349490262}
   - {fileID: 187436189}
   - {fileID: 742465320}
+  - {fileID: 182269655}
