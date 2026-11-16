@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,6 +15,7 @@ public class TeleportPattern : BossPattern
     public Vector3 ? OverrideDestiantion {get; set;}
 
     [Header("연출")]
+    [SerializeField] private GameObject teleportPrefab;
     [SerializeField] private GameObject bossModel;           // 보스의 보이는 부분 (비워두면 숨기기 생략)
     [SerializeField] private float vanishTime = 0.3f;        // 사라진 채로 있는 시간
     [SerializeField] private float appearDelay = 0.4f;       // 나타난 뒤 다음 행동까지 여유
@@ -61,8 +63,8 @@ public class TeleportPattern : BossPattern
             // 2. 플레이어 주변 고리에서 고르기
             for (int t = 0; t < maxPickTries; t++)
             {
-                Vector2 dir = Random.insideUnitCircle.normalized;
-                float dist = Random.Range(minDistance, maxDistance);
+                Vector2 dir = UnityEngine.Random.insideUnitCircle.normalized;
+                float dist = UnityEngine.Random.Range(minDistance, maxDistance);
                 Vector3 candidate = basePos + new Vector3(dir.x, 0f, dir.y) * dist;
 
                 if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 1f, NavMesh.AllAreas))
@@ -84,6 +86,9 @@ public class TeleportPattern : BossPattern
         else bossRoot.position = teleportPos;
 
         // 5. 나타나기 + 짧은 여유
+        Vector3 effectPos = teleportPos + new Vector3(0f, 3f, 0f); // 바닥에 붙지 않게 살짝 띄움
+        GameObject teleportEffect = Instantiate(teleportPrefab,effectPos,Quaternion.identity);
+        Destroy(teleportEffect,0.5f);
         SetVisible(true);
         yield return new WaitForSeconds(appearDelay);
     }

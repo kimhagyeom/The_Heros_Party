@@ -1,26 +1,26 @@
 using UnityEngine;
 
-// 맵 외곽에서 안쪽으로 번지는 안개. 안에 있는 대상에게 일정 간격으로 피해를 줌
+// ?? ??????? ???????? ?????? ???. ??? ??? ???? ???? ???????? ????? ??
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class InfectionFog : MonoBehaviour
 {
     private const int Segments = 64;
 
-    [Header("맵 타원 크기")]
+    [Header("?? ??? ???")]
     [SerializeField] private float radiusX = 30f;
     [SerializeField] private float radiusZ = 20f;
 
-    [Header("확산")]
-    [SerializeField, Range(0f, 1f)] private float startInnerRatio = 0.9f; //안쪽 경계
-    [SerializeField, Range(0f, 1f)] private float endInnerRatio = 0.7f; //다 퍼졌을 때 안쪽 경계
+    [Header("???")]
+    [SerializeField, Range(0f, 1f)] private float startInnerRatio = 0.9f; //???? ???
+    [SerializeField, Range(0f, 1f)] private float endInnerRatio = 0.7f; //?? ?????? ?? ???? ???
     [SerializeField] private float spreadTime = 10f;
 
-    [Header("피해")]
+    [Header("????")]
     [SerializeField] private float damage = 5f;
-    [SerializeField] private float tickInterval = 1f; //피해 간격
+    [SerializeField] private float tickInterval = 1f; //???? ????
 
-    [Header("표시")]
+    [Header("???")]
     [SerializeField] private Color fogColor = new Color(0.45f, 0.15f, 0.7f, 0.45f);
 
     private Mesh mesh;
@@ -51,7 +51,7 @@ public class InfectionFog : MonoBehaviour
 
         if (!newTarget.TryGetComponent(out targetDamageable))
         {
-            Debug.LogWarning("InfectionFog: 대상에 IDamageable이 없음", this);
+            Debug.LogWarning("InfectionFog: ??? IDamageable?? ????", this);
             return;
         }
         target = newTarget;

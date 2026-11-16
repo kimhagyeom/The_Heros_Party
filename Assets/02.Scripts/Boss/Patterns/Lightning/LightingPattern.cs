@@ -63,7 +63,8 @@ public class LightingPattern : BossPattern
         yield return new WaitForSeconds(D.warningTime);
         ctx.telegraph.Hide();
 
-        GameObject lighting = Instantiate(lightingPrefab,targetPos,Quaternion.identity);
+        Vector3 effectPos = targetPos + new Vector3(0f, 3f, 0f); // 바닥에 붙지 않게 살짝 띄움
+        GameObject lighting = Instantiate(lightingPrefab,effectPos,Quaternion.identity);
         Destroy(lighting, lighting_duration);
         DamageInfo dmg = new DamageInfo { damage = D.damage };
         aoeAttack.Execute(targetPos,hitboxInfo, dmg ,ctx.targetMask);

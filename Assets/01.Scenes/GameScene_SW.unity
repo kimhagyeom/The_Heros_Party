@@ -532,6 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PushPattern
   data: {fileID: 11400000, guid: c0fb627969e8fef49a3403a4be7c1c56, type: 2}
+  pushCenter: {fileID: 0}
 --- !u!1 &212527752
 GameObject:
   m_ObjectHideFlags: 0
@@ -2211,6 +2212,7 @@ MonoBehaviour:
   minDistance: 3
   maxDistance: 5
   maxPickTries: 10
+  teleportPrefab: {fileID: 501571056799249353, guid: 53855069b632b4f828bbc1e0a710f479, type: 3}
   bossModel: {fileID: 907124998}
   vanishTime: 0.3
   appearDelay: 0.4
@@ -2498,7 +2500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightingPattern
   data: {fileID: 11400000, guid: b9cda16f623e54046babd52ba4a14565, type: 2}
-  lightingPrefab: {fileID: 60762599081345009, guid: 26922581865a244859945a59d33288bf, type: 3}
+  lightingPrefab: {fileID: 4069937728164613970, guid: 1bee10b961a764bbdb92eb46c7b7b472, type: 3}
   burnGroundPrefab: {fileID: 6803207366237250946, guid: 109474ba844e1da4d8051a13d9081c83, type: 3}
   random_Atk_Radius: 10
   lighting_duration: 0.2
@@ -3110,7 +3112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MagicMissilePattern
   data: {fileID: 11400000, guid: aebabefa82c3e0e49a607878ed15cce8, type: 2}
-  missilePrefab: {fileID: 7648211592940456836, guid: 68519ff5823954c38a471a07276072f4, type: 3}
+  missilePrefab: {fileID: -2279990811217238854, guid: d8928463bf5574b60a6478ee3cabd964, type: 3}
   sideOffset: 4
   infection: 0
   telegraphWidth: 0.3
@@ -3909,8 +3911,8 @@ MonoBehaviour:
   phases:
   - hpRatio: 1
     patterns:
-    - {fileID: 212527754}
-    - {fileID: 212527754}
+    - {fileID: 1079522255}
+    - {fileID: 1190375459}
     - {fileID: 212527754}
     - {fileID: 860130273}
     entryPhasePattern: {fileID: 0}
