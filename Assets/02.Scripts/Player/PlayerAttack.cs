@@ -211,6 +211,31 @@ public class PlayerAttack : MonoBehaviour
         Debug.Log("무기 스위칭");
         currentWeaponData = currentWeaponData == mainWeaponData ? subWeaponData : mainWeaponData;
     }
+    //베이스캠프: 무기 교체
+    // 주무기 교체
+    public void SetMainWeapon(WeaponData weapon)
+    {
+        if (weapon == null) return;
+        bool isHoldingMain = currentWeaponData == mainWeaponData;
+
+        mainWeaponData = weapon;
+        if (isHoldingMain) currentWeaponData = weapon;
+
+        comboIndex = 0;
+        Debug.Log($"[베이스캠프] 주무기 → {weapon.weapon_Name}");
+    }
+    // 보조무기 교체
+    public void SetSubWeapon(WeaponData weapon)
+    {
+        if (weapon == null) return;
+        bool isHoldingSub = currentWeaponData == subWeaponData;
+
+        subWeaponData = weapon;
+        if (isHoldingSub) currentWeaponData = weapon;
+
+        comboIndex = 0;
+        Debug.Log($"[베이스캠프] 보조무기 → {weapon.weapon_Name}");
+    }
 
     public void ResetAttack()
     {

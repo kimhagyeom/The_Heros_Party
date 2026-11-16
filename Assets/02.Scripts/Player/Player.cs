@@ -80,4 +80,11 @@ public class Player : MonoBehaviour
 
         health.Init(Stats.maxHealth, Stats.startHealth);
     }
+    // 베이스캠프: 스탯 변경 후 호출
+    // 바뀐 최대 체력/스태미나를 적용하고 가득 채움
+    public void RefreshStats()
+    {
+        health.Init(Stats.maxHealth, Stats.maxHealth);
+        Stats.currentStamina = Stats.maxStamina;
+    }
 }

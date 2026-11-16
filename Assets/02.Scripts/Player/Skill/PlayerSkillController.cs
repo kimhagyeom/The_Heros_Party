@@ -183,6 +183,23 @@ public class PlayerSkillController : MonoBehaviour
             slot.rechargeRemaining = 0f;
         }
     }
+    //베이스캠프: 스킬 교체
+    public void SetSkill(int slotIndex, SkillData skill)
+    {
+        if (slotIndex < 0 || slotIndex >= SlotCount) return;
+        if (IsCasting)
+        {
+            Debug.Log("[베이스캠프] 스킬 시전 중에는 교체할 수 없음");
+            return;
+        }
+        // 1) 원본 배열도 같이 바꿔줌
+        if (slotIndex < slotSkills.Length)
+            slotSkills[slotIndex] = skill;
+        // 2) 실제로 쓰이는 슬롯을 새로 만듦 → 스택이 가득 찬 상태로 시작
+        slots[slotIndex] = new SkillSlot(skill);
+        string name = skill != null ? skill.skill_Name : "(비움)";
+        Debug.Log($"[베이스캠프] {slotIndex + 1}번 슬롯 → {name}");
+    }
     IEnumerator CastRoutine(int index, SkillData data, Enemy target)
     {
         IsCasting = true;
