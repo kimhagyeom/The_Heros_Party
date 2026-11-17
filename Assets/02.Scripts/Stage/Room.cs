@@ -73,6 +73,7 @@ public class Room : MonoBehaviour
         Debug.Log("Cleared",this);
         isCleared = true;
         OnRoomCleared?.Invoke(this);
+        UpgradeSelector.Instance.ShowUpgradeOptions(3);
         if(roomExit == null) 
         {
             Debug.Log("RoomExit is null" + "게임 클리어!");

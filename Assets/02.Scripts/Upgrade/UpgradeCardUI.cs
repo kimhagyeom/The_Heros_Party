@@ -2,9 +2,55 @@ using UnityEngine;
 
 public class UpgradeCardUI : MonoBehaviour
 {
-    [SerializeField] private UpgradeData upgradeData;
+    public UpgradeData upgradeData;
+    public TMPro.TextMeshProUGUI titleText;
+    public TMPro.TextMeshProUGUI descriptionText;
+    public TMPro.TextMeshProUGUI amountText;
+
     public void SetUpgrade()
     {
         UpgradeManager.Instance.UpgradeSkill(upgradeData);
+        UpgradeSelector.Instance.upgradePanel.SetActive(false);
+    }
+    public void SetData(UpgradeData data)
+    {
+        upgradeData = data;
+        titleText.text = data.upgrade_Name;
+        descriptionText.text = GetDescription(data);
+    }
+    private string GetDescription(UpgradeData data)
+    {
+        switch (data.upgrade_Type)
+        {
+            case UpgradeType.Damage:
+                return $"Damage +{data.dmg_Rate_Increment * 100}%";
+            case UpgradeType.Cooldown:
+                return $"Cooldown -{data.dmg_Rate_Increment * 100}%";
+            case UpgradeType.Stacks:
+                return $"Stacks +{data.projectile_Count_Increment}";
+            case UpgradeType.Windup:
+                return $"Windup -{data.dmg_Rate_Increment * 100}%";
+            case UpgradeType.Range:
+                return $"Range +{data.dmg_Rate_Increment * 100}%";
+            case UpgradeType.Status:    
+                return GetStatusDescription(data.status_Increment);
+        }
+        return "";
+    }
+
+    private string GetStatusDescription(UpgradeStatus status)
+    {
+        if(status == null) return "";
+
+        string description = "";
+
+        if (status.increase_Speed > 0)
+            description += $"Speed +{status.increase_Speed}\n";
+        if (status.increase_maxStamina > 0)
+            description += $"Max Stamina +{status.increase_maxStamina}\n";
+        if (status.increase_BaseAtk > 0)
+            description += $"Base Attack +{status.increase_BaseAtk}\n";
+
+        return description;
     }
 }
