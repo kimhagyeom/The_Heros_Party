@@ -5,7 +5,8 @@ using UnityEngine;
 public class SkillExecutor : MonoBehaviour
 {
     [SerializeField] private LayerMask enemyMask;
-    [SerializeField] private LayerMask obstacleMask = 1;    // 순간이동을 막는 벽 레이어 (기본: Default)
+    [SerializeField] private LayerMask obstacleMask = 1;    // 투사체를 막는 벽 레이어 (기본: Default)
+    [SerializeField] private LayerMask teleportBlockMask = 1; // 일섬을 막는 벽 레이어 (흙벽은 빼기)
     [SerializeField] private float behindDistance = 1f;     //일섬?: 대상 중심에서 얼마나 뒤로 이동할지
     [SerializeField] private float projectileSpawnOffset = 0.5f; // 단검 쇄도: 몸 앞 몇 m에서 투사체 생성
 
@@ -179,7 +180,7 @@ public class SkillExecutor : MonoBehaviour
 
         Vector3 center = owner.position + characterController.center;
         if (Physics.SphereCast(center, characterController.radius, dir, out RaycastHit hit,
-                distance, obstacleMask, QueryTriggerInteraction.Ignore))
+                distance, teleportBlockMask, QueryTriggerInteraction.Ignore))
             return hit.distance;
 
         return distance;

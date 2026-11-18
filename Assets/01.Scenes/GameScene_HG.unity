@@ -7273,6 +7273,9 @@ MonoBehaviour:
     m_Bits: 256
   obstacleMask:
     serializedVersion: 2
+    m_Bits: 129
+  teleportBlockMask:
+    serializedVersion: 2
     m_Bits: 1
   behindDistance: 3.5
   projectileSpawnOffset: 0.5
