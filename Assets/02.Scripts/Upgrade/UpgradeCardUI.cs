@@ -22,20 +22,31 @@ public class UpgradeCardUI : MonoBehaviour
     {
         switch (data.upgrade_Type)
         {
-            case UpgradeType.Damage:
-                return $"Damage +{data.dmg_Rate_Increment * 100}%";
-            case UpgradeType.Cooldown:
-                return $"Cooldown -{data.dmg_Rate_Increment * 100}%";
-            case UpgradeType.Stacks:
-                return $"Stacks +{data.projectile_Count_Increment}";
-            case UpgradeType.Windup:
-                return $"Windup -{data.dmg_Rate_Increment * 100}%";
-            case UpgradeType.Range:
-                return $"Range +{data.dmg_Rate_Increment * 100}%";
-            case UpgradeType.Status:    
+            case UpgradeType.Skill:
+                return GetSkillDescription(data.upgradeSkills);
+            case UpgradeType.Status:
                 return GetStatusDescription(data.status_Increment);
         }
         return "";
+    }
+    private string GetSkillDescription(UpgradeSkills skill)
+    {
+        if (skill == null) return "";
+
+        string description = "";
+
+        if (skill.dmg_Rate_Increment > 0)
+            description += $"Damage +{skill.dmg_Rate_Increment * 100}%\n";
+        if (skill.projectile_Count_Increment > 0)
+            description += $"Projectile +{skill.projectile_Count_Increment}\n";
+        if (skill.cooldown_Increment > 0)
+            description += $"Cooldown -{skill.cooldown_Increment}s\n";
+        if (skill.windup_Increment > 0)
+            description += $"Windup -{skill.windup_Increment}s\n";
+        if (skill.range_Increment > 0)
+            description += $"Range +{skill.range_Increment}m\n";
+
+        return description;
     }
 
     private string GetStatusDescription(UpgradeStatus status)

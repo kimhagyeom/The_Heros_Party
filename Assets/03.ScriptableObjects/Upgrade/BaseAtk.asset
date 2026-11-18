@@ -10,14 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82ea20c0486429b4c881b12b3406d162, type: 3}
-  m_Name: SpinSlash_Atk
+  m_Name: BaseAtk
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
-  upgrade_ID: 1000
-  upgrade_Name: "\uD68C\uC804\uBCA0\uAE30"
-  upgrade_Type: 0
-  dmg_Rate_Increment: 1.2
-  projectile_Count_Increment: 0
+  skillData: {fileID: 0}
+  upgrade_ID: 0
+  upgrade_Name: 
+  upgrade_Type: 1
+  upgradeSkills:
+    dmg_Rate_Increment: 0
+    projectile_Count_Increment: 0
+    cooldown_Increment: 0
+    windup_Increment: 0
+    range_Increment: 0
   status_Increment:
     increase_Speed: 0
     increase_maxStamina: 0
-    increase_BaseAtk: 0
+    increase_BaseAtk: 10
