@@ -24,6 +24,7 @@ public class EnemyData : ScriptableObject
     public float knockback_Resistance;
 
     [Header("이동 / 충돌")]
+    public bool is_Chasing_Player = true;
     public float collision_Radius;
     public float stop_Distance;
 

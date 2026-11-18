@@ -152,6 +152,15 @@ public class EnemyAI_S : MonoBehaviour
             return;
         }
 
+        // 추격하지 않는 적(가시덩굴): 사거리 밖이면 chase x
+        if (!data.is_Chasing_Player)
+        {
+            movement.Stop();
+            movement.LookAt(toTarget);
+            return;
+        }
+
+
         repathTimer -= Time.deltaTime;
         if (repathTimer <= 0f)
         {

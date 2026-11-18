@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
@@ -38,5 +38,7 @@ public class EnemyAttack : MonoBehaviour
         Vector3 spawnPos = targetPos + Vector3.up * 0.02f;
 
         GameObject effect = Instantiate(d.effectPrefab, spawnPos, transform.rotation);
+        if (d.active_Time > 0f)
+            Destroy(effect, d.active_Time); // 유지시간이 끝나면 이펙트 삭제 (돌기둥)
     }
 }

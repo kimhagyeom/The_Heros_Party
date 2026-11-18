@@ -20,7 +20,7 @@ MonoBehaviour:
   chain_Delay: 0
   hp_Damage: 5
   infection_Value: 0
-  atk_Range: 2
+  atk_Range: 4
   windup_Time: 0.5
   active_Time: 0
   recovery_Time: 0.5
