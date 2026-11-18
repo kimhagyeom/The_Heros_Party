@@ -192,6 +192,23 @@ public class PlayerSkillController : MonoBehaviour
             Debug.Log("[베이스캠프] 스킬 시전 중에는 교체할 수 없음");
             return;
         }
+
+        // 같은 스킬이 다른 슬롯에 있으면 그 슬롯은 비움 (중복 장착 방지)
+        if (skill != null)
+        {
+            for (int i = 0; i < SlotCount; i++)
+            {
+                if (i == slotIndex) continue;
+                if (slots[i].data == skill)
+                {
+                    if (i < slotSkills.Length)
+                        slotSkills[i] = null;
+                    slots[i] = new SkillSlot(null);
+                    Debug.Log($"[베이스캠프] {i + 1}번 슬롯에 있던 {skill.skill_Name} 빠짐");
+                }
+            }
+        }
+
         // 1) 원본 배열도 같이 바꿔줌
         if (slotIndex < slotSkills.Length)
             slotSkills[slotIndex] = skill;
