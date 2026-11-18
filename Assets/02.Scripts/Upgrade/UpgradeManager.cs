@@ -14,8 +14,9 @@ public class UpgradeManager : Singleton<UpgradeManager>
         foreach(var slot in playerSkillController.slotSkills)
         {
             if (slot == null) continue;
-
-            if (slot.skill_ID == upgradeData.upgrade_ID)
+            
+            int targetSkillID = upgradeData.upgrade_ID / 10;   // 10002 → 1000
+            if (slot.skill_ID == targetSkillID)
             {
                 applySkillData = slot;
                 break;
@@ -24,20 +25,8 @@ public class UpgradeManager : Singleton<UpgradeManager>
 
         switch (upgradeData.upgrade_Type)
         {
-            case UpgradeType.Damage:
-                applySkillData.dmg_Rate += upgradeData.dmg_Rate_Increment;
-                break;
-            case UpgradeType.Cooldown:
-                applySkillData.cooldown -= upgradeData.dmg_Rate_Increment;
-                break;
-            case UpgradeType.Stacks:
-                applySkillData.max_Stacks += upgradeData.projectile_Count_Increment;
-                break;
-            case UpgradeType.Windup:
-                applySkillData.windup_Time -= upgradeData.dmg_Rate_Increment;
-                break;
-            case UpgradeType.Range:
-                applySkillData.range += upgradeData.dmg_Rate_Increment;
+            case UpgradeType.Skill:
+                UpgradeSkill(applySkillData, upgradeData.upgradeSkills);
                 break;
             case UpgradeType.Status:
                 UpgradePlayer(upgradeData.status_Increment);
@@ -53,5 +42,15 @@ public class UpgradeManager : Singleton<UpgradeManager>
         playerController.stats.Move_Speed += upgradeData.increase_Speed;
         playerController.stats.maxStamina += upgradeData.increase_maxStamina;
         playerController.stats.base_Atk += upgradeData.increase_BaseAtk;
+    }
+    public void UpgradeSkill(SkillData applySkill, UpgradeSkills upgradeData)
+    {
+        if (applySkill == null || upgradeData == null) return;
+
+        applySkill.dmg_Rate += upgradeData.dmg_Rate_Increment;
+        applySkill.max_Stacks += upgradeData.projectile_Count_Increment;
+        applySkill.cooldown -= upgradeData.cooldown_Increment;
+        applySkill.windup_Time -= upgradeData.windup_Increment;
+        applySkill.range += upgradeData.range_Increment;
     }
 }

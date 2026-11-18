@@ -10,14 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82ea20c0486429b4c881b12b3406d162, type: 3}
-  m_Name: UpgradeStatus_BaseAtk
+  m_Name: SpinStrike_Damage
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
-  upgrade_ID: 0
-  upgrade_Name: 
-  upgrade_Type: 5
-  dmg_Rate_Increment: 0
-  projectile_Count_Increment: 0
+  skillData: {fileID: 11400000, guid: 8b88d99c88273a04e94e04e3e3958d82, type: 2}
+  upgrade_ID: 10001
+  upgrade_Name: Spin_Atk
+  upgrade_Type: 0
+  upgradeSkills:
+    dmg_Rate_Increment: 10
+    projectile_Count_Increment: 0
+    cooldown_Increment: 0
+    windup_Increment: 0
+    range_Increment: 0
   status_Increment:
     increase_Speed: 0
     increase_maxStamina: 0
-    increase_BaseAtk: 10
+    increase_BaseAtk: 0
