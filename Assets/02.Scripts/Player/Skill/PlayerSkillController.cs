@@ -30,6 +30,7 @@ public class PlayerSkillController : MonoBehaviour
     public const int SlotCount = 4;
 
     [SerializeField] public SkillData[] slotSkills = new SkillData[SlotCount];
+    [SerializeField] public SkillSlotUI[] skillSlotUIs = new SkillSlotUI[SlotCount];
 
     [Header("판정 범위 표시")]
     [SerializeField] private AttackTelegraph telegraph;
@@ -69,6 +70,8 @@ public class PlayerSkillController : MonoBehaviour
         {
             SkillData data = i < slotSkills.Length ? slotSkills[i] : null;
             slots[i] = new SkillSlot(data);
+            if(skillSlotUIs[i] == null) continue;
+            skillSlotUIs[i].Bind(slots[i]);
         }
     }
 
@@ -204,6 +207,7 @@ public class PlayerSkillController : MonoBehaviour
                     if (i < slotSkills.Length)
                         slotSkills[i] = null;
                     slots[i] = new SkillSlot(null);
+                    if (skillSlotUIs[i] != null) skillSlotUIs[i].Bind(slots[i]); 
                     Debug.Log($"[베이스캠프] {i + 1}번 슬롯에 있던 {skill.skill_Name} 빠짐");
                 }
             }
@@ -214,6 +218,7 @@ public class PlayerSkillController : MonoBehaviour
             slotSkills[slotIndex] = skill;
         // 2) 실제로 쓰이는 슬롯을 새로 만듦 → 스택이 가득 찬 상태로 시작
         slots[slotIndex] = new SkillSlot(skill);
+        if (skillSlotUIs[slotIndex] != null) skillSlotUIs[slotIndex].Bind(slots[slotIndex]);
         string name = skill != null ? skill.skill_Name : "(비움)";
         Debug.Log($"[베이스캠프] {slotIndex + 1}번 슬롯 → {name}");
     }
