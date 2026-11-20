@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class IceSpikePattern_2 : BossPattern
 {
+    [SerializeField] private TeleportPattern teleportPattern;
     [SerializeField] private GameObject iceSpikePrefab;
     [SerializeField] private Projectile iceShardPrefab;
     readonly AoeAttack aoeAttack = new AoeAttack();
@@ -27,37 +28,42 @@ public class IceSpikePattern_2 : BossPattern
         Vector3 dir = targetPos - transform.position;
         dir.y = 0f;
         Vector3 atkDir = dir.normalized;
-        //for(int set = 0; set < D.Spike_Set_Count; set++) // SetCount 필요 없을듯?
-        //{
-            for (int i = 0; i < radii.Length; i++)
-            {
-                float r = radii[i];
-                // bool isLast = set == D.Spike_Set_Count - 1 && i == radii.Length - 1; //여기도 어차피 작중큰 얼음가시 소환하면 되니까
-                    
-                var hitbox = new HitboxInfo { shape = HitboxShape.Sector, atk_Type = AttackType.Aoe,atk_Range = 10f, radius = r, angle = 360f };//atk_Range 수정 필요
-                ctx.telegraph.Show(hitbox, targetPos);   
+        
+        if(teleportPattern != null)
+        {
+            teleportPattern.OverrideDestiantion = targetPos;
+            yield return RunAndWait(teleportPattern, ctx);
+        }
 
-                yield return new WaitForSeconds(D.warningTime);
-                GameObject spike = Instantiate(iceSpikePrefab , targetPos, Quaternion.identity);
-
-                spike.transform.localScale = Vector3.one * (r * 2f); //프리팹 지름 1기준
+        for (int i = 0; i < radii.Length; i++)
+        {
+            float r = radii[i];
+            // bool isLast = set == D.Spike_Set_Count - 1 && i == radii.Length - 1; //여기도 어차피 작중큰 얼음가시 소환하면 되니까
                 
-                DamageInfo dmg = new DamageInfo { damage = D.damage };
-                aoeAttack.Execute(targetPos, hitbox , dmg, ctx.targetMask);
-                if (i == radii.Length - 1)
-                {
-                    lastSpike = spike; 
-                    lastPos = lastSpike.transform.position;
-                    ctx.telegraph.Hide();
-                    Debug.Log("Last Spike");
-                }
-                else
-                {
-                    Destroy(spike, spikeLifeTime);
-                    yield return new WaitForSeconds(D.Spike_interval);
-                }
+            var hitbox = new HitboxInfo { shape = HitboxShape.Sector, atk_Type = AttackType.Aoe,atk_Range = 10f, radius = r, angle = 360f };//atk_Range 수정 필요
+            ctx.telegraph.Show(hitbox, targetPos);   
+
+            yield return new WaitForSeconds(D.warningTime);
+            GameObject spike = Instantiate(iceSpikePrefab , targetPos, Quaternion.identity);
+
+            spike.transform.localScale = Vector3.one * (r * 2f); //프리팹 지름 1기준
+            
+            DamageInfo dmg = new DamageInfo { damage = D.damage };
+            aoeAttack.Execute(targetPos, hitbox , dmg, ctx.targetMask);
+            if (i == radii.Length - 1)
+            {
+                lastSpike = spike; 
+                lastPos = lastSpike.transform.position;
+                ctx.telegraph.Hide();
+                Debug.Log("Last Spike");
             }
-        //}
+            else
+            {
+                Destroy(spike, spikeLifeTime);
+                yield return new WaitForSeconds(D.Spike_interval);
+            }
+        }
+
         yield return new WaitForSeconds(spikeLifeTime); // 얼음 가시 생존 시간
 
         if (lastSpike != null) Destroy(lastSpike);
@@ -88,5 +94,13 @@ public class IceSpikePattern_2 : BossPattern
         
             Projectile p = projectileAttack.Shoot(iceShardPrefab, lastPos, rot, settings, dmg); 
         }
+    }
+
+    IEnumerator RunAndWait(BossPattern pattern, BossContext ctx)
+    {
+        if(pattern == null || ctx == null) yield break;
+
+        pattern.Run(ctx, null);
+        while(pattern.IsRunning) yield return null;
     }
 }

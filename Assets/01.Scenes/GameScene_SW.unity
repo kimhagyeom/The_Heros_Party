@@ -1790,6 +1790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceSpikePattern_2
   data: {fileID: 11400000, guid: e523ba4282a8be048b1254e55f0c8a38, type: 2}
+  teleportPattern: {fileID: 860130273}
   iceSpikePrefab: {fileID: 2691841446480377768, guid: e0fc6226af12e4f99b1bb4fff0e72379, type: 3}
   iceShardPrefab: {fileID: 8621090898542561031, guid: 040f35af0c1704642b74ea1dfb986790, type: 3}
   spikeLifeTime: 1.4
@@ -11641,10 +11642,7 @@ MonoBehaviour:
   phases:
   - hpRatio: 1
     patterns:
-    - {fileID: 1079522255}
-    - {fileID: 1190375459}
     - {fileID: 212527754}
-    - {fileID: 860130273}
     entryPhasePattern: {fileID: 0}
   - hpRatio: 0.4
     patterns:
