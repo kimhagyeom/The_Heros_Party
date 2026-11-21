@@ -30,7 +30,8 @@ public class GameManager : Singleton<GameManager>
         if (CurrentState != GameState.Playing) return;
         SetState(GameState.Cleared);
 
-        GoToBaseCamp();
+        // 보스 죽는 모습 보여주고 베이스캠프로
+        Invoke(nameof(GoToBaseCamp), returnDelay);
     }
 
     public void GameOver()

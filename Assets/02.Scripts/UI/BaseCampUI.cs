@@ -8,6 +8,7 @@ public class BaseCampUI : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerAttack playerAttack;
     [SerializeField] private PlayerSkillController skillController;
+    [SerializeField] private PlayerDataLoader dataLoader;
 
     [Header("현재 상태를 보여줄 텍스트")]
     [SerializeField] private TMP_Text weaponText;
@@ -28,6 +29,8 @@ public class BaseCampUI : MonoBehaviour
     {
         if (playerController.InputActions != null)
             playerController.InputActions.Player.Enable();
+
+        dataLoader.Save(); // 패널 닫을 때 영구 저장
     }
 
     //무기 버튼용

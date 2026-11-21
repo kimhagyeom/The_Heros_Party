@@ -63,6 +63,7 @@ public class Room : MonoBehaviour
                 {
                     Debug.LogWarning("Boss가 비어있음", this); return;
                 }
+                boss.GetComponent<Health>().OnDied += ClearRoom; // 보스 죽으면 방 클리어
                 boss.StartBattle();
                 break;
         }
@@ -73,6 +74,14 @@ public class Room : MonoBehaviour
         Debug.Log("Cleared",this);
         isCleared = true;
         OnRoomCleared?.Invoke(this);
+
+        // 보스방 클리어 = 던전 클리어
+        if (roomType == RoomType.Boss)
+        {
+            GameManager.Instance.ClearStage();
+            return;
+        }
+
         UpgradeSelector.Instance.ShowUpgradeOptions(3);
         if(roomExit == null) 
         {

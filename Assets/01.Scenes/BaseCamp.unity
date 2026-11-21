@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1f14fc48343dd4c99aeec3cd5bba95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseCampPortal
-  dungeonSceneName: GameScene_HG
+  mainScene: GameScene_HG
 --- !u!23 &155216745
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -587,6 +587,7 @@ MonoBehaviour:
   playerController: {fileID: 756309399}
   playerAttack: {fileID: 756309398}
   skillController: {fileID: 756309396}
+  dataLoader: {fileID: 756309402}
   weaponText: {fileID: 961869808}
   skillText: {fileID: 299960309}
   statText: {fileID: 412506044}
@@ -2888,6 +2889,7 @@ GameObject:
   - component: {fileID: 756309394}
   - component: {fileID: 756309393}
   - component: {fileID: 756309392}
+  - component: {fileID: 756309402}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3113,6 +3115,19 @@ Transform:
   - {fileID: 1595809368}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &756309402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756309391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d4775ca61a4704186036497191826f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDataLoader
+  dataTable: {fileID: 11400000, guid: 67da3dfd43751724ab1f3a5798468ce2, type: 2}
 --- !u!1 &768718076
 GameObject:
   m_ObjectHideFlags: 0
