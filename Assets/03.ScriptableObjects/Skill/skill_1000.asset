@@ -17,7 +17,7 @@ MonoBehaviour:
   base_Skill_ID: 0
   atk_Type: 0
   has_Target: 0
-  dmg_Rate: 100
+  dmg_Rate: 10
   cooldown: 3
   max_Stacks: 1
   windup_Time: 0.1
