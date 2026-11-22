@@ -43,4 +43,19 @@ public class UpgradeSelector : Singleton<UpgradeSelector>
 
         upgradePanel.SetActive(true);
     }
+
+    public List<UpgradeData> GetSpecialCandidates(int targetId)
+    {
+        UpgradeProgress p = UpgradeManager.Instance.GetProgress(targetId);
+        List<UpgradeData> result = new List<UpgradeData>();
+
+        foreach (var u in upgrades)
+        {
+            if (u.upgrade_Grade != UpgradeGrade.Special) continue;
+            if (u.upgrade_ID / 10 != targetId) continue;          // 이 대상 것만
+            if (p.takenSpecials.Contains(u.upgrade_ID)) continue; // 먹은 건 제외
+            result.Add(u);
+        }
+        return result;
+    }
 }

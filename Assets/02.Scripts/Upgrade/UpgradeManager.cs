@@ -1,22 +1,36 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UpgradeManager : Singleton<UpgradeManager>
 {
     [SerializeField] private PlayerSkillController playerSkillController;
     [SerializeField] private PlayerController playerController;
+    private Dictionary<int, UpgradeProgress> progressMap = new Dictionary<int, UpgradeProgress>();
+
+    public UpgradeProgress GetProgress(int targetId)
+    {
+        if (!progressMap.TryGetValue(targetId, out var p))
+        {
+            p = new UpgradeProgress();
+            progressMap[targetId] = p;
+        }
+        return p;
+    }
 
     public void UpgradeSkill(UpgradeData upgradeData)
     {
         if (upgradeData == null) return;
 
+        
+        int targetSkillID = upgradeData.upgrade_ID / 10;
+
         SkillData applySkillData = null;
+        UpgradeProgress progress = GetProgress(targetSkillID);
 
         foreach(var slot in playerSkillController.slotSkills)
         {
             if (slot == null) continue;
-            
-            int targetSkillID = upgradeData.upgrade_ID / 10;   // 10002 → 1000
-            if (slot.skill_ID == targetSkillID)
+            if (slot.skill_ID == targetSkillID) // 10002 → 1000
             {
                 applySkillData = slot;
                 break;
@@ -31,6 +45,19 @@ public class UpgradeManager : Singleton<UpgradeManager>
             case UpgradeType.Status:
                 UpgradePlayer(upgradeData.status_Increment);
                 break;
+        }
+
+        
+        if (upgradeData.upgrade_Grade == UpgradeGrade.Special)
+        {
+            progress.takenSpecials.Add(upgradeData.upgrade_ID);
+            return;
+        }
+        upgradeData.upgradeProgress.normalCount++;
+
+        if (progress.normalCount % 3 == 0 && !progress.IsComplete)
+        {
+            Debug.Log($"[{targetSkillID}] 특수 강화 선택 타이밍 ({progress.normalCount}회)");
         }
 
         //skillData.Upgrade();
