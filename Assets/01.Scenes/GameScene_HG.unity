@@ -1301,7 +1301,7 @@ MonoBehaviour:
   playerSkillController: {fileID: 756309396}
   playerController: {fileID: 756309399}
   playerAttack: {fileID: 756309398}
-  specialTriggerCount: 3
+  specialTriggerCount: 1
 --- !u!4 &372827356
 Transform:
   m_ObjectHideFlags: 0
