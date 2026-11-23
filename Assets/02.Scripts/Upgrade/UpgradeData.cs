@@ -15,20 +15,20 @@ public class UpgradeStatus
 [System.Serializable]
 public class UpgradeSkills
 {
-    public float dmg_Rate_Increment;
-    public int projectile_Count_Increment;
-    public float cooldown_Increment;
+    public float dmg_Rate_Increment; // 공격력 +%
+    public int projectile_Count_Increment;  // 투사체 +개
+    public float cooldown_Increment; // 쿨타임 -%
     public float windup_Increment;
-    public float range_Increment;
+    public float range_Increment; // 범위 / 사거리 +%
     public float attack_Speed_Increment; // 공격속도 +%
-    public int max_Stacks_Increment;     // 충전량 +개
+    public int max_Stacks_Increment;// 충전량 +개
 }
 [System.Serializable]
 public class UpgradeProgress
 {
-    public int normalCount;
-    public List<int> takenSpecials = new List<int>();
-    public bool IsComplete => takenSpecials.Count >= 3;
+    public int normalCount; //일반강화 횟수
+    public List<int> takenSpecials = new List<int>(); //얻은 특수 강화 ID 저장
+    public bool IsComplete => takenSpecials.Count >= 3; //특수 3개면 완료
 }
 
 [CreateAssetMenu(fileName = "UpgradeData", menuName = "Upgrade/UpgradeData")]
@@ -39,7 +39,6 @@ public class UpgradeData : ScriptableObject
     public string upgrade_Name;
     public UpgradeType upgrade_Type;
     public UpgradeGrade upgrade_Grade;
-    public UpgradeProgress upgradeProgress;
     public UpgradeSkills upgradeSkills;
     public UpgradeStatus status_Increment;
     public UpgradeTargetType target_Type;

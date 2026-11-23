@@ -9,14 +9,14 @@ public class UpgradeCardUI : MonoBehaviour
 
     public void SetUpgrade()
     {
-        UpgradeManager.Instance.UpgradeSkill(upgradeData);
-        UpgradeSelector.Instance.upgradePanel.SetActive(false);
+        UpgradeSelector.Instance.Pick(upgradeData);
     }
     public void SetData(UpgradeData data)
     {
         upgradeData = data;
-        titleText.text = data.upgrade_Name;
-        descriptionText.text = GetDescription(data);
+        titleText.text = data.display_Name;
+        descriptionText.text = data.display_Description;
+        amountText.text = data.display_Small_Name; // 작은 이름 (검, 회전베기)
     }
     private string GetDescription(UpgradeData data)
     {

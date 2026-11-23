@@ -13,7 +13,8 @@ public class SkillSlot
 
     public SkillSlot(SkillData data)
     {
-        this.data = data;
+        // 강화할때 원본 에셋이 바뀌어서 복사해서 씀
+        this.data = data != null ? ScriptableObject.Instantiate(data) : null;
         stacks = MaxStacks; // 처음엔 가득 찬 상태로 시작
     }
 
@@ -202,7 +203,7 @@ public class PlayerSkillController : MonoBehaviour
             for (int i = 0; i < SlotCount; i++)
             {
                 if (i == slotIndex) continue;
-                if (slots[i].data == skill)
+                if (!slots[i].IsEmpty && slots[i].data.skill_ID == skill.skill_ID) // 복사본이라 ID로 비교
                 {
                     if (i < slotSkills.Length)
                         slotSkills[i] = null;

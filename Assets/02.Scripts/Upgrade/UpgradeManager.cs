@@ -5,6 +5,8 @@ public class UpgradeManager : Singleton<UpgradeManager>
 {
     [SerializeField] private PlayerSkillController playerSkillController;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerAttack playerAttack;
+    [SerializeField] private int specialTriggerCount = 3; // 특수 강화 주기
     private Dictionary<int, UpgradeProgress> progressMap = new Dictionary<int, UpgradeProgress>();
 
     public UpgradeProgress GetProgress(int targetId)
@@ -21,26 +23,15 @@ public class UpgradeManager : Singleton<UpgradeManager>
     {
         if (upgradeData == null) return;
 
-        
-        int targetSkillID = upgradeData.upgrade_ID / 10;
-
-        SkillData applySkillData = null;
-        UpgradeProgress progress = GetProgress(targetSkillID);
-
-        foreach(var slot in playerSkillController.slotSkills)
-        {
-            if (slot == null) continue;
-            if (slot.skill_ID == targetSkillID) // 10002 → 1000
-            {
-                applySkillData = slot;
-                break;
-            }
-        }
+        UpgradeProgress progress = GetProgress(upgradeData.target_ID);
 
         switch (upgradeData.upgrade_Type)
         {
             case UpgradeType.Skill:
-                UpgradeSkill(applySkillData, upgradeData.upgradeSkills);
+                if (upgradeData.target_Type == UpgradeTargetType.Normal_Attack)
+                    UpgradeAttack(upgradeData.upgradeSkills);
+                else
+                    UpgradeSkill(GetSkill(upgradeData.target_ID), upgradeData.upgradeSkills);
                 break;
             case UpgradeType.Status:
                 UpgradePlayer(upgradeData.status_Increment);
@@ -53,14 +44,46 @@ public class UpgradeManager : Singleton<UpgradeManager>
             progress.takenSpecials.Add(upgradeData.upgrade_ID);
             return;
         }
-        upgradeData.upgradeProgress.normalCount++;
-
-        if (progress.normalCount % 3 == 0 && !progress.IsComplete)
-        {
-            Debug.Log($"[{targetSkillID}] 특수 강화 선택 타이밍 ({progress.normalCount}회)");
-        }
+        progress.normalCount++;
 
         //skillData.Upgrade();
+    }
+
+    // 특수 강화 타이밍인지
+    public bool NeedSpecial(int targetId)
+    {
+        UpgradeProgress p = GetProgress(targetId);
+        return p.normalCount / specialTriggerCount > p.takenSpecials.Count;
+    }
+
+    // 장착중인 무기/스킬인지
+    public bool IsEquipped(UpgradeData upgradeData)
+    {
+        if (upgradeData.target_Type == UpgradeTargetType.Normal_Attack)
+            return playerAttack.mainWeaponData != null && playerAttack.mainWeaponData.weapon_ID == upgradeData.target_ID;
+
+        return GetSkill(upgradeData.target_ID) != null;
+    }
+
+    // 장착한 스킬 찾기
+    SkillData GetSkill(int skillId)
+    {
+        for (int i = 0; i < PlayerSkillController.SlotCount; i++)
+        {
+            SkillSlot slot = playerSkillController.GetSlot(i);
+            if (slot != null && !slot.IsEmpty && slot.data.skill_ID == skillId)
+                return slot.data;
+        }
+        return null;
+    }
+
+    public void UpgradeAttack(UpgradeSkills upgradeData)
+    {
+        if (upgradeData == null) return;
+
+        playerAttack.upgradeDamageRate += upgradeData.dmg_Rate_Increment;
+        playerAttack.upgradeRangeRate += upgradeData.range_Increment;
+        playerAttack.upgradeSpeedRate += upgradeData.attack_Speed_Increment;
     }
     public void UpgradePlayer(UpgradeStatus upgradeData)
     {
@@ -74,10 +97,13 @@ public class UpgradeManager : Singleton<UpgradeManager>
     {
         if (applySkill == null || upgradeData == null) return;
 
-        applySkill.dmg_Rate += upgradeData.dmg_Rate_Increment;
-        applySkill.max_Stacks += upgradeData.projectile_Count_Increment;
-        applySkill.cooldown -= upgradeData.cooldown_Increment;
+        // 0.1 = 10%
+        applySkill.dmg_Rate *= 1f + upgradeData.dmg_Rate_Increment;
+        applySkill.projectile_Count += upgradeData.projectile_Count_Increment;
+        applySkill.max_Stacks += upgradeData.max_Stacks_Increment;
+        applySkill.cooldown *= 1f - upgradeData.cooldown_Increment;
         applySkill.windup_Time -= upgradeData.windup_Increment;
-        applySkill.range += upgradeData.range_Increment;
+        applySkill.range *= 1f + upgradeData.range_Increment; // 부채꼴
+        applySkill.length *= 1f + upgradeData.range_Increment; // 박스
     }
 }

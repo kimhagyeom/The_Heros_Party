@@ -10,6 +10,9 @@ public class PlayerAttack : MonoBehaviour
     public WeaponData mainWeaponData;
     public WeaponData subWeaponData;
     public float attackInterval = 1f; // 공격 간격
+    public float upgradeDamageRate = 1f; // 강화 공격력 배율
+    public float upgradeRangeRate = 1f; // 강화 범위 배율
+    public float upgradeSpeedRate = 1f; // 강화 공속 배율
     private float lastAttackTime = -999f; // 마지막 공격 시간
     public float hitDetectionWidth = 15f;
     private int comboIndex = 0;
@@ -79,7 +82,7 @@ public class PlayerAttack : MonoBehaviour
 
         foreach (Enemy enemy in EnemyRegistry.Instance.ActiveEnemies)
         {
-            float range = currentWeaponData.atk_Range + GetEnemyRadius(enemy.transform);
+            float range = currentWeaponData.atk_Range * upgradeRangeRate + GetEnemyRadius(enemy.transform);
             float sqrDistance = (enemy.transform.position - transform.position).sqrMagnitude;
             if (sqrDistance <= range * range)
             {
@@ -132,8 +135,9 @@ public class PlayerAttack : MonoBehaviour
 
         HashSet<Transform> hit = new HashSet<Transform>();
         float elapsed = 0f;
+        float duration = comboStep.duration / upgradeSpeedRate; // 공속 강화
 
-        while (elapsed < comboStep.duration)
+        while (elapsed < duration)
         {
             if (playerController.IsDashing)
             {
@@ -141,7 +145,7 @@ public class PlayerAttack : MonoBehaviour
                 break;
             }
             elapsed += Time.deltaTime;
-            float t = elapsed / comboStep.duration;
+            float t = elapsed / duration;
             float currentYaw = Mathf.Lerp(startYaw, endYaw, t);
 
             weaponPivot.rotation = Quaternion.Euler(0f, currentYaw, 0f);
@@ -176,7 +180,7 @@ public class PlayerAttack : MonoBehaviour
 
             Vector3 dirToEnemy = enemy.position - transform.position;
             //dirToEnemy.y = 0f;
-            float range = currentWeaponData.atk_Range + GetEnemyRadius(enemy);
+            float range = currentWeaponData.atk_Range * upgradeRangeRate + GetEnemyRadius(enemy);
             if (dirToEnemy.sqrMagnitude > range * range) continue;
 
             float angleToWeapon = Vector3.Angle(weaponPivot.forward, dirToEnemy);
@@ -187,13 +191,13 @@ public class PlayerAttack : MonoBehaviour
                 {
                     DamageInfo damageInfo = new DamageInfo
                     {
-                        damage = playerController.stats.base_Atk * damageRate,
+                        damage = playerController.stats.base_Atk * damageRate * upgradeDamageRate,
                         infection = 0f,
                         hitDirection = (enemy.position - transform.position).normalized,
                         knockbackDistance = 0f
                     };
                     damageable.TakeDamage(damageInfo); // 캐릭터 공격력 * 무기 비율
-                    dpmTracker.RecordDamage(playerController.stats.base_Atk * damageRate);
+                    dpmTracker.RecordDamage(playerController.stats.base_Atk * damageRate * upgradeDamageRate);
                 }
             }
         }

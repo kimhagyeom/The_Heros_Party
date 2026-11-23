@@ -178,7 +178,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Base Atk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7c4ac2b59fd27a6408ba8c24aa87735b, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &31723222
@@ -1092,7 +1092,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &290711031
@@ -1298,6 +1298,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
   playerSkillController: {fileID: 756309396}
   playerController: {fileID: 756309399}
+  playerAttack: {fileID: 756309398}
+  specialTriggerCount: 3
 --- !u!4 &372827356
 Transform:
   m_ObjectHideFlags: 0
@@ -1899,7 +1901,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Base Atk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7c4ac2b59fd27a6408ba8c24aa87735b, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1966,7 +1968,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &670674693
@@ -2359,6 +2361,9 @@ MonoBehaviour:
   mainWeaponData: {fileID: 11400000, guid: dc69e8297cb1e410d871232326824f7e, type: 2}
   subWeaponData: {fileID: 11400000, guid: bebd28b281f034941b9078ae65fc2497, type: 2}
   attackInterval: 0
+  upgradeDamageRate: 1
+  upgradeRangeRate: 1
+  upgradeSpeedRate: 1
   hitDetectionWidth: 15
   comboResetTime: 0.5
   comboFinishDelay: 0.7
@@ -3522,9 +3527,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSelector
   upgrades:
-  - {fileID: 11400000, guid: 8b0eec7adcc3e4aa0bee8e1327135bda, type: 2}
-  - {fileID: 11400000, guid: be5d93c2e6cae48758d4d259c6f499ec, type: 2}
-  - {fileID: 11400000, guid: 48640276206794c778cd9913740d162e, type: 2}
+  - {fileID: 11400000, guid: ebd761fbee535644681e2a005c2a97d7, type: 2}
+  - {fileID: 11400000, guid: d0532d9fc3da58247864a48fd7f95e28, type: 2}
+  - {fileID: 11400000, guid: 8b8d4f667b200944f955174131f89619, type: 2}
+  - {fileID: 11400000, guid: af954a95a3874b2c81a93cfbb8c7e59d, type: 2}
+  - {fileID: 11400000, guid: 4195442ea5ed40739a22f83c49722049, type: 2}
+  - {fileID: 11400000, guid: 3083407debfb4407bf705e10f6687cdf, type: 2}
+  - {fileID: 11400000, guid: 3a0be971a37b4174afce066e551b76c5, type: 2}
+  - {fileID: 11400000, guid: 33d410327fa340ff8e61fdacdb5a841e, type: 2}
+  - {fileID: 11400000, guid: c176b3fdf6ca49768333e07a27a65f9d, type: 2}
+  - {fileID: 11400000, guid: e2c805590a60427da464bdd89a3f8d55, type: 2}
+  - {fileID: 11400000, guid: dc12095786c2494dbb68582873706cd5, type: 2}
+  - {fileID: 11400000, guid: 3531aacb365748c8b9d3e3e2ec4e206b, type: 2}
+  - {fileID: 11400000, guid: 2804912b176ae684889571a64a0763ba, type: 2}
+  - {fileID: 11400000, guid: e72130d7170491f45a41e864f2cd8cd9, type: 2}
+  - {fileID: 11400000, guid: 2738510b77ceb6648bc24e38e95b0daa, type: 2}
+  - {fileID: 11400000, guid: 620d0a940429e84498bfb06f3b7992f2, type: 2}
+  - {fileID: 11400000, guid: cf9ed33867e79304f9793c6658d593e7, type: 2}
+  - {fileID: 11400000, guid: 4b630d2ed52b20a40a9fb9c3a4200002, type: 2}
+  - {fileID: 11400000, guid: a98d2708e1cfbba43b38bf35fbba7559, type: 2}
+  - {fileID: 11400000, guid: 0f1da76b30e7aa047a8656e943ac550b, type: 2}
+  - {fileID: 11400000, guid: 9e0204deb6d04d7498838b1f7ffc90ce, type: 2}
+  - {fileID: 11400000, guid: d64fcf9eeaa59df4587e7b33bfb02308, type: 2}
+  - {fileID: 11400000, guid: 7a5dc9550e84ca84bad9dd1b405e2475, type: 2}
+  - {fileID: 11400000, guid: 592378e1b4ef2e646a0a4e295e8466b2, type: 2}
+  - {fileID: 11400000, guid: 0693117bc699ae04081b11734e21799c, type: 2}
+  - {fileID: 11400000, guid: 6f85d340de1dbe94996eebebd13d522f, type: 2}
+  - {fileID: 11400000, guid: 0e6f4c6ec7d03834086d795494f3bc38, type: 2}
+  - {fileID: 11400000, guid: ab0f09ac19c7c9846b9cb4e545de8c44, type: 2}
+  - {fileID: 11400000, guid: c50f31510ff1f194080b3194dc76cf36, type: 2}
+  - {fileID: 11400000, guid: 01db3792bd39ec04cb39c6cdb146b753, type: 2}
+  - {fileID: 11400000, guid: ccfac94803de7d54db2533e18107a20e, type: 2}
+  - {fileID: 11400000, guid: b29f9580a333bd847895910c70c31a16, type: 2}
+  - {fileID: 11400000, guid: 481527da5a2801d4da471b96367bd5a3, type: 2}
   upgradeCardUIs:
   - {fileID: 1479665560}
   - {fileID: 1584538339}
@@ -5237,7 +5272,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Base Atk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7c4ac2b59fd27a6408ba8c24aa87735b, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -5304,7 +5339,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1840514723
@@ -5441,7 +5476,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1849636549
@@ -5990,7 +6025,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &2044421010
