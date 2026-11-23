@@ -20,6 +20,7 @@ public class GameManager : Singleton<GameManager>
 
     public void StartGame()
     {
+        RunSaveManager.Instance.StartRun();
         SetState(GameState.Playing);
         StageManager.Instance.BeginStage();
     }
@@ -29,6 +30,7 @@ public class GameManager : Singleton<GameManager>
         // Playing 상태에서만 클리어 처리 (중복 호출이나 GameOver 이후 호출로 상태가 꼬이는 것 방지)
         if (CurrentState != GameState.Playing) return;
         SetState(GameState.Cleared);
+        RunSaveManager.Instance.Delete();
 
         // 보스 죽는 모습 보여주고 베이스캠프로
         Invoke(nameof(GoToBaseCamp), returnDelay);
@@ -38,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (CurrentState != GameState.Playing) return;
         SetState(GameState.GameOver);
+        RunSaveManager.Instance.Delete();
 
         // 바로 넘어가면 어색해서 조금 기다렸다가 베이스캠프로
         Invoke(nameof(GoToBaseCamp), returnDelay);

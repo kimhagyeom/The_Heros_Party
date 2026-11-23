@@ -82,7 +82,7 @@ public class Room : MonoBehaviour
             return;
         }
 
-        UpgradeSelector.Instance.ShowUpgradeOptions(3);
+        UpgradeSelector.Instance.ShowUpgradeOptions();
         if(roomExit == null) 
         {
             Debug.Log("RoomExit is null" + "게임 클리어!");

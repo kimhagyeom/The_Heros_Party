@@ -6,6 +6,7 @@ public class UpgradeManager : Singleton<UpgradeManager>
     [SerializeField] private PlayerSkillController playerSkillController;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerAttack playerAttack;
+    public List<int> upgrades;
     public int specialTriggerCount = 3; // 특수 강화 주기
     private Dictionary<int, UpgradeProgress> progressMap = new Dictionary<int, UpgradeProgress>();
 
@@ -23,30 +24,32 @@ public class UpgradeManager : Singleton<UpgradeManager>
     {
         if (upgradeData == null) return;
 
+        upgrades.Add(upgradeData.upgrade_ID);
         UpgradeProgress progress = GetProgress(upgradeData.target_ID);
 
         switch (upgradeData.upgrade_Type)
         {
             case UpgradeType.Skill:
                 if (upgradeData.target_Type == UpgradeTargetType.Normal_Attack)
+                {
                     UpgradeAttack(upgradeData.upgradeSkills);
+                }
                 else
                     UpgradeSkill(GetSkill(upgradeData.target_ID), upgradeData.upgradeSkills);
                 break;
             case UpgradeType.Status:
-                UpgradePlayer(upgradeData.status_Increment);
-                break;
+                {
+                    UpgradePlayer(upgradeData.status_Increment);
+                    break;
+                }
         }
 
-        
         if (upgradeData.upgrade_Grade == UpgradeGrade.Special)
         {
             progress.takenSpecials.Add(upgradeData.upgrade_ID);
             return;
         }
         progress.normalCount++;
-
-        //skillData.Upgrade();
     }
 
     // 특수 강화 타이밍인지
@@ -105,5 +108,38 @@ public class UpgradeManager : Singleton<UpgradeManager>
         applySkill.windup_Time -= upgradeData.windup_Increment;
         applySkill.range *= 1f + upgradeData.range_Increment; // 부채꼴
         applySkill.length *= 1f + upgradeData.range_Increment; // 박스
+    }
+
+    public void Replay(List<int> savedIds, Dictionary<int, UpgradeData> lookup)
+    {
+        ResetRun();
+        if (savedIds == null || lookup == null) return;
+
+        foreach (int id in savedIds)
+        {
+            if (!lookup.TryGetValue(id, out UpgradeData data)) continue;   // 삭제된 강화는 건너뜀
+            UpgradeSkill(data);   // 적용 + 목록 추가 + 횟수 기록 전부 여기서
+        }
+    }
+    int RecordProgress(UpgradeData data)
+    {
+        UpgradeProgress p = GetProgress(data.target_ID);
+
+        if (data.upgrade_Grade == UpgradeGrade.Special)
+        {
+            p.takenSpecials.Add(data.upgrade_ID);
+            return -1;
+        }
+
+        p.normalCount++;
+        if (p.normalCount % 3 == 0 && !p.IsComplete)
+            return data.target_ID;
+
+        return -1;
+    }
+    public void ResetRun()
+    {
+        upgrades.Clear();
+        progressMap.Clear();
     }
 }
