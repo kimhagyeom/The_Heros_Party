@@ -3,6 +3,7 @@ using UnityEngine;
 
 public enum UpgradeType { Skill, Status }
 public enum UpgradeGrade { Normal, Special }
+public enum UpgradeTargetType { Normal_Attack, Skill }
 
 [System.Serializable]
 public class UpgradeStatus
@@ -19,6 +20,8 @@ public class UpgradeSkills
     public float cooldown_Increment;
     public float windup_Increment;
     public float range_Increment;
+    public float attack_Speed_Increment; // 공격속도 +%
+    public int max_Stacks_Increment;     // 충전량 +개
 }
 [System.Serializable]
 public class UpgradeProgress
@@ -38,6 +41,12 @@ public class UpgradeData : ScriptableObject
     public UpgradeGrade upgrade_Grade;
     public UpgradeProgress upgradeProgress;
     public UpgradeSkills upgradeSkills;
-    public UpgradeStatus status_Increment;   
+    public UpgradeStatus status_Increment;
+    public UpgradeTargetType target_Type;
+    public int target_ID;
+    public bool is_Enabled = true;
+    public string display_Name;
+    public string display_Small_Name;
+    [TextArea] public string display_Description;
 
 }

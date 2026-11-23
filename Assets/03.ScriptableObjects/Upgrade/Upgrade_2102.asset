@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ea20c0486429b4c881b12b3406d162, type: 3}
+  m_Name: Upgrade_2102
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
+  skillData: {fileID: 0}
+  upgrade_ID: 2102
+  upgrade_Name: "\uD68C\uC804\uBCA0\uAE30_\uAC15\uCC29"
+  upgrade_Type: 0
+  upgrade_Grade: 1
+  upgradeProgress:
+    normalCount: 0
+    takenSpecials: 
+  upgradeSkills:
+    dmg_Rate_Increment: 0.3
+    projectile_Count_Increment: 0
+    cooldown_Increment: 0
+    windup_Increment: 0
+    range_Increment: 0.3
+    attack_Speed_Increment: 0
+    max_Stacks_Increment: 0
+  status_Increment:
+    increase_Speed: 0
+    increase_maxStamina: 0
+    increase_BaseAtk: 0
+  target_Type: 1
+  target_ID: 10001
+  is_Enabled: 1
+  display_Name: "\uAC15\uCC29"
+  display_Small_Name: "\uD68C\uC804\uBCA0\uAE30"
+  display_Description: "\uBC94\uC704 \uBC0F \uD53C\uD574\uB7C9 30% \uC99D\uAC00,\n\uB109\uBC31
+    \uBA74\uC5ED\uC774 \uC5C6\uB294 \uC801\uC744 \uB04C\uC5B4\uB2F9\uAE40"
