@@ -6,7 +6,7 @@ public class UpgradeManager : Singleton<UpgradeManager>
     [SerializeField] private PlayerSkillController playerSkillController;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerAttack playerAttack;
-    [SerializeField] private int specialTriggerCount = 3; // 특수 강화 주기
+    public int specialTriggerCount = 3; // 특수 강화 주기
     private Dictionary<int, UpgradeProgress> progressMap = new Dictionary<int, UpgradeProgress>();
 
     public UpgradeProgress GetProgress(int targetId)

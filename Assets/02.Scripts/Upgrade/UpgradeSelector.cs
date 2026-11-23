@@ -4,6 +4,7 @@ public class UpgradeSelector : Singleton<UpgradeSelector>
 {
     [SerializeField] private UpgradeData[] upgrades;
     [SerializeField] private UpgradeCardUI[] upgradeCardUIs;
+    [SerializeField] private PlayerController player;
     public GameObject upgradePanel;
 
     private List<UpgradeData> selectedUpgrades = new List<UpgradeData>();
@@ -50,14 +51,14 @@ public class UpgradeSelector : Singleton<UpgradeSelector>
             ShowCards(GetSpecialCandidates(upgradeData.target_ID));
             return;
         }
-        upgradePanel.SetActive(false);
+        ClosePanel();
     }
 
     void ShowCards(List<UpgradeData> cards)
     {
         if (cards.Count == 0) // 카드 없으면 닫기
         {
-            upgradePanel.SetActive(false);
+            ClosePanel();
             return;
         }
 
@@ -75,6 +76,22 @@ public class UpgradeSelector : Singleton<UpgradeSelector>
         }
 
         upgradePanel.SetActive(true);
+        SetPlayerInput(false); // 카드 클릭이 공격으로 안 나가게
+    }
+
+    void ClosePanel()
+    {
+        upgradePanel.SetActive(false);
+        SetPlayerInput(true);
+    }
+
+    void SetPlayerInput(bool enabled)
+    {
+        if (player == null)
+            player = FindFirstObjectByType<PlayerController>();
+
+        if (enabled) player.InputActions.Player.Enable();
+        else player.InputActions.Player.Disable();
     }
 
     public List<UpgradeData> GetSpecialCandidates(int targetId)

@@ -6,6 +6,7 @@ public class UpgradeCardUI : MonoBehaviour
     public TMPro.TextMeshProUGUI titleText;
     public TMPro.TextMeshProUGUI descriptionText;
     public TMPro.TextMeshProUGUI amountText;
+    public TMPro.TextMeshProUGUI smallNameText; // 작은 이름 (검, 회전베기)
 
     public void SetUpgrade()
     {
@@ -16,7 +17,23 @@ public class UpgradeCardUI : MonoBehaviour
         upgradeData = data;
         titleText.text = data.display_Name;
         descriptionText.text = data.display_Description;
-        amountText.text = data.display_Small_Name; // 작은 이름 (검, 회전베기)
+        smallNameText.text = data.display_Small_Name;
+        amountText.text = GetProgressText(data);
+    }
+    // 이 카드 고르면 몇 번째인지
+    private string GetProgressText(UpgradeData data)
+    {
+        UpgradeProgress p = UpgradeManager.Instance.GetProgress(data.target_ID);
+
+        if (data.upgrade_Grade == UpgradeGrade.Special)
+            return $"특수 {p.takenSpecials.Count + 1}/3";
+
+        int count = UpgradeManager.Instance.specialTriggerCount;
+        int next = p.normalCount + 1;
+        int left = count - next % count; // 특수까지 남은 횟수
+        if (left == count)
+            return $"일반 {next}회 → 특수 강화!";
+        return $"일반 {next}회 (특수까지 {left}회)";
     }
     private string GetDescription(UpgradeData data)
     {
