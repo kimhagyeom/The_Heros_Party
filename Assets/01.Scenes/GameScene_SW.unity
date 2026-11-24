@@ -1137,6 +1137,7 @@ MonoBehaviour:
   database: {fileID: 11400000, guid: c9c31f5c2cd4c4d1c8c1a5c25f8fa424, type: 2}
   skillController: {fileID: 756309396}
   playerAttack: {fileID: 756309398}
+  playerHealth: {fileID: 756309393}
   defaultMainWeaponId: 1001
   defaultSubWeaponId: 1011
   defaultSkillIds: 11270000122700000000000013270000
@@ -1354,7 +1355,7 @@ MonoBehaviour:
   playerController: {fileID: 756309399}
   playerAttack: {fileID: 756309398}
   upgrades: 
-  specialTriggerCount: 1
+  specialTriggerCount: 3
 --- !u!4 &372827356
 Transform:
   m_ObjectHideFlags: 0
@@ -2990,8 +2991,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78984f558dfd341aca5cbf103f7cb2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  mainWeaponOriginal: {fileID: 0}
-  subWeaponOriginal: {fileID: 0}
+  mainWeaponOriginal: {fileID: 11400000, guid: dc69e8297cb1e410d871232326824f7e, type: 2}
+  subWeaponOriginal: {fileID: 11400000, guid: bebd28b281f034941b9078ae65fc2497, type: 2}
   currentWeaponData: {fileID: 11400000, guid: dc69e8297cb1e410d871232326824f7e, type: 2}
   mainWeaponData: {fileID: 11400000, guid: dc69e8297cb1e410d871232326824f7e, type: 2}
   subWeaponData: {fileID: 11400000, guid: bebd28b281f034941b9078ae65fc2497, type: 2}
@@ -3132,6 +3133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e701feceb8f04bfcadef095199c2704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
+  roomIndex: 3
   arrivalPoint: {fileID: 336331296}
   roomType: 0
   spawnEntries:
@@ -3268,6 +3270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e701feceb8f04bfcadef095199c2704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
+  roomIndex: 1
   arrivalPoint: {fileID: 0}
   roomType: 0
   spawnEntries:
@@ -4117,6 +4120,13 @@ MonoBehaviour:
   startRoom: {fileID: 801012099}
   player: {fileID: 756309399}
   deathDelay: 1
+  rooms:
+  - {fileID: 801012099}
+  - {fileID: 2077626094}
+  - {fileID: 772306095}
+  - {fileID: 1374857830}
+  - {fileID: 1941100880}
+  roomIndex: 0
 --- !u!4 &1114284655
 Transform:
   m_ObjectHideFlags: 0
@@ -5041,6 +5051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e701feceb8f04bfcadef095199c2704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
+  roomIndex: 4
   arrivalPoint: {fileID: 1892502274}
   roomType: 0
   spawnEntries:
@@ -6813,6 +6824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e701feceb8f04bfcadef095199c2704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
+  roomIndex: 5
   arrivalPoint: {fileID: 1025624075}
   roomType: 2
   spawnEntries: []
@@ -7115,6 +7127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e701feceb8f04bfcadef095199c2704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
+  roomIndex: 2
   arrivalPoint: {fileID: 1071961466}
   roomType: 0
   spawnEntries:

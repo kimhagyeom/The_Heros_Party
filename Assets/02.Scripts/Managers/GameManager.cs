@@ -13,14 +13,13 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float returnDelay = 1f; // 사망 연출 보여주는 시간
 
     // 테스트용 자동 시작. 메인 메뉴/스테이지 선택 붙이면 이 호출은 지우고 메뉴 쪽에서 StartGame()을 직접 호출할 것
-    private void Start()
-    {
-        StartGame();
-    }
+    // private void Start()
+    // {
+    //     StartGame();
+    // }
 
     public void StartGame()
     {
-        RunSaveManager.Instance.StartRun();
         SetState(GameState.Playing);
         StageManager.Instance.BeginStage();
     }

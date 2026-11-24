@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,8 +9,11 @@ public class StageManager : Singleton<StageManager>
     [SerializeField] private Room startRoom;          // 게임 시작 시 첫 방
     [SerializeField] private PlayerController player; // 비워두면 자동으로 찾음
     [SerializeField] private float deathDelay = 1f; //사망 연출 시간
+    [SerializeField] private Room[] rooms;
     public Room CurrentRoom { get; private set; }
+    public int roomIndex;
     private bool isTransitioning; // 전환 중 중복 요청 방지
+    
 
     // GameManager.StartGame()에서 호출
     public void BeginStage()
@@ -19,7 +23,16 @@ public class StageManager : Singleton<StageManager>
             Debug.LogWarning("[StageManager] startRoom이 비어 있음", this);
             return;
         }
-        StartCoroutine(EnterRoomRoutine(startRoom, isFirstRoom: true));
+        if (roomIndex != 0 && roomIndex != startRoom.roomIndex)
+        {
+            Debug.Log($"[Stage] BeginStage roomIndex={roomIndex}");
+            Room loadRoom = GetRoom(roomIndex);
+            Debug.Log($"[Stage] GetRoom 결과: {(loadRoom != null ? loadRoom.name : "null")}");
+            if (loadRoom == null) loadRoom = startRoom;
+            StartCoroutine(EnterRoomRoutine(loadRoom, isFirstRoom: false));
+        }
+        else    
+            StartCoroutine(EnterRoomRoutine(startRoom, isFirstRoom: true));
     }
 
     // RoomExit(출구)에서 호출. nextRoom이 null이면 던전 끝
@@ -33,6 +46,9 @@ public class StageManager : Singleton<StageManager>
             GameManager.Instance.ClearStage();
             return;
         }
+
+        roomIndex = nextRoom.roomIndex;
+        RunSaveManager.Instance.Save();   // 출구 지나서 저장
 
         StartCoroutine(EnterRoomRoutine(nextRoom, isFirstRoom: false));
     }
@@ -64,6 +80,7 @@ public class StageManager : Singleton<StageManager>
         isTransitioning = false;
 
         CurrentRoom.StartCombat();
+        Debug.Log("StartCombat");
     }
 
     // GameManager.Start()에서 바로 호출될 수 있어서, Start 대신 필요할 때 찾음
@@ -120,5 +137,15 @@ public class StageManager : Singleton<StageManager>
         GameManager.Instance.CompleteRestart();
 
         yield return EnterRoomRoutine(startRoom, isFirstRoom: true); //페이드 아웃 후 처음 방 가기
+    }
+
+    Room GetRoom(int roomIndex)
+    {
+        foreach(Room r in rooms)
+        {
+            if(r.roomIndex == roomIndex)
+                return r;
+        }
+        return null;
     }
 }

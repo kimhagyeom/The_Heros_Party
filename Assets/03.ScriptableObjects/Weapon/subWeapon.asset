@@ -15,11 +15,12 @@ MonoBehaviour:
   weapon_ID: 1002
   weapon_Name: "\uD14C\uC2A4\uD2B8"
   weapon_Type: 0
-  weapon_Slot_Type: 0
+  weapon_Slot_Type: 1
   combo_Count: 1
   combo_Step:
   - damageRate: 0.2
     duration: 0.2
+    swingEffect: {fileID: 0}
   atk_Range: 100
   atk_Type: 0
   hitbox_Shape: 0

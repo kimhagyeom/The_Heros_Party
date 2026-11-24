@@ -107,7 +107,7 @@ public class UpgradeSelector : Singleton<UpgradeSelector>
     {
         upgradePanel.SetActive(false);
         SetPlayerInput(true);
-        RunSaveManager.Instance.Save();   // 강화 선택이 다 끝난 뒤에만 저장
+        
     }
 
     void SetPlayerInput(bool enabled)

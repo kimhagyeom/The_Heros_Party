@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // 영구 데이터 불러와서 Player에 적용 / 베이스캠프에서 저장
 public class PlayerDataLoader : MonoBehaviour
@@ -21,10 +22,24 @@ public class PlayerDataLoader : MonoBehaviour
     void Start()
     {
         PermanentData data = SaveManager.LoadPermanent();
-        if (data == null) return; // 처음엔 씬에 세팅된 값 그대로(스탯은 playerconrooler stats, 무기는 playerattack main, sub weapon data 스킬슬롯은 playerskillcontroller slot skills)
 
-        LoadStats(data);
-        LoadEquipment(data);
+        bool isDungeon = SceneManager.GetActiveScene().name != "BaseCamp";
+
+        // 1. 스탯은 어디서든 먼저
+        if (data != null)
+            LoadStats(data);
+
+        if (isDungeon)
+        {
+            // 2. 던전: 장비·강화·HP는 RunSaveManager가 (이어하기 or 새 런)
+            RunSaveManager.Instance.StartRun();
+        }
+        else
+        {
+            // 2. 베이스캠프: 장비 불러오기
+            if (data != null)
+                LoadEquipment(data);
+        }
     }
 
     void LoadStats(PermanentData data)

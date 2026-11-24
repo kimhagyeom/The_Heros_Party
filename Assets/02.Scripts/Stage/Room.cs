@@ -18,6 +18,7 @@ public enum RoomType
 
 public class Room : MonoBehaviour
 {
+    public int roomIndex;
     [Header("도착 위치")]
     [SerializeField] private Transform arrivalPoint;
     [Header("클리어 조건")]
