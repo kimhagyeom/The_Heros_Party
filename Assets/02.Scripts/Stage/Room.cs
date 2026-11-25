@@ -18,6 +18,7 @@ public enum RoomType
 
 public class Room : MonoBehaviour
 {
+    public int roomIndex;
     [Header("도착 위치")]
     [SerializeField] private Transform arrivalPoint;
     [Header("클리어 조건")]
@@ -82,7 +83,7 @@ public class Room : MonoBehaviour
             return;
         }
 
-        UpgradeSelector.Instance.ShowUpgradeOptions(3);
+        UpgradeSelector.Instance.ShowUpgradeOptions();
         if(roomExit == null) 
         {
             Debug.Log("RoomExit is null" + "게임 클리어!");

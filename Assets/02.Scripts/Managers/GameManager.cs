@@ -13,10 +13,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float returnDelay = 1f; // 사망 연출 보여주는 시간
 
     // 테스트용 자동 시작. 메인 메뉴/스테이지 선택 붙이면 이 호출은 지우고 메뉴 쪽에서 StartGame()을 직접 호출할 것
-    private void Start()
-    {
-        StartGame();
-    }
+    // private void Start()
+    // {
+    //     StartGame();
+    // }
 
     public void StartGame()
     {
@@ -29,6 +29,7 @@ public class GameManager : Singleton<GameManager>
         // Playing 상태에서만 클리어 처리 (중복 호출이나 GameOver 이후 호출로 상태가 꼬이는 것 방지)
         if (CurrentState != GameState.Playing) return;
         SetState(GameState.Cleared);
+        RunSaveManager.Instance.Delete();
 
         // 보스 죽는 모습 보여주고 베이스캠프로
         Invoke(nameof(GoToBaseCamp), returnDelay);
@@ -38,6 +39,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (CurrentState != GameState.Playing) return;
         SetState(GameState.GameOver);
+        RunSaveManager.Instance.Delete();
 
         // 바로 넘어가면 어색해서 조금 기다렸다가 베이스캠프로
         Invoke(nameof(GoToBaseCamp), returnDelay);

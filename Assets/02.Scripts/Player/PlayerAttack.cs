@@ -6,6 +6,11 @@ using System.Linq;
 
 public class PlayerAttack : MonoBehaviour
 {
+    
+    [SerializeField] private WeaponData mainWeaponOriginal;
+    [SerializeField] private WeaponData subWeaponOriginal;
+    public WeaponData MainWeapon { get; private set; }
+    public WeaponData SubWeapon  { get; private set; }
     public WeaponData currentWeaponData;
     public WeaponData mainWeaponData;
     public WeaponData subWeaponData;
@@ -33,6 +38,11 @@ public class PlayerAttack : MonoBehaviour
 
     private bool isAtk = false;
     public bool IsAttacking => isAtk;
+
+    void Awake()
+    {
+        InitWeapons(mainWeaponOriginal, subWeaponOriginal);
+    }
 
     void Start()
     {
@@ -74,6 +84,32 @@ public class PlayerAttack : MonoBehaviour
     private void OnWeaponSwitchPerformed(InputAction.CallbackContext ctx)
     {
         SwitchWeapon();
+    }
+
+    public void InitWeapons(WeaponData mainOriginal, WeaponData subOriginal)
+    {
+        if (MainWeapon != null) Destroy(MainWeapon);   // 이전 복사본 정리
+        if (SubWeapon  != null) Destroy(SubWeapon);
+
+        MainWeapon = mainOriginal != null ? Instantiate(mainOriginal) : null;
+        SubWeapon  = subOriginal  != null ? Instantiate(subOriginal)  : null;
+
+        // 기존 공격 코드가 쓰는 변수들을 복사본으로
+        mainWeaponData    = MainWeapon;
+        subWeaponData     = SubWeapon;
+        currentWeaponData = mainWeaponData;
+
+        // 런 강화 배율 초기화 (새 런 / 이어하기 Replay 전에 깨끗하게)
+        upgradeDamageRate = 1f;
+        upgradeRangeRate  = 1f;
+        upgradeSpeedRate  = 1f;
+        comboIndex = 0;
+    }
+    public WeaponData FindWeapon(int weaponId)
+    {
+        if (MainWeapon != null && MainWeapon.weapon_ID == weaponId) return MainWeapon;
+        if (SubWeapon  != null && SubWeapon.weapon_ID  == weaponId) return SubWeapon;
+        return null;
     }
 
     void FindEnemy()

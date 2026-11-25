@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,14 +8,13 @@ public enum SkillPhase { None, Windup, Active, Recovery } // 선딜 / 판정 / �
 
 public class SkillSlot
 {
-    public SkillData data;
+    public SkillData data;           // ★ 복사본
     public int stacks;               // 지금 쓸 수 있는 횟수
     public float rechargeRemaining;  // 다음 스택 충전까지 남은 시간
 
     public SkillSlot(SkillData data)
     {
-        // 강화할때 원본 에셋이 바뀌어서 복사해서 씀
-        this.data = data != null ? ScriptableObject.Instantiate(data) : null;
+        this.data = data;
         stacks = MaxStacks; // 처음엔 가득 찬 상태로 시작
     }
 
@@ -30,6 +30,7 @@ public class PlayerSkillController : MonoBehaviour
 {
     public const int SlotCount = 4;
 
+    [Tooltip("원본 SkillData (인스펙터 연결). 실제 사용은 slots[i].data 복사본")]
     [SerializeField] public SkillData[] slotSkills = new SkillData[SlotCount];
     [SerializeField] public SkillSlotUI[] skillSlotUIs = new SkillSlotUI[SlotCount];
 
@@ -66,14 +67,8 @@ public class PlayerSkillController : MonoBehaviour
             telegraph = AttackTelegraph.Create(transform, telegraphColor, telegraphMaterial);
         pathTelegraph = AttackTelegraph.Create(null, telegraphColor, telegraphMaterial);
 
-        slots = new SkillSlot[SlotCount];
-        for (int i = 0; i < SlotCount; i++)
-        {
-            SkillData data = i < slotSkills.Length ? slotSkills[i] : null;
-            slots[i] = new SkillSlot(data);
-            if(skillSlotUIs[i] == null) continue;
-            skillSlotUIs[i].Bind(slots[i]);
-        }
+        // 저장 시스템 없이 테스트할 때를 위한 기본 세팅 (인스펙터 원본으로 복사본 생성)
+        InitSkills(slotSkills);
     }
 
     void Start()
@@ -98,6 +93,80 @@ public class PlayerSkillController : MonoBehaviour
     {
         RechargeSlots();
     }
+
+    // ─────────────────────────────────────────────
+    // 복사본 생성 / 찾기 / 저장
+    // ─────────────────────────────────────────────
+
+    // 런 시작 / 이어하기 때 호출: 원본 → 복사본
+    public void InitSkills(SkillData[] originals)
+    {
+        if (slots == null) slots = new SkillSlot[SlotCount];
+
+        for (int i = 0; i < SlotCount; i++)
+        {
+            SkillData original = originals != null && i < originals.Length ? originals[i] : null;
+            if (i < slotSkills.Length) slotSkills[i] = original;
+            SetSlot(i, original);
+        }
+    }
+
+    // 슬롯 새로 만들기: 이전 복사본 정리 → 새 복사본 → UI 연결
+    void SetSlot(int index, SkillData original)
+    {
+        if (slots[index] != null && slots[index].data != null)
+            Destroy(slots[index].data);
+
+        SkillData copy = original != null ? Instantiate(original) : null;
+        slots[index] = new SkillSlot(copy);
+
+        if (index < skillSlotUIs.Length && skillSlotUIs[index] != null)
+            skillSlotUIs[index].Bind(slots[index]);
+    }
+
+    // 스킬 ID로 복사본 찾기 (UpgradeManager, UpgradeSelector에서 사용)
+    public SkillData FindSkill(int skillId)
+    {
+        if (slots == null) return null;
+        foreach (SkillSlot slot in slots)
+        {
+            if (!slot.IsEmpty && slot.data.skill_ID == skillId)
+                return slot.data;
+        }
+        return null;
+    }
+
+    public int[] GetSkillIds()
+    {
+        int[] ids = new int[SlotCount];
+        for (int i = 0; i < SlotCount; i++)
+            ids[i] = slots[i].IsEmpty ? 0 : slots[i].data.skill_ID;
+        return ids;
+    }
+
+    public List<SkillSlotSave> GetSlotSaves()
+    {
+        List<SkillSlotSave> list = new List<SkillSlotSave>();
+        foreach (SkillSlot slot in slots)
+            list.Add(new SkillSlotSave { stacks = slot.stacks, rechargeRemaining = slot.rechargeRemaining });
+        return list;
+    }
+
+    // 강화 Replay 뒤에 호출 (최대 충전량이 강화로 바뀌니까)
+    public void RestoreSlots(List<SkillSlotSave> saves)
+    {
+        if (saves == null) return;
+        for (int i = 0; i < SlotCount && i < saves.Count; i++)
+        {
+            if (slots[i].IsEmpty) continue;
+            slots[i].stacks = Mathf.Clamp(saves[i].stacks, 0, slots[i].MaxStacks);
+            slots[i].rechargeRemaining = saves[i].rechargeRemaining;
+        }
+    }
+
+    // ─────────────────────────────────────────────
+    // 쿨타임 / 사용
+    // ─────────────────────────────────────────────
 
     private void OnSkillPerformed(InputAction.CallbackContext ctx)
     {
@@ -167,6 +236,7 @@ public class PlayerSkillController : MonoBehaviour
 
         StartCoroutine(CastRoutine(index, slot.data, target));
     }
+
     public void ResetSkills() //리셋 시 스킬 끊고 스택 초기화 , 코루틴도 정지
     {
         StopAllCoroutines();
@@ -187,7 +257,8 @@ public class PlayerSkillController : MonoBehaviour
             slot.rechargeRemaining = 0f;
         }
     }
-    //베이스캠프: 스킬 교체
+
+    //베이스캠프: 스킬 교체 (skill은 원본)
     public void SetSkill(int slotIndex, SkillData skill)
     {
         if (slotIndex < 0 || slotIndex >= SlotCount) return;
@@ -197,32 +268,33 @@ public class PlayerSkillController : MonoBehaviour
             return;
         }
 
-        // 같은 스킬이 다른 슬롯에 있으면 그 슬롯은 비움 (중복 장착 방지)
+        // 같은 스킬이 다른 슬롯에 있으면 그 슬롯은 비움 (중복 장착 방지) — 복사본이라 ID로 비교
         if (skill != null)
         {
             for (int i = 0; i < SlotCount; i++)
             {
                 if (i == slotIndex) continue;
-                if (!slots[i].IsEmpty && slots[i].data.skill_ID == skill.skill_ID) // 복사본이라 ID로 비교
+                if (!slots[i].IsEmpty && slots[i].data.skill_ID == skill.skill_ID)
                 {
-                    if (i < slotSkills.Length)
-                        slotSkills[i] = null;
-                    slots[i] = new SkillSlot(null);
-                    if (skillSlotUIs[i] != null) skillSlotUIs[i].Bind(slots[i]); 
+                    if (i < slotSkills.Length) slotSkills[i] = null;
+                    SetSlot(i, null);
                     Debug.Log($"[베이스캠프] {i + 1}번 슬롯에 있던 {skill.skill_Name} 빠짐");
                 }
             }
         }
 
-        // 1) 원본 배열도 같이 바꿔줌
         if (slotIndex < slotSkills.Length)
             slotSkills[slotIndex] = skill;
-        // 2) 실제로 쓰이는 슬롯을 새로 만듦 → 스택이 가득 찬 상태로 시작
-        slots[slotIndex] = new SkillSlot(skill);
-        if (skillSlotUIs[slotIndex] != null) skillSlotUIs[slotIndex].Bind(slots[slotIndex]);
+        SetSlot(slotIndex, skill);   // 새 복사본 → 스택 가득 찬 상태로 시작
+
         string name = skill != null ? skill.skill_Name : "(비움)";
         Debug.Log($"[베이스캠프] {slotIndex + 1}번 슬롯 → {name}");
     }
+
+    // ─────────────────────────────────────────────
+    // 시전 (기존 그대로)
+    // ─────────────────────────────────────────────
+
     IEnumerator CastRoutine(int index, SkillData data, Enemy target)
     {
         IsCasting = true;
@@ -261,6 +333,7 @@ public class PlayerSkillController : MonoBehaviour
     void PlaySkillAnimation(SkillData data)
     {
         if (animator == null) return;
+        // ★ 스킬 ID가 10001 등으로 바뀌어서 애니메이터 상태 이름도 Player_Skill10001 형태로 맞춰야 함
         int stateHash = Animator.StringToHash($"Player_Skill{data.skill_ID}");
         if (animator.HasState(0, stateHash))
         {
