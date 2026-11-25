@@ -953,6 +953,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShieldPattern
   data: {fileID: 11400000, guid: 2522a8da61836814f975dfffa4836365, type: 2}
   failPattern: {fileID: 39959408}
+  shieldPrefab: {fileID: 6944478496352457897, guid: 9fa6ed43beaf5445a85f9697e608cc7b, type: 3}
+  effectPosOffset: {x: -1, y: 3, z: 0}
 --- !u!4 &243894807
 Transform:
   m_ObjectHideFlags: 0
