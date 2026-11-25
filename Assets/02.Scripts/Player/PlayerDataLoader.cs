@@ -36,6 +36,9 @@ public class PlayerDataLoader : MonoBehaviour
         }
         else
         {
+            // 베이스캠프에 왔다 = 이전 런 끝남 -> 이어하기 파일 삭제
+            RunSaveManager.Instance.Delete();
+
             // 2. 베이스캠프: 장비 불러오기
             if (data != null)
                 LoadEquipment(data);
