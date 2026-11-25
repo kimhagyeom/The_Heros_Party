@@ -17,7 +17,7 @@ public class TeleportPattern : BossPattern
     [Header("연출")]
     [SerializeField] private GameObject teleportPrefab;
     [SerializeField] private GameObject bossModel;           // 보스의 보이는 부분 (비워두면 숨기기 생략)
-    [SerializeField] private Vector3 effectPosOffset = new Vector3(-1f, 3f, 0f);        // 사라진 채로 있는 시간
+    [SerializeField] private Vector3 effectPosOffset = new Vector3(-1f, 3f, 0f); 
     [SerializeField] private float vanishTime = 0.3f;        // 사라진 채로 있는 시간
     [SerializeField] private float appearDelay = 0.4f;       // 나타난 뒤 다음 행동까지 여유
 

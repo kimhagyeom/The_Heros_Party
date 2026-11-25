@@ -4,8 +4,11 @@ using UnityEngine;
 public class ShieldPattern : BossPattern
 {
     [SerializeField] BossPattern failPattern;
+    [SerializeField] private GameObject shieldPrefab;
+    [SerializeField] private Vector3 effectPosOffset = new Vector3(0f, 4.8f, -3f);
     ShieldData D => (ShieldData)data;
     Health health;
+    GameObject shieldEffect;
     // 보스컨트롤러가 HP 트리거 확인에 사용
     public float[] HpTriggers => data == null ? new float[0] : new[] { D.trigger_HP1, D.trigger_HP2 };
     protected override IEnumerator Execute(BossContext ctx)
@@ -14,15 +17,25 @@ public class ShieldPattern : BossPattern
 
         // 보호막 켜기
         health.SetShield(D.activation_Count);
+        
+        shieldEffect = Instantiate(shieldPrefab, transform);
+        shieldEffect.transform.localPosition = effectPosOffset;
 
         // 제한시간 동안 기다리기 (깨지면 바로 빠져나옴)
         float elapsed = 0f;
         while (elapsed < D.shield_Duration)
         {
-            if (!health.IsShielded && D.End_On_Break) break;
+            if (!health.IsShielded && D.End_On_Break)
+            {
+                ClearShieldEffect();
+                break;
+            }
             elapsed += Time.deltaTime;
             yield return null;
         }
+        // 시간 종료로 빠져나온 경우까지 정리
+        ClearShieldEffect();
+        
         if (!health.IsShielded)
         {
             // 성공 → 패턴이 끝난 뒤 컨트롤러가 기절 + 취약 처리
@@ -43,11 +56,19 @@ public class ShieldPattern : BossPattern
     }
     protected override void OnStopped()
     {
+        // 패턴이 중간에 끊겨도 이펙트는 정리 (health 체크보다 먼저)
+        ClearShieldEffect();
+        
         if (health == null) return;
         health.SetShield(0f);
     }
-    void HandleShieldBroken()
+    
+    void ClearShieldEffect()
     {
-
+        if (shieldEffect != null)
+        {
+            Destroy(shieldEffect);
+            shieldEffect = null;
+        }
     }
 }
