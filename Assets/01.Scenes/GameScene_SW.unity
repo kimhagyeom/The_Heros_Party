@@ -302,7 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeteorPattern
   data: {fileID: 11400000, guid: bb43dbde06a3c41d2b3007d57d854768, type: 2}
   meteorPrefab: {fileID: 60762599081345009, guid: 9e89ee9a2adbb42afa8eb9d4f0b89868, type: 3}
-  burnGroundPrefab: {fileID: 6803207366237250946, guid: 109474ba844e1da4d8051a13d9081c83, type: 3}
+  burnGroundPrefab: {fileID: -348883060266005948, guid: ac91134b7727f4bf3b58fb1579a035ce, type: 3}
   spawnHight: {x: 0, y: 10, z: 0}
   fallSpeed: 3
   burnground_Damage: 6
@@ -3728,7 +3728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LightingPattern
   data: {fileID: 11400000, guid: b9cda16f623e54046babd52ba4a14565, type: 2}
   lightingPrefab: {fileID: 4069937728164613970, guid: 1bee10b961a764bbdb92eb46c7b7b472, type: 3}
-  burnGroundPrefab: {fileID: 6803207366237250946, guid: 109474ba844e1da4d8051a13d9081c83, type: 3}
+  burnGroundPrefab: {fileID: 1083489332881716135, guid: 634af92d79c604ee3ac9380de0febb0f, type: 3}
   random_Atk_Radius: 10
   lighting_duration: 0.2
   burnground_Damage: 6
