@@ -40,6 +40,8 @@ public class RunSaveManager : Singleton<RunSaveManager>
     // ── 새 런
     public void StartNewRun(int mainWeaponId, int subWeaponId, int[] skillIds)
     {
+        if (mainWeaponId == 0) mainWeaponId = defaultMainWeaponId;
+        if (subWeaponId == 0)  subWeaponId  = defaultSubWeaponId;
         playerAttack.InitWeapons(database.GetWeapon(mainWeaponId), database.GetWeapon(subWeaponId));
         skillController.InitSkills(GetSkills(skillIds));
         UpgradeManager.Instance.ResetRun();

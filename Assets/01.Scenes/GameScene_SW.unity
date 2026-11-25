@@ -1139,7 +1139,7 @@ MonoBehaviour:
   playerAttack: {fileID: 756309398}
   playerHealth: {fileID: 756309393}
   defaultMainWeaponId: 1001
-  defaultSubWeaponId: 1011
+  defaultSubWeaponId: 1002
   defaultSkillIds: 11270000122700000000000013270000
 --- !u!4 &324787311
 Transform:
