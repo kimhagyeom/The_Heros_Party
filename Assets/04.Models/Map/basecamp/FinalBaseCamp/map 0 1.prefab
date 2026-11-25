@@ -415,6 +415,7 @@ GameObject:
   - component: {fileID: 4619742729994219563}
   - component: {fileID: 6014245492398040210}
   - component: {fileID: 3649341767325614487}
+  - component: {fileID: 4093328870311348463}
   m_Layer: 0
   m_Name: map0 cage
   m_TagString: Untagged
@@ -494,6 +495,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4093328870311348463
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133125236893872141}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 690106047850165013, guid: 0cc8f1f7ed468774e8bddc0f9f9bdc04, type: 3}
 --- !u!1 &8259227846611587690
 GameObject:
   m_ObjectHideFlags: 0

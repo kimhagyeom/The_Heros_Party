@@ -41,7 +41,7 @@ public class EnemyAI_S : MonoBehaviour
                     currentState == State.Windup && atk != null && atk.has_Super_Armor;
 
     private bool isRanged; // 투사체 확인용 
-    [SerializeField] private float fleeRange = 4f;      // 이 거리 안으로 들어오면 도망
+    [SerializeField] private float fleeRange = 15;      // 이 거리 안으로 들어오면 도망
     [SerializeField] private float fleeDistance = 4f;   // 도망 지점을 얼마나 앞에 찍을지
     void Start()
     {

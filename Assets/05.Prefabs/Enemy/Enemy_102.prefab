@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff75d3557f148475daa390956d0e181a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  health: {fileID: 0}
   enemyData: {fileID: 11400000, guid: 6f398fe9a940a264799bcf3e466e1b3d, type: 2}
   damageTextPrefab: {fileID: 3806835965005989872, guid: 9e19fe82c5757934eb565d8053f9833e, type: 3}
   damageTextOffset: {x: 0, y: 2, z: 0}
@@ -106,7 +107,7 @@ MonoBehaviour:
   currentState: 0
   telegraph: {fileID: 1545449204285315867}
   telegraphMaterial: {fileID: 2100000, guid: 161700c9c34f6430191e95e29d6bf36a, type: 2}
-  fleeRange: 4.5
+  fleeRange: 15
   fleeDistance: 4
 --- !u!114 &388261740422618470
 MonoBehaviour:
@@ -120,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9c7a50d2f14901ad2be4770cd71c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
+  shieldHP: 0
 --- !u!114 &4099987681321387997
 MonoBehaviour:
   m_ObjectHideFlags: 0
