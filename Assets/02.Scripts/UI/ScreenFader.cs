@@ -12,6 +12,7 @@ public class ScreenFader : Singleton<ScreenFader>
 
     private void OnEnable()
     {
+        canvasGroup.gameObject.SetActive(true);
         SetAlpha(startBlack ? 1f : 0f);
     }
 
