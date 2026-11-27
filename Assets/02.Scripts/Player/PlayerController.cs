@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private Health health;   // 대시 무적에 사용
     private PlayerAttack playerAttack; // 공격 중 여부 확인용
     private PlayerSkillController skillController; // 스킬 사용 중 여부 확인용
-    private bool isDash = false;
+    public bool isDash = false;
     private bool isBack = false;
     public float facingSign;
     private Vector3 lastMoveDir;
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     public bool IsAttacking => playerAttack != null && playerAttack.IsAttacking;
     public bool IsCasting => skillController != null && skillController.IsCasting;
     public bool IsStunned => Time.time < stunUntil;
-    public bool IsBusy => IsKnockback || IsDashing || IsAttacking || IsCasting || IsStunned;
+    public bool IsBusy => IsKnockback || isDash || IsAttacking || IsCasting || IsStunned;
 
     void Awake()
     {
@@ -190,8 +190,7 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleDodge()
     {
-        // 스킬 사용 중에는 대시 불가 (스킬 도중 위치가 바뀌지 않도록)
-        if(isDash || IsCasting || IsStunned || stats.currentStamina < stats.dash_Stamina_Cost) return;
+        if(isDash ||  (IsCasting && !skillController.IsCancelable) || IsStunned || stats.currentStamina < stats.dash_Stamina_Cost) return;
 
         stats.currentStamina -= stats.dash_Stamina_Cost;
         stats.currentStamina = Mathf.Clamp(stats.currentStamina, 0, stats.maxStamina);

@@ -52,6 +52,7 @@ public class PlayerSkillController : MonoBehaviour
     private Animator animator;
 
     public bool IsCasting { get; private set; }
+    public bool IsCancelable { get; private set; }
     public SkillPhase Phase { get; private set; }
     public int CastingSlot { get; private set; } = -1;
 
@@ -297,20 +298,30 @@ public class PlayerSkillController : MonoBehaviour
 
     IEnumerator CastRoutine(int index, SkillData data, Enemy target)
     {
+        Debug.Log("Cast!");
         IsCasting = true;
         CastingSlot = index;
         PlaySkillAnimation(data);
 
         // 선딜: 범위 표시 후 안쪽이 차오름
-        SetPhase(SkillPhase.Windup, data);
+       SetPhase(SkillPhase.Windup, data);
+        IsCancelable = true;                    // 선딜 시작: 대시로 취소 가능
         bool hasTelegraph = ShowTelegraph(data, target);
         float elapsed = 0f;
         while (elapsed < data.windup_Time)
         {
             elapsed += Time.deltaTime;
+            if (playerController.isDash)
+            {
+                IsCancelable = false;
+                CancelCast(data);               // 정리는 여기서 전부
+                Debug.Log("Cast Canceled!");
+                yield break;                    // break 대신: Execute까지 내려가지 않음
+            }
             if (hasTelegraph) shownTelegraph.SetProgress(elapsed / data.windup_Time);
             yield return null;
         }
+        IsCancelable = false;                   // 선딜 끝: 이제부터 취소 불가
 
         // 판정: 범위 꽉 찬 상태로 유지
         SetPhase(SkillPhase.Active, data);
@@ -329,7 +340,13 @@ public class PlayerSkillController : MonoBehaviour
         IsCasting = false;
         CastingSlot = -1;
     }
-
+    void CancelCast(SkillData data)
+    {
+        IsCasting = false;
+        SetPhase(SkillPhase.None,data);
+        CastingSlot = -1;
+        HideTelegraph();
+    }
     void PlaySkillAnimation(SkillData data)
     {
         if (animator == null) return;

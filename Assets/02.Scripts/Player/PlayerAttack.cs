@@ -178,6 +178,7 @@ public class PlayerAttack : MonoBehaviour
             if (playerController.IsDashing)
             {
                 // 추후 대시 애니메이션 추가
+                CancelAttack();
                 break;
             }
             elapsed += Time.deltaTime;
@@ -203,6 +204,13 @@ public class PlayerAttack : MonoBehaviour
             attackBuffered = false;
             TryAttack();
         }
+    }
+    void CancelAttack()
+    {
+        isAtk = false;
+        comboIndex = 0;
+        lastSwingEndTime = Time.time;
+        attackBuffered = false;
     }
 
     void CheckWeaponHit(HashSet<Transform> hit, float damageRate)
