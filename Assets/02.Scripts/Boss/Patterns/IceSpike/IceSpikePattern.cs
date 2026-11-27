@@ -18,7 +18,7 @@ public class IceSpikePattern : BossPattern
 
 
     protected override IEnumerator Execute(BossContext ctx)
-    {
+    {        
         float[] radii = {D.S_Spike_Radius, D.M_Spike_Radius, D.L_Spike_Radius};
         GameObject lastSpike = null;
         Vector3 lastPos = Vector3.zero;
@@ -54,7 +54,6 @@ public class IceSpikePattern : BossPattern
                     lastSpike = spike; 
                     lastPos = lastSpike.transform.position;
                     ctx.telegraph.Hide();
-                    Debug.Log("Last Spike");
                 }
                 else
                 {
@@ -70,7 +69,6 @@ public class IceSpikePattern : BossPattern
     }
     private void SpawnShard(Vector3 lastPos , BossContext ctx)
     {
-        Debug.Log("SpawnShard");
         float step = 360f / D.Shard_Count;
 
         var settings = new ProjectileSettings

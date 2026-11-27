@@ -63,7 +63,7 @@ public class EnemyAI_S : MonoBehaviour
         if (player != null)
         {
             target = player.transform;
-            enemyAttack.SetTargetMask(1 << player.gameObject.layer);
+            enemyAttack.SetTargetMask(1 << player.HurtboxLayer);
         }
 
         for(int i = 0; i < data.atk_List.Length; i++)

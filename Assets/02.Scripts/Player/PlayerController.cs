@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackMoveSpeedRate = 0.1f; //기본 공격 중 이동 속도
     [SerializeField] private Transform dashEffectPos;
     [SerializeField] private GameObject dashEffectPrefab;
+    public Collider hitbox;
+    public int HurtboxLayer => hitbox.gameObject.layer;
 
     private PlayerInputActions inputActions; // 실제 값을 저장하는 필드 (소문자, private)
 
@@ -218,6 +220,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator DashRoutine()
     {
         isDash = true;
+        hitbox.enabled = false;
 
         Vector3 direction = lastMoveDir;
 
@@ -243,6 +246,7 @@ public class PlayerController : MonoBehaviour
         }
 
         isDash = false;
+        hitbox.enabled = true;
     }
 
     // Player가 호출: 방향으로 거리만큼 짧은 시간 동안 밀림

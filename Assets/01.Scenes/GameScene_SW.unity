@@ -869,7 +869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceSpikePattern_2
   data: {fileID: 11400000, guid: e523ba4282a8be048b1254e55f0c8a38, type: 2}
-  teleportPattern: {fileID: 0}
+  teleportPattern: {fileID: 860130273}
   iceSpikePrefab: {fileID: 2691841446480377768, guid: e0fc6226af12e4f99b1bb4fff0e72379, type: 3}
   iceShardPrefab: {fileID: 8621090898542561031, guid: 040f35af0c1704642b74ea1dfb986790, type: 3}
   spikeLifeTime: 1.4
@@ -3028,6 +3028,7 @@ MonoBehaviour:
   attackMoveSpeedRate: 0.1
   dashEffectPos: {fileID: 828648178}
   dashEffectPrefab: {fileID: 103259545581077082, guid: 507e21510a664854a9595a66ea4d3336, type: 3}
+  hitbox: {fileID: 1330486531}
   stats:
     Character_ID: 1001
     Character_Name: "\uC544\uB974\uB9C8"
@@ -3049,6 +3050,7 @@ MonoBehaviour:
     base_Atk: 10
     currentStamina: 0
     currentInfection: 0
+  isDash: 0
   facingSign: 0
 --- !u!143 &756309400
 CharacterController:
@@ -3090,6 +3092,7 @@ Transform:
   m_Children:
   - {fileID: 638214807}
   - {fileID: 1595809368}
+  - {fileID: 1330486530}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &756309402
@@ -4948,6 +4951,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1289258658}
   m_CullTransparentMesh: 1
+--- !u!1 &1330486529
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1330486530}
+  - component: {fileID: 1330486531}
+  m_Layer: 9
+  m_Name: hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1330486530
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330486529}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 756309401}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1330486531
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330486529}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0463583
+  m_Height: 4.0923185
+  m_Direction: 1
+  m_Center: {x: -0.046358105, y: 0.68688333, z: 0}
 --- !u!1 &1365349756
 GameObject:
   m_ObjectHideFlags: 0
@@ -5508,10 +5566,7 @@ MonoBehaviour:
   phases:
   - hpRatio: 1
     patterns:
-    - {fileID: 1079522255}
-    - {fileID: 1190375459}
-    - {fileID: 212527754}
-    - {fileID: 860130273}
+    - {fileID: 745653514}
     entryPhasePattern: {fileID: 0}
   - hpRatio: 0.4
     patterns:

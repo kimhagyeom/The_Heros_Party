@@ -86,10 +86,13 @@ public class BossController : Enemy
 
     void Init(Transform target)
     {
+        PlayerController pc = target.GetComponentInParent<PlayerController>();
+        int layer = pc != null ? pc.HurtboxLayer : target.gameObject.layer;
+
         ctx = new BossContext
-        {                                        
+        {
             target = target,
-            targetMask = 1 << target.gameObject.layer, // 공격 안맞으면 이 부분 확인
+            targetMask = 1 << layer,
             telegraph = telegraph,
             bossHealth = health,
             queuePattern = QueuePattern,

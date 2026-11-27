@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ using System.Collections.Generic;
 using UnityEngine;
 
 public class HitDetector
@@ -11,7 +11,7 @@ public class HitDetector
         Vector3 center = owner.position + owner.forward * length/2;
         Vector3 halfSize = new Vector3(width / 2f, HitHieght / 2f , length / 2f);
 
-        Collider[] hits = Physics.OverlapBox(center, halfSize , owner.rotation, mask); // 보고 있는 방향으로 체크함
+        Collider[] hits = Physics.OverlapBox(center, halfSize , owner.rotation, mask, QueryTriggerInteraction.Collide); // 보고 있는 방향으로 체크함
 
         foreach(Collider hit in hits)
         {
@@ -25,7 +25,7 @@ public class HitDetector
     {
         List<IDamageable> result = new List<IDamageable>();
 
-        Collider[] hits = Physics.OverlapSphere(owner.position, radius, mask);
+        Collider[] hits = Physics.OverlapSphere(owner.position, radius, mask, QueryTriggerInteraction.Collide);
         foreach (Collider hit in hits)
         {
             Vector3 dir = hit.transform.position - owner.position;
@@ -45,7 +45,7 @@ public class HitDetector
     {
         List<IDamageable> result = new List<IDamageable>();
 
-        Collider[] hits = Physics.OverlapSphere(center, radius, mask);
+        Collider[] hits = Physics.OverlapSphere(center, radius, mask, QueryTriggerInteraction.Collide);
         foreach (Collider hit in hits)
         {
             AddTarget(result, hit);
@@ -59,7 +59,7 @@ public class HitDetector
     {
         List<IDamageable> result = new List<IDamageable>();
 
-        Collider[] hits = Physics.OverlapSphere(center, radius, mask);
+        Collider[] hits = Physics.OverlapSphere(center, radius, mask, QueryTriggerInteraction.Collide);
         foreach (Collider hit in hits)
         {
             Vector3 dir = hit.transform.position - center;
@@ -78,7 +78,7 @@ public class HitDetector
         List<IDamageable> result = new List<IDamageable>();
         Vector3 halfSize = new Vector3(width / 2f, HitHieght / 2f , length / 2f);
         
-        Collider[] hits = Physics.OverlapBox(center, halfSize , Quaternion.identity, mask); // 보고 있는 방향으로 체크함
+        Collider[] hits = Physics.OverlapBox(center, halfSize , Quaternion.identity, mask, QueryTriggerInteraction.Collide); // 보고 있는 방향으로 체크함
         foreach(Collider hit in hits)
         {
             AddTarget(result, hit);
@@ -86,11 +86,12 @@ public class HitDetector
         return result;
     }
 
-    // 한 대상에 콜라이더가 여러 개여도 결과에는 한 번만 담기
-    // (CharacterController + BoxCollider처럼 콜라이더가 2개면 Overlap 결과에 같은 대상이 2번 나옴)
+    // 콜라이더가 자식 오브젝트(PlayerHurtbox 등)에 있어도 부모의 IDamageable을 찾음
+    // 한 대상에 콜라이더가 여러 개여도 결과에는 한 번만 담김
     private static void AddTarget(List<IDamageable> result, Collider hit)
     {
-        if (hit.TryGetComponent(out IDamageable target) && !result.Contains(target))
+        IDamageable target = hit.GetComponentInParent<IDamageable>();
+        if (target != null && !result.Contains(target))
             result.Add(target);
     }
 }

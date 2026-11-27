@@ -34,6 +34,7 @@ public class Projectile : MonoBehaviour
 
         if (s.radius > 0f) hitRadius = s.radius;
         if (s.lifeTime > 0f) lifeTime = s.lifeTime;
+        Debug.Log($"투사체 Init: speed={s.speed}, hitRadius={hitRadius}, life={lifeTime}, mask={s.targetMask.value}");
     }
 
     void Update()
