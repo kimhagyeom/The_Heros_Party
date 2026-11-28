@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class IceSpikePattern : BossPattern
 {
-    [SerializeField] private GameObject iceSpikePrefab;
+    [SerializeField] private GameObject[] iceSpikePrefabs;
     [SerializeField] private Projectile iceShardPrefab;
     readonly AoeAttack aoeAttack = new AoeAttack();
     readonly ProjectileAttack projectileAttack = new ProjectileAttack();
@@ -32,7 +32,7 @@ public class IceSpikePattern : BossPattern
 
         //for(int set = 0; set < D.Spike_Set_Count; set++) // SetCount 필요 없을듯?
         //{
-            for (int i = 0; i < radii.Length; i++)
+            for (int i = 0; i < iceSpikePrefabs.Length; i++)
             {
                 float r = radii[i];
                 // bool isLast = set == D.Spike_Set_Count - 1 && i == radii.Length - 1; //여기도 어차피 작중큰 얼음가시 소환하면 되니까
@@ -45,8 +45,8 @@ public class IceSpikePattern : BossPattern
                 ctx.telegraph.Show(hitbox, atkPos);   
 
                 yield return new WaitForSeconds(D.warningTime);
-                GameObject spike = Instantiate(iceSpikePrefab , atkPos, Quaternion.identity);
-                spike.transform.localScale = Vector3.one * (r * 2f); //프리팹 지름 1기준
+                GameObject spike = Instantiate(iceSpikePrefabs[i] , atkPos, Quaternion.identity);
+                //spike.transform.localScale = Vector3.one * (r * 2f); //프리팹 지름 1기준
                 DamageInfo dmg = new DamageInfo { damage = D.damage };
                 aoeAttack.Execute(atkPos, hitbox , dmg, ctx.targetMask);
                 if (i == radii.Length - 1)
