@@ -4,7 +4,7 @@ using UnityEngine;
 public class IceSpikePattern_2 : BossPattern
 {
     [SerializeField] private TeleportPattern teleportPattern;
-    [SerializeField] private GameObject iceSpikePrefab;
+    [SerializeField] private GameObject[] iceSpikePrefabs;
     [SerializeField] private Projectile iceShardPrefab;
     readonly AoeAttack aoeAttack = new AoeAttack();
     readonly ProjectileAttack projectileAttack = new ProjectileAttack();
@@ -44,9 +44,9 @@ public class IceSpikePattern_2 : BossPattern
             ctx.telegraph.Show(hitbox, targetPos);   
 
             yield return new WaitForSeconds(D.warningTime);
-            GameObject spike = Instantiate(iceSpikePrefab , targetPos, Quaternion.identity);
+            GameObject spike = Instantiate(iceSpikePrefabs[i] , targetPos, Quaternion.identity);
 
-            spike.transform.localScale = Vector3.one * (r * 2f); //프리팹 지름 1기준
+            //spike.transform.localScale = Vector3.one * (r * 2f); //프리팹 지름 1기준
             
             DamageInfo dmg = new DamageInfo { damage = D.damage };
             aoeAttack.Execute(targetPos, hitbox , dmg, ctx.targetMask);

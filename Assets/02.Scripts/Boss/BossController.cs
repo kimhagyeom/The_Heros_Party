@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;    
+using UnityEngine.AI;
+using UnityEngine.LowLevelPhysics;
 using Random = UnityEngine.Random;
 
 [Serializable]
@@ -20,6 +21,8 @@ public class BossController : Enemy
     [SerializeField] float retryDelay = 0.2f;
     [SerializeField] private AttackTelegraph telegraph;
     [SerializeField] private PhaseGimmickPattern gimmickPattern;
+    [SerializeField] List<BossPattern> openingPatterns;
+    List<BossPattern> bag = new List<BossPattern>();
     // 시아 범위
     [SerializeField] float visualRange;
     int shieldTriggerIndex; //발동한 보호막 트리거 수
@@ -51,15 +54,15 @@ public class BossController : Enemy
     bool started; //보스 방 입장
     public bool IsInBattle => started && !IsDead;
 
-    void Update()
-    {
-        switch (state)
-        {
-            case BossState.Chase:
-                UpdateChase();
-                break;
-        }
-    }
+    // void Update()
+    // {
+    //     switch (state)
+    //     {
+    //         case BossState.Chase:
+    //             UpdateChase();
+    //             break;
+    //     }
+    // }
 
     public override void Start()
     {
@@ -103,6 +106,18 @@ public class BossController : Enemy
         shieldTriggerIndex = 0;
         PickNext();
     }
+
+    BossPattern DrawFromBag()
+    {
+        if (bag.Count == 0)
+        bag.AddRange(phases[phaseIndex].patterns.FindAll(p => p != null)); // 현재 페이즈에 있는 패턴 다 넣기
+        if (bag.Count == 0) return null; // 패턴이 없음
+        
+        int i = Random.Range(0, bag.Count);
+        BossPattern picked = bag[i]; // 랜덤으로 선택
+        bag.RemoveAt(i); // 고른 패턴 제거 
+        return picked; // 리턴
+    }
     private void PickNext()
     {
         if (state == BossState.Dead || state == BossState.Stunned) return;
@@ -115,17 +130,23 @@ public class BossController : Enemy
             StartPattern(next);                          // [변경]
             return;
         }
-        List<BossPattern> candidates = phases[phaseIndex].patterns.FindAll(p=> p != null && p.CanUse() && p.InRange(transform.position, ctx.target.position));
+        // List<BossPattern> candidates = phases[phaseIndex].patterns.FindAll(p=> p != null && p.CanUse() && p.InRange(transform.position, ctx.target.position));
 
-        if(candidates.Count == 0) 
+        // if(candidates.Count == 0) 
+        // {
+        //     state = BossState.Chase; // 쿨타임 중에는 추적
+        //     ResumeMoving();
+        //     waitRoutine = StartCoroutine(WaitThenPick(retryDelay));
+        //     return;
+        // }
+        // BossPattern picked = candidates[Random.Range(0, candidates.Count)];
+
+        BossPattern picked = DrawFromBag();
+        if (picked == null)                     // 페이즈에 패턴이 하나도 없을 때 대비
         {
-            state = BossState.Chase; // 쿨타임 중에는 추적
-            ResumeMoving();
             waitRoutine = StartCoroutine(WaitThenPick(retryDelay));
             return;
         }
-        BossPattern picked = candidates[Random.Range(0, candidates.Count)];
-
         Debug.Log($"[Boss] 패턴 실행: {picked.name} ({phaseIndex + 1}페이즈)");
 
         StartPattern(picked);   

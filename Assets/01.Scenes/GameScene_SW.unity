@@ -5570,6 +5570,9 @@ MonoBehaviour:
   - hpRatio: 1
     patterns:
     - {fileID: 745653514}
+    - {fileID: 212527754}
+    - {fileID: 1079522255}
+    - {fileID: 1190375459}
     entryPhasePattern: {fileID: 0}
   - hpRatio: 0.4
     patterns:
@@ -5581,6 +5584,7 @@ MonoBehaviour:
   retryDelay: 0.2
   telegraph: {fileID: 117335641}
   gimmickPattern: {fileID: 1922800657}
+  openingPatterns: []
   visualRange: 10
 --- !u!114 &1506927872
 MonoBehaviour:
